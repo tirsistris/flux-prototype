@@ -1,21 +1,30 @@
-import Link from "next/link";
+"use client";
+// app/page.tsx — Flux Welcome (fx system), golden-path entry. Ported from
+// screens.jsx ScreenWelcome. Replaces the phase-1 dev launchpad, which now lives
+// at /dev (outside the golden path). [Get started] → onboarding; the secondary
+// link → /login.
+import { useRouter } from "next/navigation";
+import { FxPhone, FluxLogo, PrimaryButton, Body, FX_THEME } from "@/components/fx/ui";
 
-// Phase-1 dev launchpad ONLY. This is not a designed screen — it just links to
-// the two pipeline-check routes. In phase 2 this route becomes the Welcome
-// screen (golden path entry).
-export default function DevIndex() {
+const T = FX_THEME;
+
+export default function WelcomePage() {
+  const router = useRouter();
   return (
-    <main style={{ minHeight: "100dvh", display: "flex", flexDirection: "column", gap: 16, alignItems: "center", justifyContent: "center", padding: 24 }}>
-      <h1 style={{ fontSize: 22, fontWeight: 800, letterSpacing: -0.4 }}>Flux — phase 1 check</h1>
-      <p style={{ color: "#8A91A3", fontSize: 14 }}>Two pipeline-check screens:</p>
-      <div style={{ display: "flex", gap: 12 }}>
-        <Link href="/home" style={{ padding: "12px 20px", borderRadius: 12, background: "linear-gradient(135deg,#7B61FF,#4A6FE8)", color: "#fff", fontWeight: 700, textDecoration: "none" }}>
-          /home (fl)
-        </Link>
-        <Link href="/login" style={{ padding: "12px 20px", borderRadius: 12, background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.14)", color: "#fff", fontWeight: 700, textDecoration: "none" }}>
-          /login (fx)
-        </Link>
+    <FxPhone>
+      <div className="fx-screen">
+        <div style={{ flex: 1 }} />
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center" }}>
+          <FluxLogo T={T} />
+          <h1 className="fx-h1" style={{ marginTop: 40, fontSize: 34 }}>{T.slogan}</h1>
+          <Body>Buy, hold and grow your money — without the confusing jargon.</Body>
+        </div>
+        <div style={{ flex: 1 }} />
+        <div style={{ display: "flex", flexDirection: "column", gap: 18, alignItems: "center" }}>
+          <PrimaryButton label="Get started" onClick={() => router.push("/onboarding")} T={T} />
+          <button className="fx-textlink" onClick={() => router.push("/login")}>I already have an account</button>
+        </div>
       </div>
-    </main>
+    </FxPhone>
   );
 }

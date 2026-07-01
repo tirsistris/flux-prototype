@@ -89,3 +89,30 @@
 .fx-euro { width: 40px; height: 40px; border-radius: 50%; background: rgba(26,29,38,0.85); border: 1px solid rgba(255,255,255,0.12); display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 700; color: #fff; position: absolute; box-shadow: 0 8px 22px rgba(0,0,0,0.4); }
 .fx-terms { font-size: 12px; color: rgba(235,235,245,0.34); text-align: center; line-height: 1.55; max-width: 290px; }
 .fx-terms a { color: rgba(235,235,245,0.6); }
+
+/* ── onboarding illustrations — AUTHORED in phase 3b, NOT ported ──────────────
+   The SVG/DOM illustrations reference .fx-float / .fx-ring, but no keyframes for
+   them exist in the exports: the Onboarding export is the PRINT build, which
+   shipped `.fx-float,.fx-ring{animation:none!important}` and zero keyframes. So
+   the motion below is newly written, deliberately RESTRAINED (calm = trust for
+   first-time users): a soft vertical bob and a gentle ring breathe.
+   float animates the independent `translate` property (not `transform`) so it
+   composes with each coin's inline `transform` positioning instead of erasing it.
+   Rings carry no inline transform, so scale is safe there. Honors reduced-motion. */
+.fx-float { animation: fxfloat 5.6s ease-in-out infinite; }
+@keyframes fxfloat { 0%, 100% { translate: 0 0; } 50% { translate: 0 -8px; } }
+.fx-ring { animation: fxring 4.2s ease-in-out infinite; }
+@keyframes fxring { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.045); } }
+@media (prefers-reduced-motion: reduce) {
+  .fx-float, .fx-ring { animation: none; }
+}
+
+/* ── success overlay — AUTHORED in phase 3b, NOT ported ───────────────────────
+   SuccessOverlay uses .fx-overlay / .fx-success-card / .fx-success-badge, but the
+   exports ship no CSS rules for them (they appear only as classNames in the
+   transpiled JSX). The badge's gradient + glow are set inline by the component;
+   these rules add the backdrop, centering and badge shape. */
+.fx-overlay { position: absolute; inset: 0; z-index: 40; display: flex; align-items: center; justify-content: center; padding: 32px; background: rgba(6,8,14,0.72); backdrop-filter: blur(10px); animation: fxfade .3s ease; }
+@keyframes fxfade { from { opacity: 0; } to { opacity: 1; } }
+.fx-success-card { display: flex; flex-direction: column; align-items: center; text-align: center; }
+.fx-success-badge { width: 84px; height: 84px; border-radius: 26px; display: flex; align-items: center; justify-content: center; }
