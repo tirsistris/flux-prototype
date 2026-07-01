@@ -30,7 +30,7 @@
     radial-gradient(95% 55% at -5% 102%, rgba(74,111,232,0.14), transparent 72%);
 }
 .fl-island { position: absolute; top: 11px; left: 50%; transform: translateX(-50%); width: 116px; height: 33px; border-radius: 20px; background: #000; z-index: 30; }
-.fl-statusbar { display: flex; align-items: center; justify-content: space-between; padding: 14px 28px 2px; position: relative; z-index: 20; flex-shrink: 0; }
+.fl-statusbar { display: flex; align-items: center; justify-content: space-between; padding: 14px 28px 10px; position: relative; z-index: 20; flex-shrink: 0; }
 .fl-time { font-size: 16px; font-weight: 600; letter-spacing: 0.3px; }
 .fl-status-icons { display: flex; align-items: center; gap: 7px; }
 .fl-content { flex: 1; position: relative; z-index: 5; padding: 0 20px; display: flex; flex-direction: column; overflow: hidden; }
