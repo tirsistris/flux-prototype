@@ -4,6 +4,7 @@
 // live (balance eye toggle, Trending/Watchlist/… segmented) but do not yet
 // navigate — routing/dead-control honesty lands in later phases.
 import React from "react";
+import Link from "next/link";
 import { PhoneFrame } from "@/components/frame/PhoneFrame";
 import { ScreenHeader, RoundBtn, Segmented, Sparkline, CoinAvatar, BalAmt, ACCENT } from "@/components/fl/ui";
 import { Ico } from "@/components/icons";
@@ -36,10 +37,12 @@ function ActionTile({ icon, label, primary }: { icon: React.ReactNode; label: st
   );
 }
 
-function TokenCard({ id }: { id: string }) {
+// `href` makes the card a navigable link (BTC → /coin/btc). Other tokens omit
+// it and stay inert until coin/[id] parametrization lands in phase 4.
+function TokenCard({ id, href }: { id: string; href?: string }) {
   const c = FLUX.coins[id];
-  return (
-    <div className="fl-card fl-token-card">
+  const inner = (
+    <>
       <div style={{ display: "flex", alignItems: "center", gap: 9 }}>
         <CoinAvatar id={id} size={30} />
         <div style={{ display: "flex", flexDirection: "column" }}>
@@ -54,8 +57,17 @@ function TokenCard({ id }: { id: string }) {
       <div style={{ marginTop: 6 }}>
         <Sparkline vals={c.spark} w={150} h={40} id={"tok" + id} up={c.ch >= 0} color={ACCENT.from} />
       </div>
-    </div>
+    </>
   );
+  const cls = "fl-card fl-token-card";
+  if (href) {
+    return (
+      <Link href={href} className={cls} style={{ display: "block", textDecoration: "none", color: "inherit" }}>
+        {inner}
+      </Link>
+    );
+  }
+  return <div className={cls}>{inner}</div>;
 }
 
 function CoinRow({ id }: { id: string }) {
@@ -113,7 +125,7 @@ export default function HomePage() {
         <span className="fl-sec-link">See all</span>
       </div>
       <div className="fl-token-grid">
-        <TokenCard id="btc" />
+        <TokenCard id="btc" href="/coin/btc" />
         <TokenCard id="eth" />
       </div>
 
