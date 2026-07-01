@@ -175,7 +175,7 @@ export function Sparkline({
   const c = color || (up ? GROWTH : FALL);
   const gid = `sg_${id}`;
   return (
-    <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} style={{ display: "block" }}>
+    <svg className="fl-spark" width={w} height={h} viewBox={`0 0 ${w} ${h}`} style={{ display: "block" }}>
       <defs>
         <linearGradient id={gid} x1="0" y1="0" x2="0" y2="1">
           <stop offset="0" stopColor={c} stopOpacity="0.28" />
