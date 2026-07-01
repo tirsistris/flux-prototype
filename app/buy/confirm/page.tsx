@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 import { PhoneFrame } from "@/components/frame/PhoneFrame";
 import { CoinAvatar } from "@/components/fl/ui";
 import { Ico } from "@/components/icons";
-import { FLUX, eur, fmtNum, fmtTxDate, type Tx } from "@/lib/flux-data";
+import { FLUX, eur, fmtCrypto, fmtTxDate, type Tx } from "@/lib/flux-data";
 import { useBuy, type BuyMethod } from "@/lib/store";
 
 const BTC = FLUX.coins.btc;
@@ -77,7 +77,7 @@ export default function BuyConfirmPage() {
       <div className="fl-card fl-confirm-hero">
         <CoinAvatar id="btc" size={48} />
         <div style={{ display: "flex", flexDirection: "column", gap: 4, marginTop: 12 }}>
-          <span className="fl-bal-amt" style={{ fontSize: 30 }}>{fmtNum(cryptoAmount, 6)}<span className="fl-bal-cur">BTC</span></span>
+          <span className="fl-bal-amt" style={{ fontSize: 30 }}>{fmtCrypto(cryptoAmount)}<span className="fl-bal-cur">BTC</span></span>
           <span style={{ fontSize: 13.5, color: "#8A91A3" }}>≈ for {eur(eurAmount)}</span>
         </div>
       </div>

@@ -19,6 +19,12 @@ export const pct = (n: number, dec = 2) =>
 export const signEur = (n: number, dec = 2) =>
   (n >= 0 ? "+" : "") + fmtNum(n, dec) + " €";
 
+// Single crypto-amount format used everywhere a coin quantity is shown (buy
+// confirm/success + tx detail) so one transaction reads identically in all three.
+// 6 dp = the quantity the user actually bought; keeps significant precision for
+// seed amounts (ETH 0,011987 / XRP 0,005746) without padding ugly trailing zeros.
+export const fmtCrypto = (n: number) => fmtNum(n, 6);
+
 // Formats a Date into the same string shape the seed txs use: "DD.MM.YY, HH:MM".
 // Used when injecting a freshly-created transaction (phase 2b) so an injected
 // row is indistinguishable in form from the seed rows Wallet renders.

@@ -9,7 +9,7 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import { PhoneFrame } from "@/components/frame/PhoneFrame";
 import { Ico } from "@/components/icons";
-import { eur, fmtNum } from "@/lib/flux-data";
+import { eur, fmtCrypto } from "@/lib/flux-data";
 import { useBuy } from "@/lib/store";
 
 export default function BuySuccessPage() {
@@ -49,7 +49,7 @@ export default function BuySuccessPage() {
         <h2 className="fl-success-title">Purchase complete</h2>
         <p className="fl-success-sub">You&apos;ve added Bitcoin to your wallet.</p>
         <div className="fl-success-amt">
-          <span className="fl-bal-amt" style={{ fontSize: 34 }}>{fmtNum(cryptoAmount, 6)}<span className="fl-bal-cur">BTC</span></span>
+          <span className="fl-bal-amt" style={{ fontSize: 34 }}>{fmtCrypto(cryptoAmount)}<span className="fl-bal-cur">BTC</span></span>
           <span style={{ fontSize: 14, color: "#8A91A3", marginTop: 4 }}>{eur(eurAmount + feeEur)} paid</span>
         </div>
       </div>

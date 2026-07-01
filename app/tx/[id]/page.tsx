@@ -12,7 +12,7 @@ import { useParams, useRouter } from "next/navigation";
 import { PhoneFrame } from "@/components/frame/PhoneFrame";
 import { CoinAvatar } from "@/components/fl/ui";
 import { Ico } from "@/components/icons";
-import { FLUX, eur, fmtNum, GROWTH, type Tx, type TxType } from "@/lib/flux-data";
+import { FLUX, eur, fmtNum, fmtCrypto, GROWTH, type Tx, type TxType } from "@/lib/flux-data";
 import { useBuy } from "@/lib/store";
 
 const KIND: Record<TxType, { label: string; ico: (c?: string, w?: number) => React.ReactNode; sign: number }> = {
@@ -121,7 +121,7 @@ export default function TxDetailPage() {
         </div>
         <div className="fl-tx-status">{Ico.check(GROWTH, 15)}<span>Completed</span></div>
         <div className="fl-tx-amt-wrap">
-          <span className="fl-bal-amt" style={{ fontSize: 38 }}>{signed}{fmtNum(amtCrypto, 4)}<span className="fl-bal-cur">{c.sym}</span></span>
+          <span className="fl-bal-amt" style={{ fontSize: 38 }}>{signed}{fmtCrypto(amtCrypto)}<span className="fl-bal-cur">{c.sym}</span></span>
           <span className="fl-tx-eur">≈ {eur(eurVal)}</span>
         </div>
       </div>
