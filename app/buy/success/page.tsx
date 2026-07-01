@@ -33,7 +33,10 @@ export default function BuySuccessPage() {
 
   const footer = (
     <div className="fl-ctabar col">
-      <button className="fl-cta-buy" style={{ width: "100%" }} onClick={() => router.push("/wallet")}>View in wallet</button>
+      {/* flex:none neutralises the shared .fl-cta-buy `flex:1`, whose 0% basis
+          collapses the button's height inside this column footer (.fl-ctabar.col);
+          restores the standard 54px primary height. width:100% keeps full width. */}
+      <button className="fl-cta-buy" style={{ width: "100%", flex: "none" }} onClick={() => router.push("/wallet")}>View in wallet</button>
       <button className="fl-done-link" onClick={() => router.push("/home")}>Done</button>
     </div>
   );
