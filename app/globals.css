@@ -1,0 +1,54 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── single reset (Tailwind preflight is disabled; the design owns its reset) ──
+   Mirrors the reset that the Claude Design exports shipped at the top of each
+   <style> block, lifted here once instead of duplicated into fx.css / fl.css. */
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; padding: 0; }
+html, body { height: 100%; }
+button { font-family: inherit; cursor: pointer; }
+
+body {
+  font-family: var(--font-inter), -apple-system, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  background: #05070c;
+  color: #fff;
+}
+
+/* Inter is wired through next/font (see app/layout.tsx) as the --font-inter
+   variable. A couple of design rules name 'Inter' literally (e.g. .fl-bal-amt
+   lists 'Archivo','Inter'); Archivo was never bundled in the source either, so
+   routing those to the real Inter matches the original render exactly. */
+.fl-bal-amt, .fl-bal-cur { font-family: 'Archivo', var(--font-inter), sans-serif; }
+
+/* ── device stage ──────────────────────────────────────────────
+   Desktop: the phone (its own bezel/rounding lives in fx-phone / fl-phone)
+   floats centered on a dark backdrop. Below 420px it goes full-bleed: bezel,
+   outer glow and corner radius drop, the phone fills the viewport, and the
+   internal layout stays 390-based (content padding is untouched). */
+.device-stage {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: radial-gradient(120% 90% at 50% 0%, #12151f 0%, #0a0c12 45%, #05070c 100%);
+}
+
+@media (max-width: 420px) {
+  .device-stage {
+    padding: 0;
+    align-items: stretch;
+    background: none;
+  }
+  .fl-phone, .fx-phone {
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    border-radius: 0;
+    box-shadow: none;
+  }
+}
