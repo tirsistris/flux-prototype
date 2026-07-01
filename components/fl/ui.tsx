@@ -1,13 +1,14 @@
 "use client";
 // fl/ui.tsx — shared Flux core (fl) primitives, ported from the export's ui.jsx.
 // PhoneFrame / StatusBar / TabBar live in components/frame; this file holds the
-// in-screen primitives. ACCENT keeps the source fl gradient (#8B5CF6 → #6366F1);
-// it is unified to the fx accent in phase 3.
+// in-screen primitives. ACCENT is the JS twin of the fl.css accent tokens
+// (--fl-c1 / --fl-c2 / --fl-glow-rgb) — sparklines & area charts read it. Phase 3a
+// unified it to the fx canon (#7B61FF → #4A6FE8); keep it in sync with fl.css.
 import React from "react";
 import { Coin } from "@/components/icons";
 import { fmtNum, GROWTH, FALL } from "@/lib/flux-data";
 
-export const ACCENT = { from: "#8B5CF6", to: "#6366F1", glow: "rgba(124,92,246,0.45)" };
+export const ACCENT = { from: "#7B61FF", to: "#4A6FE8", glow: "rgba(123,97,255,0.45)" };
 
 // ── header (title + actions) ─────────────────────────────────
 export function ScreenHeader({
