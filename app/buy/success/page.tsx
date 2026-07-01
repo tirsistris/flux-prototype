@@ -1,9 +1,10 @@
 "use client";
 // app/buy/success/page.tsx — Buy step 4 (Success), ported from buyflow.jsx
-// ScreenBuySuccess. The source hardcoded `eurVal = 100`; here the purchased
-// amount, BTC total and fee come from the store's pendingBuy. In 2a both footer
-// buttons go to /home (Wallet doesn't exist yet). If the store is empty (hard
-// reload), fall back to /home.
+// ScreenBuySuccess. The purchased amount, BTC total and fee come from the store's
+// pendingBuy — snapshotted on mount, after which pendingBuy is CLEARED so that
+// navigating back to /buy/confirm can't re-inject the same transaction (confirm's
+// guard bounces the now-empty store to /buy). [View in wallet] → /wallet,
+// [Done] → /home. If the store is already empty (hard reload), fall back to /home.
 import React from "react";
 import { useRouter } from "next/navigation";
 import { PhoneFrame } from "@/components/frame/PhoneFrame";
@@ -13,19 +14,26 @@ import { useBuy } from "@/lib/store";
 
 export default function BuySuccessPage() {
   const router = useRouter();
-  const { pendingBuy } = useBuy();
+  const { pendingBuy, clearPendingBuy } = useBuy();
+  // Capture pendingBuy at mount so the screen keeps rendering after we clear it.
+  const [snap] = React.useState(() => pendingBuy);
 
   React.useEffect(() => {
-    if (!pendingBuy) router.replace("/home");
-  }, [pendingBuy, router]);
-  if (!pendingBuy) return null;
+    // The transaction was already injected on Confirm; drop the pending buy so a
+    // back-navigation + second Confirm can't double it.
+    clearPendingBuy();
+  }, [clearPendingBuy]);
 
-  const { eurAmount, cryptoAmount, feeEur } = pendingBuy;
+  React.useEffect(() => {
+    if (!snap) router.replace("/home");
+  }, [snap, router]);
+  if (!snap) return null;
+
+  const { eurAmount, cryptoAmount, feeEur } = snap;
 
   const footer = (
     <div className="fl-ctabar col">
-      {/* TODO(2b): re-point "View in wallet" → /wallet once the Wallet screen exists. */}
-      <button className="fl-cta-buy" style={{ width: "100%" }} onClick={() => router.push("/home")}>View in wallet</button>
+      <button className="fl-cta-buy" style={{ width: "100%" }} onClick={() => router.push("/wallet")}>View in wallet</button>
       <button className="fl-done-link" onClick={() => router.push("/home")}>Done</button>
     </div>
   );

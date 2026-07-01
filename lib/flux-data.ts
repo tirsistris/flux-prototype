@@ -19,6 +19,14 @@ export const pct = (n: number, dec = 2) =>
 export const signEur = (n: number, dec = 2) =>
   (n >= 0 ? "+" : "") + fmtNum(n, dec) + " €";
 
+// Formats a Date into the same string shape the seed txs use: "DD.MM.YY, HH:MM".
+// Used when injecting a freshly-created transaction (phase 2b) so an injected
+// row is indistinguishable in form from the seed rows Wallet renders.
+export function fmtTxDate(d: Date = new Date()): string {
+  const p = (n: number) => String(n).padStart(2, "0");
+  return `${p(d.getDate())}.${p(d.getMonth() + 1)}.${String(d.getFullYear()).slice(-2)}, ${p(d.getHours())}:${p(d.getMinutes())}`;
+}
+
 export type Coin = {
   id: string;
   name: string;
@@ -29,12 +37,20 @@ export type Coin = {
   spark: number[];
 };
 
+export type TxType = "buy" | "received" | "sent" | "swap";
+
 export type Tx = {
+  // Wallet-render fields (the original seed shape — TxRow reads exactly these):
   coin: string;
   name: string;
-  amt: number;
+  amt: number; // signed EUR: + = in (buy/receive), − = out (sell/send)
   date: string;
   ago: string;
+  // 2b superset — populated on store txs; raw FLUX.txs seeds omit these:
+  id?: string; // store assigns: `seed-N` for seeds, `tx-<ts>` for injected
+  type?: TxType; // explicit for injected buys; seeds fall back to amt sign
+  cryptoAmount?: number; // injected buys carry the exact crypto amount
+  feeEur?: number; // injected buys carry the fee; seeds have none → detail hides the row
 };
 
 export type Earn = {

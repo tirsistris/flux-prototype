@@ -2,14 +2,15 @@
 // app/buy/confirm/page.tsx — Buy step 3 (Confirm), ported from buyflow.jsx
 // ScreenBuyConfirm. The source hardcoded `eurVal = 100, fee = 1.49`; here the
 // amount, BTC equivalent, fee and pay-method all come from the store's
-// pendingBuy. Confirm purchase → /buy/success (no tx creation until 2b).
+// pendingBuy. Confirm purchase INJECTS a transaction (phase 2b) — built in the
+// FLUX.txs superset shape — then navigates to /buy/success.
 // If the store is empty (e.g. a hard reload dropped it), fall back to /buy.
 import React from "react";
 import { useRouter } from "next/navigation";
 import { PhoneFrame } from "@/components/frame/PhoneFrame";
 import { CoinAvatar } from "@/components/fl/ui";
 import { Ico } from "@/components/icons";
-import { FLUX, eur, fmtNum } from "@/lib/flux-data";
+import { FLUX, eur, fmtNum, fmtTxDate, type Tx } from "@/lib/flux-data";
 import { useBuy, type BuyMethod } from "@/lib/store";
 
 const BTC = FLUX.coins.btc;
@@ -31,7 +32,7 @@ const PAY_LABEL: Record<BuyMethod, string> = {
 
 export default function BuyConfirmPage() {
   const router = useRouter();
-  const { pendingBuy } = useBuy();
+  const { pendingBuy, addTransaction } = useBuy();
 
   React.useEffect(() => {
     if (!pendingBuy) router.replace("/buy");
@@ -40,9 +41,28 @@ export default function BuyConfirmPage() {
 
   const { eurAmount, cryptoAmount, feeEur, method } = pendingBuy;
 
+  // Inject the transaction, THEN navigate. Built in the FLUX.txs superset so the
+  // Wallet list renders it exactly like a seed row; the extra fields (type,
+  // cryptoAmount, feeEur) feed the /tx/[id] detail screen. Positive amt = a buy.
+  const confirm = () => {
+    const tx: Tx = {
+      id: `tx-${Date.now()}`,
+      coin: "btc",
+      name: FLUX.coins.btc.name,
+      amt: eurAmount,
+      date: fmtTxDate(),
+      ago: "Just now",
+      type: "buy",
+      cryptoAmount,
+      feeEur,
+    };
+    addTransaction(tx);
+    router.push("/buy/success");
+  };
+
   const footer = (
     <div className="fl-ctabar">
-      <button className="fl-cta-buy" style={{ width: "100%" }} onClick={() => router.push("/buy/success")}>Confirm purchase</button>
+      <button className="fl-cta-buy" style={{ width: "100%" }} onClick={confirm}>Confirm purchase</button>
     </div>
   );
 
