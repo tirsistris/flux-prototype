@@ -48,7 +48,7 @@ export default function TradePage() {
     : { coin: recCoin, amt: recAmt, val: recVal };
 
   return (
-    <PhoneFrame active="trade">
+    <PhoneFrame active="trade" scroll>
       <div className="fl-wallet-head">
         <button className="fl-cur-sel">EUR {Ico.chevD("rgba(255,255,255,0.6)", 16)}</button>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
@@ -84,13 +84,16 @@ export default function TradePage() {
         <AreaChart vals={FLUX.curve} w={342} h={118} label={eur(c.price * 0.9784)} id="trade" />
       </div>
 
-      {/* AUTHORED: primary CTA driven by the Buy/Sell toggle (no button in source). */}
+      {/* AUTHORED: primary CTA driven by the Buy/Sell toggle (no button in source).
+          flexShrink:0 pins the 54px height — .fl-content is a flex COLUMN and this
+          screen's children over-fill it, so an unpinned .fl-primary gets shrunk to
+          its text height. Same class-in-a-column trap as /buy/success. */}
       {dir === "Buy" ? (
-        <button className="fl-primary" style={{ marginTop: 16 }} onClick={() => router.push("/buy")}>
+        <button className="fl-primary" style={{ marginTop: 16, flexShrink: 0 }} onClick={() => router.push("/buy")}>
           {Ico.receive("#fff", 20)}Buy {c.name}
         </button>
       ) : (
-        <button className="fl-primary" style={{ marginTop: 16 }} disabled>
+        <button className="fl-primary" style={{ marginTop: 16, flexShrink: 0 }} disabled>
           Selling — coming soon
         </button>
       )}
@@ -112,8 +115,9 @@ export default function TradePage() {
         </div>
       </div>
 
-      {/* AUTHORED: Convert CTA — the convert flow lands in phase 4b. TODO(4b) */}
-      <button className="fl-primary ghost" style={{ marginTop: 12 }} disabled>
+      {/* AUTHORED: Convert CTA — the convert flow lands in phase 4b. TODO(4b)
+          flexShrink:0: see the primary CTA above — pin 54px against column shrink. */}
+      <button className="fl-primary ghost" style={{ marginTop: 12, flexShrink: 0 }} disabled>
         Convert — coming soon
       </button>
     </PhoneFrame>
