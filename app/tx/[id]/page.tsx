@@ -49,7 +49,7 @@ function DetailRow({ label, value, mono, copy, last }: { label: string; value: s
       <span className="fl-sum-label">{label}</span>
       <span className="fl-tx-val" style={{ fontVariantNumeric: mono ? "tabular-nums" : "normal" }}>
         {value}
-        {copy && <button className="fl-tx-copy">{Ico.copy("#A78BFA", 16)}</button>}
+        {copy && <button className="fl-tx-copy">{Ico.copy("#8A79FF", 16)}</button>}
       </span>
     </div>
   );
@@ -139,7 +139,7 @@ export default function TxDetailPage() {
       </div>
 
       <button className="fl-explorer" disabled style={{ alignSelf: "flex-start", marginTop: 16, opacity: 0.45, cursor: "default" }}>
-        View on explorer {Ico.external("#A78BFA", 16)}
+        View on explorer {Ico.external("#8A79FF", 16)}
       </button>
     </PhoneFrame>
   );

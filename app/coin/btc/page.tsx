@@ -47,7 +47,7 @@ export default function CoinBtcPage() {
           </div>
         </div>
         <button className={"fl-star" + (star ? " on" : "")} onClick={() => setStar((s) => !s)}>
-          {Ico.star(star ? "#A78BFA" : "rgba(255,255,255,0.65)", 19, star)}
+          {Ico.star(star ? "#8A79FF" : "rgba(255,255,255,0.65)", 19, star)}
         </button>
       </div>
 
