@@ -9,8 +9,12 @@ const ROUTES: [string, string][] = [
   ["/create-account", "Create account"],
   ["/login", "Login"],
   ["/home", "Home"],
+  ["/markets", "Markets"],
   ["/wallet", "Wallet"],
+  ["/trade", "Trade"],
+  ["/profile", "Profile"],
   ["/coin/btc", "Coin · BTC"],
+  ["/coin/eth", "Coin · ETH"],
   ["/buy", "Buy flow"],
   ["/tx/seed-0", "Tx detail (seed)"],
 ];

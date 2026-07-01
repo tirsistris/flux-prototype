@@ -101,6 +101,36 @@ export const FLUX = {
   ] as Earn[],
 };
 
+// Per-coin modelled detail data for the coin screen. A coin is present here ONLY
+// when we actually have numbers to show for it — the demo does not model holdings
+// or per-coin market stats generically, so btc is the single modelled coin. The
+// coin screen renders the stats grid / "Your balance" / About sections *only* when
+// its id is in this map; absent coins show header+price+change+chart+CTA and
+// nothing invented (no "0 ETH", no placeholder cap/vol). BTC's values are the ones
+// previously hardcoded inline in /coin/btc — lifted here so they live in one place.
+export type CoinDetail = {
+  holdAmt: number; // demo holding shown in "Your balance"
+  marketCap: string; // pre-formatted (T/Mrd magnitudes have no generic formatter)
+  volume: string; // pre-formatted 24h volume
+  high: number; // 24h high (EUR) — rendered via eur()
+  low: number; // 24h low (EUR) — rendered via eur()
+  about: string; // "About {name}" body (the trailing "Read more" link is added in JSX)
+};
+
+export const COIN_DETAIL: Record<string, CoinDetail> = {
+  btc: {
+    holdAmt: 0.2105,
+    marketCap: "2,07 T €",
+    volume: "38,4 Mrd €",
+    high: 108240,
+    low: 101920,
+    about:
+      "Bitcoin is the original cryptocurrency — digital money you can send to anyone, " +
+      "anywhere, without a bank in the middle. It’s the most widely held coin on Flux and " +
+      "a simple first step into crypto.",
+  },
+};
+
 export const GROWTH = "#4ADE80";
 export const FALL = "#F87171";
 export const chColor = (n: number) => (n >= 0 ? GROWTH : FALL);

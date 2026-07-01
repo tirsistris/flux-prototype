@@ -107,6 +107,11 @@
 .fl-pill { display: inline-flex; align-items: center; gap: 7px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.09); padding: 9px 14px; border-radius: 12px; font-size: 13px; font-weight: 600; color: #fff; }
 
 .fl-primary { display: flex; align-items: center; justify-content: center; gap: 9px; width: 100%; height: 54px; border: none; border-radius: 16px; background: linear-gradient(135deg, var(--fl-c1), var(--fl-c2)); color: #fff; font-size: 16px; font-weight: 700; box-shadow: 0 12px 30px rgba(var(--fl-glow-rgb),0.4); }
+/* .ghost = neutral surface (used for the disabled Convert CTA); :disabled dims any
+   primary and drops its glow so "coming soon" buttons read as inert, not tappable. */
+.fl-primary.ghost { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); box-shadow: none; }
+.fl-primary:disabled { opacity: 0.45; box-shadow: none; cursor: default; }
+.fl-primary.ghost:disabled { opacity: 0.6; }
 
 /* ── markets ── */
 .fl-mkt-top { display: flex; align-items: center; gap: 10px; padding-top: 8px; }
@@ -155,6 +160,9 @@
 .fl-set-ico { width: 24px; display: flex; align-items: center; justify-content: center; }
 .fl-set-label { font-size: 15px; font-weight: 500; color: #fff; }
 .fl-logout { display: flex; align-items: center; justify-content: center; gap: 9px; width: 100%; margin-top: 22px; padding: 15px; background: rgba(248,113,113,0.08); border: 1px solid rgba(248,113,113,0.18); border-radius: 16px; color: #F87171; font-size: 16px; font-weight: 700; }
+/* "Soon" pill for settings rows whose screen isn't built (replaces the row chevron
+   so the row reads as not-yet-tappable rather than a dead navigation affordance). */
+.fl-soon-tag { margin-left: auto; font-size: 11px; font-weight: 700; color: #8A91A3; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); padding: 3px 9px; border-radius: 8px; letter-spacing: 0.3px; }
 
 /* ── coin detail ── */
 .fl-detail-head { display: flex; align-items: center; padding: 10px 0 6px; }
