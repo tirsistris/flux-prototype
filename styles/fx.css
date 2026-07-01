@@ -20,7 +20,7 @@
 .fx-herohlow { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
 .fx-island { position: absolute; top: 11px; left: 50%; transform: translateX(-50%); width: 116px; height: 33px; border-radius: 20px; background: #000; z-index: 30; }
 
-.fx-statusbar { display: flex; align-items: center; justify-content: space-between; padding: 15px 30px 4px; position: relative; z-index: 20; flex-shrink: 0; }
+.fx-statusbar { display: flex; align-items: center; justify-content: space-between; padding: 15px 30px 10px; position: relative; z-index: 20; flex-shrink: 0; }
 .fx-time { font-size: 16px; font-weight: 600; letter-spacing: 0.3px; }
 .fx-status-icons { display: flex; align-items: center; gap: 7px; }
 .fx-home-ind { position: absolute; bottom: 9px; left: 50%; transform: translateX(-50%); width: 134px; height: 5px; border-radius: 99px; background: rgba(255,255,255,0.85); z-index: 25; }
