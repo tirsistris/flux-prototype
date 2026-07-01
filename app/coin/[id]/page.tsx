@@ -49,7 +49,8 @@ export default function CoinPage({ params }: { params: { id: string } }) {
   return (
     <PhoneFrame scroll footer={footer}>
       <div className="fl-detail-head">
-        <button className="fl-roundbtn sm" onClick={() => router.back()}>{Ico.chevL("rgba(255,255,255,0.85)", 20)}</button>
+        {/* chevron 16px to match Wallet/Trade .fl-roundbtn.sm headers (same 34px plaque → same glyph size). */}
+        <button className="fl-roundbtn sm" onClick={() => router.back()}>{Ico.chevL("rgba(255,255,255,0.85)", 16)}</button>
         <div className="fl-detail-coin">
           <CoinAvatar id={id} size={28} />
           <div style={{ display: "flex", flexDirection: "column", lineHeight: 1.1 }}>
