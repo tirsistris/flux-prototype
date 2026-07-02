@@ -61,7 +61,10 @@
 .fx-primary:active { transform: scale(0.975); filter: brightness(1.06); }
 .fx-primary span { white-space: nowrap; }
 .fx-textlink { background: none; border: none; color: rgba(235,235,245,0.55); font-size: 15px; font-weight: 500; }
-.fx-icon-btn { width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; }
+/* 40px matches the fl-system's round-button canon (.fl-roundbtn) — was 36px, the
+   one round icon-plaque size fl's earlier unification pass didn't reach since
+   it lives in the separate fx stylesheet (Login/Onboarding/Create-account). */
+.fx-icon-btn { width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; }
 .fx-skip { background: none; border: none; color: rgba(235,235,245,0.5); font-size: 15px; font-weight: 600; padding: 8px; }
 .fx-outline-wide {
   width: 100%; height: 54px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);

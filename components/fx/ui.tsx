@@ -106,20 +106,20 @@ export function Dots({ active, total, T }: { active: number; total: number; T: F
 
 export function TopChrome({ onBack, onSkip }: { onBack?: () => void; onSkip?: () => void }) {
   return (
-    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: 36 }}>
+    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: 40 }}>
       {onBack ? (
         <button className="fx-icon-btn" onClick={onBack} aria-label="Back">
           {Ico.chevL("rgba(255,255,255,0.85)", 22)}
         </button>
       ) : (
-        <div style={{ width: 36 }} />
+        <div style={{ width: 40 }} />
       )}
       {onSkip ? (
         <button className="fx-skip" onClick={onSkip}>
           Skip
         </button>
       ) : (
-        <div style={{ width: 36 }} />
+        <div style={{ width: 40 }} />
       )}
     </div>
   );

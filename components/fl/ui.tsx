@@ -209,7 +209,14 @@ export function AreaChart({
   const seed = TIMEFRAMES.indexOf(tf);
   const data = vals.map((v, i) => v + Math.sin(i * 0.7 + seed) * (2 + seed) + seed * 1.5);
   const { line, area, xs, ys } = smoothPath(data, w, h, 6);
-  const peakIdx = data.indexOf(Math.max(...data));
+  // Anchor the price tag to the LAST data point (today's actual value), not the
+  // window's highest value. A peak-based anchor drifts wherever the per-timeframe
+  // high happens to sit (as far as ~82% of the width on 1M/6M) — the tag would
+  // float well short of the true right edge with nothing marking that the line
+  // keeps going past it, reading as "the chart stops here" even though it
+  // doesn't. Anchoring to the last point makes the tag sit exactly where the
+  // line ends, on every timeframe, on every screen that uses this chart.
+  const anchorIdx = data.length - 1;
   const gid = `ac_${id}`,
     lid = `acl_${id}`;
 
@@ -247,8 +254,8 @@ export function AreaChart({
             ref={tipRef}
             className="fl-chart-tip"
             style={{
-              left: Math.min(Math.max(xs(peakIdx) - 36, 4), w - tipW - 4),
-              top: Math.max(ys(data[peakIdx]) - 30, 2),
+              left: Math.min(Math.max(xs(anchorIdx) - 36, 4), w - tipW - 4),
+              top: Math.max(ys(data[anchorIdx]) - 30, 2),
             }}
           >
             {label}

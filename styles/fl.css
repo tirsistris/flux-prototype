@@ -152,7 +152,7 @@
 .fl-conv-label { font-size: 12px; color: #8A91A3; }
 .fl-conv-amt { font-size: 18px; font-weight: 700; color: #fff; letter-spacing: -0.3px; }
 .fl-conv-sub { font-size: 12px; color: #8A91A3; }
-.fl-conv-swap { width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, var(--fl-c1), var(--fl-c2)); border: none; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 20px rgba(var(--fl-glow-rgb),0.4); flex-shrink: 0; }
+.fl-conv-swap { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--fl-c1), var(--fl-c2)); border: none; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 20px rgba(var(--fl-glow-rgb),0.4); flex-shrink: 0; }
 
 /* ── profile ── */
 .fl-profile-card { display: flex; align-items: center; gap: 14px; padding: 16px; margin-top: 8px; }
