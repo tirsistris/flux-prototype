@@ -28,13 +28,18 @@ function BalanceBlock() {
   );
 }
 
-function ActionTile({ icon, label, primary }: { icon: React.ReactNode; label: string; primary?: boolean }) {
-  return (
-    <button className={"fl-action" + (primary ? " primary" : "")}>
+// `href` makes the tile a navigable link (Send/Receive/Swap flows land in 4b-1);
+// tiles without it stay inert until their destination exists.
+function ActionTile({ icon, label, primary, href }: { icon: React.ReactNode; label: string; primary?: boolean; href?: string }) {
+  const cls = "fl-action" + (primary ? " primary" : "");
+  const inner = (
+    <>
       <span className={"fl-action-ico" + (primary ? " primary" : "")}>{icon}</span>
       <span className="fl-action-label">{label}</span>
-    </button>
+    </>
   );
+  if (href) return <Link href={href} className={cls} style={{ textDecoration: "none" }}>{inner}</Link>;
+  return <button className={cls}>{inner}</button>;
 }
 
 // `href` makes the card a navigable link (BTC → /coin/btc). Other tokens omit
@@ -115,9 +120,9 @@ export default function HomePage() {
       <BalanceBlock />
 
       <div className="fl-actions">
-        <ActionTile icon={Ico.receive("rgba(255,255,255,0.92)", 22)} label="Receive" />
-        <ActionTile icon={Ico.send("rgba(255,255,255,0.92)", 22)} label="Send" />
-        <ActionTile icon={Ico.swap("rgba(255,255,255,0.92)", 22)} label="Swap" />
+        <ActionTile icon={Ico.receive("rgba(255,255,255,0.92)", 22)} label="Receive" href="/receive" />
+        <ActionTile icon={Ico.send("rgba(255,255,255,0.92)", 22)} label="Send" href="/send" />
+        <ActionTile icon={Ico.swap("rgba(255,255,255,0.92)", 22)} label="Swap" href="/swap/confirm" />
       </div>
 
       <div className="fl-sec-head">

@@ -16,6 +16,10 @@ const ROUTES: [string, string][] = [
   ["/coin/btc", "Coin · BTC"],
   ["/coin/eth", "Coin · ETH"],
   ["/buy", "Buy flow"],
+  ["/send", "Send flow"],
+  ["/send/scan", "Send · Scan QR"],
+  ["/receive", "Receive"],
+  ["/swap/confirm", "Swap flow"],
   ["/tx/seed-0", "Tx detail (seed)"],
 ];
 

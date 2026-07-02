@@ -12,13 +12,17 @@ import { Ico } from "@/components/icons";
 import { FLUX, eur, pct, signEur, chColor, type Tx } from "@/lib/flux-data";
 import { useBuy } from "@/lib/store";
 
-function WalletAction({ icon, label, primary }: { icon: React.ReactNode; label: string; primary?: boolean }) {
-  return (
-    <button className={"fl-action" + (primary ? " primary" : "")}>
+// `href` makes the tile a navigable link (Send/Receive/Swap flows land in 4b-1).
+function WalletAction({ icon, label, primary, href }: { icon: React.ReactNode; label: string; primary?: boolean; href?: string }) {
+  const cls = "fl-action" + (primary ? " primary" : "");
+  const inner = (
+    <>
       <span className={"fl-action-ico" + (primary ? " primary" : "")}>{icon}</span>
       <span className="fl-action-label">{label}</span>
-    </button>
+    </>
   );
+  if (href) return <Link href={href} className={cls} style={{ textDecoration: "none" }}>{inner}</Link>;
+  return <button className={cls}>{inner}</button>;
 }
 
 function TxRow({ tx }: { tx: Tx }) {
@@ -61,9 +65,9 @@ export default function WalletPage() {
       </div>
 
       <div className="fl-actions" style={{ marginTop: 18 }}>
-        <WalletAction icon={Ico.receive("rgba(255,255,255,0.92)", 22)} label="Receive" />
-        <WalletAction icon={Ico.send("rgba(255,255,255,0.92)", 22)} label="Send" />
-        <WalletAction icon={Ico.swap("rgba(255,255,255,0.92)", 22)} label="Swap" />
+        <WalletAction icon={Ico.receive("rgba(255,255,255,0.92)", 22)} label="Receive" href="/receive" />
+        <WalletAction icon={Ico.send("rgba(255,255,255,0.92)", 22)} label="Send" href="/send" />
+        <WalletAction icon={Ico.swap("rgba(255,255,255,0.92)", 22)} label="Swap" href="/swap/confirm" />
       </div>
 
       <div style={{ marginTop: 20 }}>
