@@ -70,8 +70,8 @@ export default function WalletPage() {
         <WalletAction icon={Ico.swap("rgba(255,255,255,0.92)", 22)} label="Swap" href="/swap/confirm" />
       </div>
 
-      <div style={{ marginTop: 20 }}>
-        <AreaChart vals={FLUX.curve} w={342} h={132} label={eur(23565.23, 2)} id="wallet" />
+      <div style={{ marginTop: 16 }}>
+        <AreaChart vals={FLUX.curve} w={342} h={118} label={eur(23565.23, 2)} id="wallet" />
       </div>
 
       <div className="fl-sec-head" style={{ marginTop: 16 }}>

@@ -51,7 +51,10 @@
 .fl-tab-ico.on { background: linear-gradient(135deg, var(--fl-c1), var(--fl-c2)); box-shadow: 0 6px 16px rgba(var(--fl-glow-rgb),0.35); }
 
 /* ── headers / buttons ── */
-.fl-screenhead { display: flex; align-items: center; gap: 10px; padding: 12px 0 4px; }
+/* padding-top unified to 10px to match .fl-wallet-head/.fl-mkt-top — was 12px,
+   which sat the header's round plaques 2px lower than Wallet/Trade/Markets and
+   made the header visibly jump when switching tabs. */
+.fl-screenhead { display: flex; align-items: center; gap: 10px; padding: 10px 0 4px; }
 .fl-screentitle { font-size: 17px; font-weight: 700; color: #fff; }
 .fl-screentitle.big { font-size: 27px; font-weight: 800; letter-spacing: -0.6px; }
 .fl-roundbtn { width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; transition: background .15s; }
@@ -117,8 +120,11 @@
 .fl-primary.ghost:disabled { opacity: 0.6; }
 
 /* ── markets ── */
-.fl-mkt-top { display: flex; align-items: center; gap: 10px; padding-top: 8px; }
-.fl-searchbar { flex: 1; display: flex; align-items: center; gap: 9px; background: #141927; border: 1px solid rgba(255,255,255,0.06); border-radius: 13px; padding: 11px 14px; color: #8A91A3; font-size: 14px; }
+.fl-mkt-top { display: flex; align-items: center; gap: 10px; padding-top: 10px; }
+/* Vertical padding trimmed 11px -> 9.5px: at 11px the pill rendered 3px taller
+   than the 40px round-button canon it sits next to in .fl-mkt-top, making it
+   the row's tallest child and off-centering the buttons within the row. */
+.fl-searchbar { flex: 1; display: flex; align-items: center; gap: 9px; background: #141927; border: 1px solid rgba(255,255,255,0.06); border-radius: 13px; padding: 9.5px 14px; color: #8A91A3; font-size: 14px; }
 .fl-mkt-list { display: flex; flex-direction: column; margin-top: 12px; }
 .fl-mkt-row { display: flex; align-items: center; gap: 12px; padding: 10px 2px; border-bottom: 1px solid rgba(255,255,255,0.045); }
 .fl-earn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
