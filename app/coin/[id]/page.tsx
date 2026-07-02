@@ -73,7 +73,7 @@ export default function CoinPage({ params }: { params: { id: string } }) {
       </div>
 
       <div style={{ marginTop: 16 }}>
-        <AreaChart vals={FLUX.curve} w={390} h={140} label={chartLabel} id="coin" />
+        <AreaChart vals={FLUX.curve} w={342} h={140} label={chartLabel} id="coin" />
       </div>
 
       {!detail && (

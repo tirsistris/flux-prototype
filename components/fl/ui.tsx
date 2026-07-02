@@ -214,10 +214,9 @@ export function AreaChart({
     lid = `acl_${id}`;
 
   // The tip's width varies with label length (a big BTC price runs wider than a
-  // small one), so the right-edge clamp below measures the real pill instead of
-  // guessing a fixed width — now that the canvas bleeds to the phone edge (no
-  // padding cushion left to hide an under-measured guess), an inexact clamp
-  // would let the pill overflow past the phone's right edge.
+  // small one) — the right-edge clamp below measures the real pill instead of
+  // guessing a fixed width, so it can't overflow past the canvas regardless of
+  // how long the label text is.
   const tipRef = React.useRef<HTMLDivElement>(null);
   const [tipW, setTipW] = React.useState(84);
   React.useLayoutEffect(() => {
@@ -226,13 +225,7 @@ export function AreaChart({
 
   return (
     <div>
-      {/* Bleeds the canvas to the phone edges: margin:0 -20px cancels .fl-content's
-          20px padding on a width:auto block, so this div is exactly as wide as the
-          phone (w, passed in by the caller as 390 — the phone's own width — so the
-          SVG's coordinate space and its actual rendered pixels are the same number
-          and stay pixel-accurate; no viewBox scale factor to account for). The
-          timeframe row below stays out of this wrapper, at normal padding. */}
-      <div style={{ position: "relative", height: h, margin: "0 -20px" }}>
+      <div style={{ position: "relative", height: h }}>
         <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} style={{ display: "block" }}>
           <defs>
             <linearGradient id={gid} x1="0" y1="0" x2="0" y2="1">
@@ -248,8 +241,6 @@ export function AreaChart({
           ))}
           <path d={area} fill={`url(#${gid})`} />
           <path d={line} fill="none" stroke={`url(#${lid})`} strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" />
-          <line x1={xs(peakIdx)} x2={xs(peakIdx)} y1={ys(data[peakIdx])} y2={h} stroke="rgba(255,255,255,0.18)" strokeDasharray="3 3" />
-          <circle cx={xs(peakIdx)} cy={ys(data[peakIdx])} r="5" fill="#fff" stroke={ACCENT.from} strokeWidth="2.5" />
         </svg>
         {label && (
           <div

@@ -1,16 +1,28 @@
 "use client";
 // app/login/page.tsx — Flux Login (fx system), ported from login.jsx (resting
-// "empty" state). Phase-1 pipeline check for the fx CSS + fx primitives + the
-// fx phone chassis. The password eye toggles live; navigation/other states land
-// in phase 2 (golden path) and phase 3.
+// "empty" state). Was a phase-1 pipeline check with every CTA a dead stub
+// ([Log in] onClick={() => {}}, Face ID/Apple/Google with no handler at all,
+// "Create account" a bare <a> with no href) and no way back to Welcome — a
+// dead end once 3b wired Welcome -> /login in. Phase-4c: every CTA goes
+// somewhere. Log in / Face ID / Apple / Google all go straight to /home
+// (demo shortcut, same as create-account's Apple/Google and its post-signup
+// overlay — no real auth exists to gate on). Forgot password stays an
+// honestly-disabled control (no reset flow exists). Create account -> the
+// real /create-account route. AUTHORED: the source design has no back
+// affordance on this screen; added one (TopChrome, same as create-account)
+// since without it /login is a dead end with only the OS back gesture to
+// escape.
 import React from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { StatusBar } from "@/components/frame/StatusBar";
-import { FluxLogo, PrimaryButton, FX_THEME } from "@/components/fx/ui";
+import { FluxLogo, PrimaryButton, TopChrome, FX_THEME } from "@/components/fx/ui";
 import { Ico } from "@/components/icons";
 
 const T = FX_THEME;
 
 export default function LoginPage() {
+  const router = useRouter();
   const [hide, setHide] = React.useState(true);
   return (
     <div className="device-stage">
@@ -23,6 +35,7 @@ export default function LoginPage() {
         <StatusBar system="fx" />
 
         <div className="fx-screen fx-login">
+          <TopChrome onBack={() => router.back()} />
           <div style={{ display: "flex", justifyContent: "center", marginTop: 4, marginBottom: 22 }}>
             <FluxLogo T={T} size={46} />
           </div>
@@ -49,11 +62,12 @@ export default function LoginPage() {
             </div>
           </div>
 
-          <button className="fx-forgot">Forgot password?</button>
+          {/* No reset flow exists behind this — honestly disabled rather than a dead-looking-live control. */}
+          <button className="fx-forgot" disabled style={{ opacity: 0.5, cursor: "default" }}>Forgot password?</button>
 
           <div style={{ display: "flex", flexDirection: "column", gap: 12, marginTop: 18 }}>
-            <PrimaryButton label="Log in" onClick={() => {}} T={T} />
-            <button className="fx-outline-wide">{Ico.faceid("#fff", 22)}<span>Log in with Face ID</span></button>
+            <PrimaryButton label="Log in" onClick={() => router.push("/home")} T={T} />
+            <button className="fx-outline-wide" onClick={() => router.push("/home")}>{Ico.faceid("#fff", 22)}<span>Log in with Face ID</span></button>
           </div>
 
           <div className="fx-or" style={{ margin: "18px 0" }}>
@@ -61,12 +75,12 @@ export default function LoginPage() {
           </div>
 
           <div style={{ display: "flex", gap: 12 }}>
-            <button className="fx-outline">{Ico.apple("#fff", 19)}<span>Apple</span></button>
-            <button className="fx-outline">{Ico.google("#fff", 18)}<span>Google</span></button>
+            <button className="fx-outline" onClick={() => router.push("/home")}>{Ico.apple("#fff", 19)}<span>Apple</span></button>
+            <button className="fx-outline" onClick={() => router.push("/home")}>{Ico.google("#fff", 18)}<span>Google</span></button>
           </div>
 
           <div style={{ flex: 1 }} />
-          <p className="fx-footer">New to Flux? <a>Create account</a></p>
+          <p className="fx-footer">New to Flux? <Link href="/create-account">Create account</Link></p>
         </div>
 
         <div className="fx-home-ind" />
