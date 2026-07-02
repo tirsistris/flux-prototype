@@ -2,8 +2,9 @@
 // app/markets/page.tsx — Flux Markets (fl system), ported from screen-markets.jsx.
 // Phase 4a: each market row now links to /coin/[id] (the parametrized coin detail)
 // — this is the entry point that makes non-btc coin screens reachable. The search
-// bar, the two round buttons, "See all" and the Earn cards stay inert (honest dead
-// controls, consistent with the rest of the prototype) until their flows land.
+// bar and the two round buttons stay inert (honest dead controls, consistent with
+// the rest of the prototype) until their flows land. Phase 4b-2: Earn cards now
+// link to /earn/[coin] (the stake detail flow); "See all" stays inert.
 import React from "react";
 import Link from "next/link";
 import { PhoneFrame } from "@/components/frame/PhoneFrame";
@@ -31,7 +32,7 @@ function MarketRow({ id }: { id: string }) {
 function EarnCard({ e }: { e: Earn }) {
   const c = FLUX.coins[e.coin] || { name: e.name, sym: e.sym, id: e.coin };
   return (
-    <div className="fl-card fl-earn-card">
+    <Link href={`/earn/${e.coin}`} className="fl-card fl-earn-card" style={{ textDecoration: "none" }}>
       <div style={{ display: "flex", alignItems: "center", gap: 9 }}>
         <CoinAvatar id={e.coin} size={28} />
         <span style={{ fontSize: 13.5, fontWeight: 600, color: "#fff" }}>{c.sym}</span>
@@ -41,7 +42,7 @@ function EarnCard({ e }: { e: Earn }) {
         <span style={{ fontSize: 22, fontWeight: 800, color: "#fff", letterSpacing: -0.4 }}>{pct(e.apy).replace("+", "")}</span>
       </div>
       <span style={{ fontSize: 12, color: "#8A91A3", marginTop: 2 }}>Earn on your {c.sym}</span>
-    </div>
+    </Link>
   );
 }
 

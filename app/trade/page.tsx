@@ -7,7 +7,11 @@
 // screen had no action button — a trade prototype needs one — so phase 4a adds:
 //   • primary CTA bound to the Buy/Sell toggle: Buy → /buy (the real buy flow),
 //     Sell → disabled "Selling — coming soon" (no sell flow exists yet).
-//   • Convert CTA → disabled placeholder; the convert flow is TODO(4b).
+//   • Convert CTA → /swap/confirm (phase 4b-2). AUTHORED boundary: the pair shown
+//     here is always the static BTC→ETH demo pair, same as /swap/confirm itself —
+//     a real pair/amount selector is not implemented (not present in swapflow.jsx,
+//     which starts at Confirm). Swap-flip stays live/local to this widget; it does
+//     not carry its swapped state into /swap/confirm.
 // Trade is BTC-only here, matching the source (c = FLUX.coins.btc throughout).
 import React from "react";
 import { useRouter } from "next/navigation";
@@ -115,10 +119,10 @@ export default function TradePage() {
         </div>
       </div>
 
-      {/* AUTHORED: Convert CTA — the convert flow lands in phase 4b. TODO(4b)
+      {/* AUTHORED: Convert CTA -> /swap/confirm, the existing static BTC->ETH swap.
           flexShrink:0: see the primary CTA above — pin 54px against column shrink. */}
-      <button className="fl-primary ghost" style={{ marginTop: 12, flexShrink: 0 }} disabled>
-        Convert — coming soon
+      <button className="fl-primary ghost" style={{ marginTop: 12, flexShrink: 0 }} onClick={() => router.push("/swap/confirm")}>
+        Convert
       </button>
     </PhoneFrame>
   );

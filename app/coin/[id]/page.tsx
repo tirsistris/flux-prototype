@@ -1,11 +1,16 @@
 "use client";
 // app/coin/[id]/page.tsx — Coin detail, parametrized (phase 4a; supersedes the
 // old hardcoded /coin/btc route so there is one source of truth for the screen).
-// Header + price + change + chart render for every known coin. The stats grid,
-// "Your balance" and About sections render ONLY when the coin has modelled detail
-// data in COIN_DETAIL — for coins without it we invent nothing (no "0 ETH", no
-// placeholder cap/vol/high/low, no About). The chart label is derived from the
-// live price. Buy → /buy; Sell stays an honest inert control.
+// Header + price + change + chart render for every known coin. The rich stats
+// grid, "Your balance" and About sections render ONLY when the coin has modelled
+// detail data in COIN_DETAIL (btc only) — for coins without it we invent nothing
+// (no "0 ETH", no placeholder cap/vol/high/low, no About). The chart label is
+// derived from the live price. Buy → /buy; Sell stays an honest inert control.
+//
+// Phase 4b-2: coins WITHOUT COIN_DETAIL get a small "Market info" block instead
+// of nothing — Price / 24h change / Circulating supply, all real FLUX.coins[id]
+// fields (the same ones Markets' row already shows), no invented cap/volume/
+// holdings. btc keeps its existing rich block untouched.
 import React from "react";
 import { useRouter, notFound } from "next/navigation";
 import { PhoneFrame } from "@/components/frame/PhoneFrame";
@@ -71,6 +76,28 @@ export default function CoinPage({ params }: { params: { id: string } }) {
       <div style={{ marginTop: 16 }}>
         <AreaChart vals={FLUX.curve} w={342} h={140} label={chartLabel} id="coin" />
       </div>
+
+      {!detail && (
+        <>
+          <div className="fl-sec-head" style={{ marginTop: 22, marginBottom: 4 }}>
+            <span className="fl-sec-title">Market info</span>
+          </div>
+          <div className="fl-summary">
+            <div className="fl-sum-row">
+              <span className="fl-sum-label">Price</span>
+              <span className="fl-sum-val">{eur(c.price)}</span>
+            </div>
+            <div className="fl-sum-row">
+              <span className="fl-sum-label">24h change</span>
+              <span className="fl-sum-val" style={{ color: chColor(c.ch) }}>{pct(c.ch)}</span>
+            </div>
+            <div className="fl-sum-row">
+              <span className="fl-sum-label">Circulating supply</span>
+              <span className="fl-sum-val">{c.supply}</span>
+            </div>
+          </div>
+        </>
+      )}
 
       {detail && (
         <>
