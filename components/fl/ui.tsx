@@ -212,9 +212,27 @@ export function AreaChart({
   const peakIdx = data.indexOf(Math.max(...data));
   const gid = `ac_${id}`,
     lid = `acl_${id}`;
+
+  // The tip's width varies with label length (a big BTC price runs wider than a
+  // small one), so the right-edge clamp below measures the real pill instead of
+  // guessing a fixed width — now that the canvas bleeds to the phone edge (no
+  // padding cushion left to hide an under-measured guess), an inexact clamp
+  // would let the pill overflow past the phone's right edge.
+  const tipRef = React.useRef<HTMLDivElement>(null);
+  const [tipW, setTipW] = React.useState(84);
+  React.useLayoutEffect(() => {
+    if (tipRef.current) setTipW(tipRef.current.offsetWidth);
+  }, [label]);
+
   return (
     <div>
-      <div style={{ position: "relative", height: h }}>
+      {/* Bleeds the canvas to the phone edges: margin:0 -20px cancels .fl-content's
+          20px padding on a width:auto block, so this div is exactly as wide as the
+          phone (w, passed in by the caller as 390 — the phone's own width — so the
+          SVG's coordinate space and its actual rendered pixels are the same number
+          and stay pixel-accurate; no viewBox scale factor to account for). The
+          timeframe row below stays out of this wrapper, at normal padding. */}
+      <div style={{ position: "relative", height: h, margin: "0 -20px" }}>
         <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} style={{ display: "block" }}>
           <defs>
             <linearGradient id={gid} x1="0" y1="0" x2="0" y2="1">
@@ -235,9 +253,10 @@ export function AreaChart({
         </svg>
         {label && (
           <div
+            ref={tipRef}
             className="fl-chart-tip"
             style={{
-              left: Math.min(Math.max(xs(peakIdx) - 36, 0), w - 84),
+              left: Math.min(Math.max(xs(peakIdx) - 36, 4), w - tipW - 4),
               top: Math.max(ys(data[peakIdx]) - 30, 2),
             }}
           >

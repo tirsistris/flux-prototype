@@ -34,7 +34,7 @@ export default function SendConfirmPage() {
   return (
     <PhoneFrame footer={footer}>
       <div className="fl-flow-head">
-        <button className="fl-roundbtn sm" onClick={() => router.back()}>{Ico.chevL("rgba(255,255,255,0.85)", 20)}</button>
+        <button className="fl-roundbtn sm" onClick={() => router.back()}>{Ico.chevL("#fff", 20)}</button>
         <span className="fl-flow-title">Confirm</span>
         <div style={{ width: 34 }} />
       </div>

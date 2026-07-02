@@ -60,8 +60,8 @@ export default function TradePage() {
           <CoinAvatar id="btc" size={22} />
         </div>
         <div style={{ display: "flex", gap: 8 }}>
-          <button className="fl-roundbtn sm">{Ico.chevD("rgba(255,255,255,0.7)", 16)}</button>
-          <button className="fl-roundbtn sm">{Ico.dots("rgba(255,255,255,0.7)", 18)}</button>
+          <button className="fl-roundbtn sm">{Ico.chevD("#fff", 20)}</button>
+          <button className="fl-roundbtn sm">{Ico.dots("#fff", 20)}</button>
         </div>
       </div>
 
@@ -85,7 +85,7 @@ export default function TradePage() {
       </div>
 
       <div style={{ marginTop: 16 }}>
-        <AreaChart vals={FLUX.curve} w={342} h={118} label={eur(c.price * 0.9784)} id="trade" />
+        <AreaChart vals={FLUX.curve} w={390} h={118} label={eur(c.price * 0.9784)} id="trade" />
       </div>
 
       {/* AUTHORED: primary CTA driven by the Buy/Sell toggle (no button in source).

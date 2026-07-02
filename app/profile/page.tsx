@@ -43,8 +43,8 @@ export default function ProfilePage() {
       <div className="fl-screenhead">
         <h1 className="fl-screentitle big">Profile</h1>
         <div style={{ display: "flex", gap: 10, marginLeft: "auto" }}>
-          <RoundBtn>{Ico.search("rgba(255,255,255,0.8)", 20)}</RoundBtn>
-          <RoundBtn>{Ico.menu("rgba(255,255,255,0.8)", 20)}</RoundBtn>
+          <RoundBtn>{Ico.search("#fff", 20)}</RoundBtn>
+          <RoundBtn>{Ico.menu("#fff", 20)}</RoundBtn>
         </div>
       </div>
 
@@ -54,7 +54,7 @@ export default function ProfilePage() {
           <span style={{ fontSize: 17, fontWeight: 700, color: "#fff" }}>{FLUX.user.name}</span>
           <span style={{ fontSize: 13, color: "#8A91A3" }}>{FLUX.user.email}</span>
         </div>
-        <button className="fl-roundbtn sm" style={{ marginLeft: "auto" }}>{Ico.edit("rgba(255,255,255,0.8)", 18)}</button>
+        <button className="fl-roundbtn sm" style={{ marginLeft: "auto" }}>{Ico.edit("#fff", 20)}</button>
       </div>
 
       <div className="fl-set-section-label">Account</div>

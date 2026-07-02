@@ -67,7 +67,7 @@ function NotFound() {
       }
     >
       <div className="fl-flow-head">
-        <Link href="/wallet" className="fl-roundbtn sm" style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>{Ico.chevL("rgba(255,255,255,0.85)", 20)}</Link>
+        <Link href="/wallet" className="fl-roundbtn sm" style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>{Ico.chevL("#fff", 20)}</Link>
         <span className="fl-flow-title">Transaction</span>
         <div style={{ width: 34 }} />
       </div>
@@ -109,7 +109,7 @@ export default function TxDetailPage() {
   return (
     <PhoneFrame footer={footer} scroll>
       <div className="fl-flow-head">
-        <button className="fl-roundbtn sm" onClick={() => router.back()}>{Ico.chevL("rgba(255,255,255,0.85)", 20)}</button>
+        <button className="fl-roundbtn sm" onClick={() => router.back()}>{Ico.chevL("#fff", 20)}</button>
         <span className="fl-flow-title">Transaction</span>
         <div style={{ width: 34 }} />
       </div>

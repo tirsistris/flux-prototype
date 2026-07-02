@@ -54,8 +54,7 @@ export default function CoinPage({ params }: { params: { id: string } }) {
   return (
     <PhoneFrame scroll footer={footer}>
       <div className="fl-detail-head">
-        {/* chevron 16px to match Wallet/Trade .fl-roundbtn.sm headers (same 34px plaque → same glyph size). */}
-        <button className="fl-roundbtn sm" onClick={() => router.back()}>{Ico.chevL("rgba(255,255,255,0.85)", 16)}</button>
+        <button className="fl-roundbtn sm" onClick={() => router.back()}>{Ico.chevL("#fff", 20)}</button>
         <div className="fl-detail-coin">
           <CoinAvatar id={id} size={28} />
           <div style={{ display: "flex", flexDirection: "column", lineHeight: 1.1 }}>
@@ -74,7 +73,7 @@ export default function CoinPage({ params }: { params: { id: string } }) {
       </div>
 
       <div style={{ marginTop: 16 }}>
-        <AreaChart vals={FLUX.curve} w={342} h={140} label={chartLabel} id="coin" />
+        <AreaChart vals={FLUX.curve} w={390} h={140} label={chartLabel} id="coin" />
       </div>
 
       {!detail && (

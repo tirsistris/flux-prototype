@@ -48,7 +48,7 @@
 }
 .fl-tab { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 5px; font-size: 10.5px; font-weight: 600; }
 .fl-tab-ico { width: 50px; height: 36px; border-radius: 13px; display: flex; align-items: center; justify-content: center; transition: background .2s; }
-.fl-tab-ico.on { background: #fff; box-shadow: 0 6px 16px rgba(255,255,255,0.14); }
+.fl-tab-ico.on { background: linear-gradient(135deg, var(--fl-c1), var(--fl-c2)); box-shadow: 0 6px 16px rgba(var(--fl-glow-rgb),0.35); }
 
 /* ── headers / buttons ── */
 .fl-screenhead { display: flex; align-items: center; gap: 10px; padding: 12px 0 4px; }
@@ -56,7 +56,10 @@
 .fl-screentitle.big { font-size: 27px; font-weight: 800; letter-spacing: -0.6px; }
 .fl-roundbtn { width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; transition: background .15s; }
 .fl-roundbtn:hover { background: rgba(255,255,255,0.1); }
-.fl-roundbtn.sm { width: 34px; height: 34px; }
+/* .sm no longer shrinks the plaque — unified to 40px across every header (was a
+   34px tier on Wallet/Trade/Coin/flow headers vs. 40px on Home/Markets); kept as
+   a hook in case a genuinely smaller variant is needed later. */
+.fl-roundbtn.sm { width: 40px; height: 40px; }
 .fl-avatar { background: linear-gradient(135deg, #2A2F45, #171B29); border: 1px solid rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .fl-avatar.lg { width: 56px; height: 56px; }
 
@@ -274,7 +277,7 @@
 .fl-recv-actions { display: flex; gap: 12px; margin-top: 8px; }
 .fl-recv-btn { flex: 1; display: flex; align-items: center; justify-content: center; gap: 9px; padding: 15px; border-radius: 16px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: #fff; font-size: 15px; font-weight: 600; transition: background .15s; }
 .fl-recv-btn:hover { background: rgba(255,255,255,0.1); }
-.fl-recv-warn { position: relative; z-index: 20; flex-shrink: 0; display: flex; align-items: flex-start; gap: 10px; margin: 0 20px 24px; padding: 14px; border-radius: 16px; background: rgba(248,198,107,0.08); border: 1px solid rgba(248,198,107,0.2); font-size: 12.5px; line-height: 1.5; color: #E6C58C; }
+.fl-recv-warn { position: relative; z-index: 20; flex-shrink: 0; display: flex; align-items: flex-start; gap: 10px; margin: 12px 20px 24px; padding: 14px; border-radius: 16px; background: rgba(248,198,107,0.08); border: 1px solid rgba(248,198,107,0.2); font-size: 12.5px; line-height: 1.5; color: #E6C58C; }
 .fl-recv-warn svg { flex-shrink: 0; margin-top: 1px; }
 .fl-recv-warn b { color: #fff; font-weight: 600; }
 

@@ -57,9 +57,9 @@ export default function MarketsPage() {
   return (
     <PhoneFrame active="markets">
       <div className="fl-mkt-top">
-        <button className="fl-roundbtn">{Ico.copy("rgba(255,255,255,0.8)", 19)}</button>
+        <button className="fl-roundbtn">{Ico.copy("#fff", 19)}</button>
         <div className="fl-searchbar">{Ico.search("rgba(138,145,163,0.9)", 19)}<span>Search</span></div>
-        <button className="fl-roundbtn">{Ico.sliders("rgba(255,255,255,0.8)", 19)}</button>
+        <button className="fl-roundbtn">{Ico.sliders("#fff", 19)}</button>
       </div>
 
       <div style={{ marginTop: 14 }}>

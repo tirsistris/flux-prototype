@@ -111,8 +111,8 @@ export default function HomePage() {
         }
         right={
           <>
-            <RoundBtn>{Ico.search("rgba(255,255,255,0.8)", 20)}</RoundBtn>
-            <RoundBtn>{Ico.menu("rgba(255,255,255,0.8)", 20)}</RoundBtn>
+            <RoundBtn>{Ico.search("#fff", 20)}</RoundBtn>
+            <RoundBtn>{Ico.menu("#fff", 20)}</RoundBtn>
           </>
         }
       />

@@ -22,7 +22,7 @@ export function TabBar({ active }: { active?: string }) {
         return (
           <Link key={t.id} href={t.href} className="fl-tab" style={{ textDecoration: "none" }}>
             <div className={"fl-tab-ico" + (on ? " on" : "")}>
-              {t.ico(on ? "#0A0D1A" : "rgba(255,255,255,0.5)", 23)}
+              {t.ico(on ? "#fff" : "rgba(255,255,255,0.5)", 23)}
             </div>
             <span style={{ color: on ? "#fff" : "rgba(255,255,255,0.4)" }}>{t.label}</span>
           </Link>

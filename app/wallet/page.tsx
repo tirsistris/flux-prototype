@@ -49,8 +49,8 @@ export default function WalletPage() {
         <button className="fl-cur-sel">EUR {Ico.chevD("rgba(255,255,255,0.6)", 16)}</button>
         <span className="fl-wallet-title">Wallet Balance</span>
         <div style={{ display: "flex", gap: 8 }}>
-          <button className="fl-roundbtn sm">{Ico.chevD("rgba(255,255,255,0.7)", 16)}</button>
-          <button className="fl-roundbtn sm">{Ico.dots("rgba(255,255,255,0.7)", 18)}</button>
+          <button className="fl-roundbtn sm">{Ico.chevD("#fff", 20)}</button>
+          <button className="fl-roundbtn sm">{Ico.dots("#fff", 20)}</button>
         </div>
       </div>
 
@@ -71,7 +71,7 @@ export default function WalletPage() {
       </div>
 
       <div style={{ marginTop: 20 }}>
-        <AreaChart vals={FLUX.curve} w={342} h={132} label={eur(23565.23, 2)} id="wallet" />
+        <AreaChart vals={FLUX.curve} w={390} h={132} label={eur(23565.23, 2)} id="wallet" />
       </div>
 
       <div className="fl-sec-head" style={{ marginTop: 16 }}>
