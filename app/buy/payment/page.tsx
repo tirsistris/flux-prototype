@@ -53,7 +53,8 @@ export default function BuyPaymentPage() {
           </button>
         ))}
       </div>
-      <button className="fl-addmethod">+ Add a new method</button>
+      {/* Adding a payment method needs a real payments backend, which doesn't exist here. */}
+      <button className="fl-addmethod" disabled style={{ opacity: 0.5, cursor: "default" }}>+ Add a new method</button>
     </PhoneFrame>
   );
 }

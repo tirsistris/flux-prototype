@@ -22,6 +22,12 @@ const ROUTES: [string, string][] = [
   ["/swap/confirm", "Swap flow"],
   ["/earn/eth", "Earn · ETH"],
   ["/earn/usdc", "Earn · USDC (no price)"],
+  ["/notifications", "Notifications"],
+  ["/alerts/new", "New price alert"],
+  ["/search", "Search"],
+  ["/settings/kyc", "Settings · Personal data"],
+  ["/settings/languages", "Settings · Languages"],
+  ["/settings/add-bank", "Settings · Add bank"],
   ["/tx/seed-0", "Tx detail (seed)"],
 ];
 

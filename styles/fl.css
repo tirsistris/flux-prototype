@@ -324,6 +324,10 @@
 .fl-notif-body { font-size: 13px; color: #8A91A3; line-height: 1.45; }
 .fl-notif-dot { position: absolute; top: 16px; right: 8px; width: 8px; height: 8px; border-radius: 50%; background: linear-gradient(135deg, var(--fl-c1), var(--fl-c2)); }
 
+/* ── toast (brief real-action feedback, e.g. "Alert created") ── */
+.fl-toast { position: absolute; top: 14px; left: 50%; transform: translateX(-50%); z-index: 40; display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 99px; background: #1A1F2E; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 12px 28px rgba(0,0,0,0.4); font-size: 13.5px; font-weight: 600; color: #fff; white-space: nowrap; animation: fltoast 2.2s ease forwards; pointer-events: none; }
+@keyframes fltoast { 0% { opacity: 0; transform: translateX(-50%) translateY(-6px); } 12% { opacity: 1; transform: translateX(-50%) translateY(0); } 82% { opacity: 1; } 100% { opacity: 0; } }
+
 /* ── price alert ── */
 .fl-cond-tog { display: flex; gap: 10px; margin-top: 16px; }
 .fl-cond-tog button { flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 13px; border-radius: 14px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); color: rgba(255,255,255,0.6); font-size: 15px; font-weight: 700; transition: all .15s; }

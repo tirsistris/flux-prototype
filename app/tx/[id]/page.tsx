@@ -44,12 +44,26 @@ function hexFrom(s: string, len: number): string {
 const addr = (id: string, salt: string) => `0x${hexFrom(id + salt, 3)}…${hexFrom(id + salt + "z", 3)}`;
 
 function DetailRow({ label, value, mono, copy, last }: { label: string; value: string; mono?: boolean; copy?: boolean; last?: boolean }) {
+  const [copied, setCopied] = React.useState(false);
+  const doCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(value);
+    } catch {
+      /* clipboard may be blocked in some contexts; the icon still confirms intent */
+    }
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
   return (
     <div className={"fl-sum-row" + (last ? " total" : "")}>
       <span className="fl-sum-label">{label}</span>
       <span className="fl-tx-val" style={{ fontVariantNumeric: mono ? "tabular-nums" : "normal" }}>
         {value}
-        {copy && <button className="fl-tx-copy">{Ico.copy("#8A79FF", 16)}</button>}
+        {copy && (
+          <button className="fl-tx-copy" onClick={doCopy} aria-label="Copy">
+            {copied ? Ico.check("#4ADE80", 16) : Ico.copy("#8A79FF", 16)}
+          </button>
+        )}
       </span>
     </div>
   );

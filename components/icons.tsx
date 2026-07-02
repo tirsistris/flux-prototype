@@ -160,6 +160,9 @@ export const Ico: Record<string, Glyph> = {
   close: (c = "#fff", w = 22) => (
     <svg width={w} height={w} viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2.2" strokeLinecap="round"><path d="M6 6l12 12M18 6L6 18" /></svg>
   ),
+  plus: (c = "#fff", w = 22) => (
+    <svg width={w} height={w} viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2.2" strokeLinecap="round"><path d="M12 5v14M5 12h14" /></svg>
+  ),
   chevD: (c = "#fff", w = 20) => (
     <svg width={w} height={w} viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 9l7 7 7-7" /></svg>
   ),

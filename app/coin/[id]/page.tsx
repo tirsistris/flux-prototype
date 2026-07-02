@@ -47,7 +47,7 @@ export default function CoinPage({ params }: { params: { id: string } }) {
   const footer = (
     <div className="fl-ctabar">
       <button className="fl-cta-buy" onClick={() => router.push("/buy")}>{Ico.receive("#fff", 19)}Buy</button>
-      <button className="fl-cta-sell">{Ico.send("#fff", 19)}Sell</button>
+      <button className="fl-cta-sell" disabled style={{ opacity: 0.5, cursor: "default" }}>{Ico.send("#fff", 19)}Sell</button>
     </div>
   );
 

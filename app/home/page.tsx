@@ -5,6 +5,7 @@
 // navigate — routing/dead-control honesty lands in later phases.
 import React from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { PhoneFrame } from "@/components/frame/PhoneFrame";
 import { ScreenHeader, RoundBtn, Segmented, Sparkline, CoinAvatar, BalAmt, ACCENT } from "@/components/fl/ui";
 import { Ico } from "@/components/icons";
@@ -42,8 +43,7 @@ function ActionTile({ icon, label, primary, href }: { icon: React.ReactNode; lab
   return <button className={cls}>{inner}</button>;
 }
 
-// `href` makes the card a navigable link (BTC → /coin/btc). Other tokens omit
-// it and stay inert until coin/[id] parametrization lands in phase 4.
+// `href` makes the card a navigable link.
 function TokenCard({ id, href }: { id: string; href?: string }) {
   const c = FLUX.coins[id];
   const inner = (
@@ -93,6 +93,7 @@ function CoinRow({ id }: { id: string }) {
 }
 
 export default function HomePage() {
+  const router = useRouter();
   const [tab, setTab] = React.useState("Trending");
   const lists: Record<string, string[]> = {
     Trending: ["zec", "sol", "uni"],
@@ -111,7 +112,8 @@ export default function HomePage() {
         }
         right={
           <>
-            <RoundBtn>{Ico.search("#fff", 20)}</RoundBtn>
+            <RoundBtn onClick={() => router.push("/search")}>{Ico.search("#fff", 20)}</RoundBtn>
+            <RoundBtn onClick={() => router.push("/notifications")}>{Ico.bell("#fff", 20)}</RoundBtn>
             <RoundBtn>{Ico.menu("#fff", 20)}</RoundBtn>
           </>
         }
@@ -131,7 +133,7 @@ export default function HomePage() {
       </div>
       <div className="fl-token-grid">
         <TokenCard id="btc" href="/coin/btc" />
-        <TokenCard id="eth" />
+        <TokenCard id="eth" href="/coin/eth" />
       </div>
 
       <div style={{ marginTop: 16 }}>

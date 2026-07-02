@@ -1,10 +1,10 @@
 "use client";
 // app/markets/page.tsx — Flux Markets (fl system), ported from screen-markets.jsx.
 // Phase 4a: each market row now links to /coin/[id] (the parametrized coin detail)
-// — this is the entry point that makes non-btc coin screens reachable. The search
-// bar and the two round buttons stay inert (honest dead controls, consistent with
-// the rest of the prototype) until their flows land. Phase 4b-2: Earn cards now
-// link to /earn/[coin] (the stake detail flow); "See all" stays inert.
+// — this is the entry point that makes non-btc coin screens reachable. Phase 4b-2:
+// Earn cards now link to /earn/[coin] (the stake detail flow); "See all" stays
+// inert. Phase 4c: the searchbar links to /search (real live filtering); the two
+// round buttons (copy/sliders — no corresponding flows in this phase) stay inert.
 import React from "react";
 import Link from "next/link";
 import { PhoneFrame } from "@/components/frame/PhoneFrame";
@@ -58,7 +58,7 @@ export default function MarketsPage() {
     <PhoneFrame active="markets">
       <div className="fl-mkt-top">
         <button className="fl-roundbtn">{Ico.copy("#fff", 19)}</button>
-        <div className="fl-searchbar">{Ico.search("rgba(138,145,163,0.9)", 19)}<span>Search</span></div>
+        <Link href="/search" className="fl-searchbar" style={{ textDecoration: "none" }}>{Ico.search("rgba(138,145,163,0.9)", 19)}<span>Search</span></Link>
         <button className="fl-roundbtn">{Ico.sliders("#fff", 19)}</button>
       </div>
 

@@ -34,7 +34,7 @@ export default function SendSuccessPage() {
           <span className="fl-bal-amt" style={{ fontSize: 32 }}>{fmtNum(amt, 4)}<span className="fl-bal-cur">ETH</span></span>
           <span style={{ fontSize: 13.5, color: "#8A91A3", marginTop: 4 }}>to 0x1a2…f9c</span>
         </div>
-        <button className="fl-explorer">0x9f2c…7b3e {Ico.external("#8A79FF", 16)}<span>View on explorer</span></button>
+        <button className="fl-explorer" disabled style={{ opacity: 0.5, cursor: "default" }}>0x9f2c…7b3e {Ico.external("#8A79FF", 16)}<span>View on explorer</span></button>
       </div>
     </PhoneFrame>
   );
