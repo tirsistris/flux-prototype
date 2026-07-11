@@ -64,7 +64,7 @@ export default function WalletPage() {
         </div>
       </div>
 
-      <div className="fl-actions" style={{ marginTop: 18 }}>
+      <div className="fl-actions">
         <WalletAction icon={Ico.receive("rgba(255,255,255,0.92)", 22)} label="Receive" href="/receive" />
         <WalletAction icon={Ico.send("rgba(255,255,255,0.92)", 22)} label="Send" href="/send" />
         <WalletAction icon={Ico.swap("rgba(255,255,255,0.92)", 22)} label="Swap" href="/swap/confirm" />
