@@ -71,7 +71,7 @@ export default function WalletPage() {
       </div>
 
       <div style={{ marginTop: 16 }}>
-        <AreaChart vals={FLUX.curve} w={342} h={118} label={eur(23565.23, 2)} id="wallet" />
+        <AreaChart vals={FLUX.curve} h={118} label={eur(23565.23, 2)} id="wallet" />
       </div>
 
       <div className="fl-sec-head" style={{ marginTop: 16 }}>

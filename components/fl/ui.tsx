@@ -193,18 +193,36 @@ export const TIMEFRAMES = ["1H", "1D", "1W", "1M", "6M", "1Y"];
 
 export function AreaChart({
   vals,
-  w,
   h,
   label,
   id,
 }: {
   vals: number[];
-  w: number;
   h: number;
   label?: string;
   id: string;
 }) {
   const [tf, setTf] = React.useState("1W");
+  const wrapRef = React.useRef<HTMLDivElement>(null);
+  // Fallback matches the old fixed design width so the chart doesn't
+  // collapse to 0 before the first ResizeObserver measurement fires.
+  const [w, setW] = React.useState(342);
+  React.useLayoutEffect(() => {
+    const el = wrapRef.current;
+    if (!el) return;
+    let raf = 0;
+    const ro = new ResizeObserver(([entry]) => {
+      const next = entry.contentRect.width;
+      if (!next) return;
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => setW(next));
+    });
+    ro.observe(el);
+    return () => {
+      cancelAnimationFrame(raf);
+      ro.disconnect();
+    };
+  }, []);
   // derive a per-timeframe variation deterministically
   const seed = TIMEFRAMES.indexOf(tf);
   const data = vals.map((v, i) => v + Math.sin(i * 0.7 + seed) * (2 + seed) + seed * 1.5);
@@ -232,8 +250,8 @@ export function AreaChart({
 
   return (
     <div>
-      <div style={{ position: "relative", height: h }}>
-        <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} style={{ display: "block" }}>
+      <div ref={wrapRef} style={{ position: "relative", height: h }}>
+        <svg width="100%" height={h} viewBox={`0 0 ${w} ${h}`} preserveAspectRatio="none" style={{ display: "block" }}>
           <defs>
             <linearGradient id={gid} x1="0" y1="0" x2="0" y2="1">
               <stop offset="0" stopColor={ACCENT.from} stopOpacity="0.45" />

@@ -85,7 +85,7 @@ export default function TradePage() {
       </div>
 
       <div style={{ marginTop: 16 }}>
-        <AreaChart vals={FLUX.curve} w={342} h={118} label={eur(c.price * 0.9784)} id="trade" />
+        <AreaChart vals={FLUX.curve} h={118} label={eur(c.price * 0.9784)} id="trade" />
       </div>
 
       {/* AUTHORED: primary CTA driven by the Buy/Sell toggle (no button in source).
