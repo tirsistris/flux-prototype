@@ -112,7 +112,6 @@ export default function HomePage() {
         }
         right={
           <>
-            <RoundBtn onClick={() => router.push("/search")}>{Ico.search("#fff", 20)}</RoundBtn>
             <RoundBtn onClick={() => router.push("/notifications")}>{Ico.bell("#fff", 20)}</RoundBtn>
             <RoundBtn>{Ico.menu("#fff", 20)}</RoundBtn>
           </>
