@@ -72,7 +72,7 @@ export default function MarketsPage() {
         ))}
       </div>
 
-      <div className="fl-sec-head" style={{ marginTop: 4 }}>
+      <div className="fl-sec-head">
         <span className="fl-sec-title">Earn</span>
         <span className="fl-sec-link">See all</span>
       </div>
