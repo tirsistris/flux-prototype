@@ -106,7 +106,13 @@ export default function HomePage() {
       <ScreenHeader
         left={
           <div style={{ display: "flex", alignItems: "center", gap: 11 }}>
-            <div className="fl-avatar" style={{ width: 40, height: 40 }}>{Ico.user("rgba(255,255,255,0.85)", 22)}</div>
+            <div className="fl-avatar" style={{ width: 40, height: 40 }}>
+              <img
+                src="/nikola%20jokic.webp"
+                alt=""
+                style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "50%" }}
+              />
+            </div>
             <span style={{ fontSize: 17, fontWeight: 700, color: "#fff" }}>Hello {FLUX.user.first}</span>
           </div>
         }
