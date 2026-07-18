@@ -68,7 +68,7 @@ export default function CoinPage({ params }: { params: { id: string } }) {
       </div>
 
       <div className="fl-detail-price">
-        <BalAmt n={c.price} />
+        <BalAmt n={c.price} curFull />
         <div className="fl-bal-change" style={{ color: chColor(c.ch), marginTop: 6 }}>{signEur(dayAbs)} ({pct(c.ch)})</div>
       </div>
 

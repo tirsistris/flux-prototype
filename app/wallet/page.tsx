@@ -57,7 +57,7 @@ export default function WalletPage() {
       <div className="fl-balance center">
         <div className="fl-bal-label">Total balance</div>
         <div className="fl-bal-row">
-          <BalAmt n={FLUX.balance} />
+          <BalAmt n={FLUX.balance} curFull />
         </div>
         <div className="fl-bal-change" style={{ color: chColor(FLUX.dayPct) }}>
           {signEur(FLUX.dayAbs)} ({pct(FLUX.dayPct)})

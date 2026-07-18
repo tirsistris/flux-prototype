@@ -66,7 +66,7 @@ export default function TradePage() {
       </div>
 
       <div className="fl-balance center">
-        <BalAmt n={c.price} />
+        <BalAmt n={c.price} curFull />
         <div className="fl-bal-change" style={{ color: chColor(c.ch) }}>{signEur(dayAbs)} ({pct(c.ch)})</div>
       </div>
 
