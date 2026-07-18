@@ -29,7 +29,7 @@ export default function SendRecipientPage() {
   return (
     <PhoneFrame footer={footer}>
       <div className="fl-flow-head">
-        <button className="fl-roundbtn sm" onClick={() => router.back()}>{Ico.chevL("#fff", 20)}</button>
+        <button className="fl-roundbtn sm" onClick={() => router.back()} aria-label="Back">{Ico.chevL("#fff", 20)}</button>
         <span className="fl-flow-title">Send</span>
         <div style={{ width: 34 }} />
       </div>
@@ -41,7 +41,7 @@ export default function SendRecipientPage() {
 
       <div className="fl-addr-field">
         <span className="fl-addr-placeholder">Address or ENS name</span>
-        <button className="fl-addr-scan" onClick={() => router.push("/send/scan")}>{Ico.camera("#fff", 21)}</button>
+        <button className="fl-addr-scan" onClick={() => router.push("/send/scan")} aria-label="Scan QR code">{Ico.camera("#fff", 21)}</button>
       </div>
 
       <div className="fl-net-row">

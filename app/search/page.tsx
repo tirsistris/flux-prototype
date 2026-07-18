@@ -65,7 +65,7 @@ export default function SearchPage() {
           style={{ flex: 1, background: "none", border: "none", outline: "none", color: "#fff", fontSize: 15, fontWeight: 500, minWidth: 0 }}
         />
         {q && (
-          <button className="fl-search-clear" onClick={() => { setQ(""); inputRef.current?.focus(); }}>
+          <button className="fl-search-clear" onClick={() => { setQ(""); inputRef.current?.focus(); }} aria-label="Clear search">
             {Ico.close("rgba(255,255,255,0.7)", 18)}
           </button>
         )}

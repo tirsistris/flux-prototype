@@ -23,7 +23,7 @@ export default function LanguagesPage() {
   return (
     <PhoneFrame scroll footer={<div style={{ height: 12 }} />}>
       <div className="fl-flow-head">
-        <button className="fl-roundbtn sm" onClick={() => router.back()}>{Ico.chevL("#fff", 20)}</button>
+        <button className="fl-roundbtn sm" onClick={() => router.back()} aria-label="Back">{Ico.chevL("#fff", 20)}</button>
         <span className="fl-flow-title">Languages</span>
         <div style={{ width: 34 }} />
       </div>

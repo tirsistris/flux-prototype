@@ -31,7 +31,7 @@ export default function AddBankPage() {
   return (
     <PhoneFrame footer={footer} scroll>
       <div className="fl-flow-head">
-        <button className="fl-roundbtn sm" onClick={() => router.back()}>{Ico.chevL("#fff", 20)}</button>
+        <button className="fl-roundbtn sm" onClick={() => router.back()} aria-label="Back">{Ico.chevL("#fff", 20)}</button>
         <span className="fl-flow-title">Add bank account</span>
         <div style={{ width: 34 }} />
       </div>

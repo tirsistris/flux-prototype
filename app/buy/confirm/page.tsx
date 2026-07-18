@@ -69,7 +69,7 @@ export default function BuyConfirmPage() {
   return (
     <PhoneFrame footer={footer}>
       <div className="fl-flow-head">
-        <button className="fl-roundbtn sm" onClick={() => router.push("/buy/payment")}>{Ico.chevL("#fff", 20)}</button>
+        <button className="fl-roundbtn sm" onClick={() => router.push("/buy/payment")} aria-label="Back">{Ico.chevL("#fff", 20)}</button>
         <span className="fl-flow-title">Confirm</span>
         <div style={{ width: 34 }} />
       </div>

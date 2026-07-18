@@ -18,7 +18,7 @@ export default function SendScanPage() {
         <StatusBar system="fl" />
         <div className="fl-scan-body">
           <div className="fl-scan-top">
-            <button className="fl-roundbtn sm" onClick={() => router.back()}>{Ico.close("#fff", 20)}</button>
+            <button className="fl-roundbtn sm" onClick={() => router.back()} aria-label="Close">{Ico.close("#fff", 20)}</button>
             <span className="fl-flow-title">Scan QR</span>
             <div style={{ width: 34 }} />
           </div>

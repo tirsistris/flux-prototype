@@ -48,7 +48,7 @@ export default function BuyAmountPage() {
   return (
     <PhoneFrame footer={footer}>
       <div className="fl-flow-head">
-        <button className="fl-roundbtn sm" onClick={() => router.push("/coin/btc")}>{Ico.chevL("#fff", 20)}</button>
+        <button className="fl-roundbtn sm" onClick={() => router.push("/coin/btc")} aria-label="Back">{Ico.chevL("#fff", 20)}</button>
         <span className="fl-flow-title">Buy</span>
         <div style={{ width: 34 }} />
       </div>
@@ -80,7 +80,7 @@ export default function BuyAmountPage() {
 
       <div className="fl-numpad">
         {keys.map((k) => (
-          <button key={k} className="fl-key" onClick={() => press(k)}>
+          <button key={k} className="fl-key" onClick={() => press(k)} aria-label={k === "del" ? "Delete" : undefined}>
             {k === "del" ? Ico.backspace("rgba(255,255,255,0.85)", 24) : k}
           </button>
         ))}

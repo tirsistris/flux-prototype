@@ -33,13 +33,15 @@ export function RoundBtn({
   children,
   onClick,
   active,
+  "aria-label": ariaLabel,
 }: {
   children?: React.ReactNode;
   onClick?: () => void;
   active?: boolean;
+  "aria-label"?: string;
 }) {
   return (
-    <button className={"fl-roundbtn" + (active ? " active" : "")} onClick={onClick}>
+    <button className={"fl-roundbtn" + (active ? " active" : "")} onClick={onClick} aria-label={ariaLabel}>
       {children}
     </button>
   );

@@ -33,7 +33,7 @@ export default function BuyPaymentPage() {
   return (
     <PhoneFrame footer={footer}>
       <div className="fl-flow-head">
-        <button className="fl-roundbtn sm" onClick={() => router.push("/buy")}>{Ico.chevL("#fff", 20)}</button>
+        <button className="fl-roundbtn sm" onClick={() => router.push("/buy")} aria-label="Back">{Ico.chevL("#fff", 20)}</button>
         <span className="fl-flow-title">Payment</span>
         <div style={{ width: 34 }} />
       </div>

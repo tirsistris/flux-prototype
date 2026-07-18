@@ -38,7 +38,7 @@ export default function KycPage() {
   return (
     <PhoneFrame footer={footer} scroll>
       <div className="fl-flow-head">
-        <button className="fl-roundbtn sm" onClick={() => router.back()}>{Ico.chevL("#fff", 20)}</button>
+        <button className="fl-roundbtn sm" onClick={() => router.back()} aria-label="Back">{Ico.chevL("#fff", 20)}</button>
         <span className="fl-flow-title">Personal data</span>
         <div style={{ width: 34 }} />
       </div>

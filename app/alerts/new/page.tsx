@@ -53,7 +53,7 @@ export default function NewPriceAlertPage() {
     <PhoneFrame footer={footer}>
       {created && <div className="fl-toast">{Ico.check(GROWTH, 16)}Alert created</div>}
       <div className="fl-flow-head">
-        <button className="fl-roundbtn sm" onClick={() => router.back()}>{Ico.chevL("#fff", 20)}</button>
+        <button className="fl-roundbtn sm" onClick={() => router.back()} aria-label="Back">{Ico.chevL("#fff", 20)}</button>
         <span className="fl-flow-title">New price alert</span>
         <div style={{ width: 34 }} />
       </div>
@@ -84,7 +84,7 @@ export default function NewPriceAlertPage() {
 
       <div className="fl-numpad" style={{ marginTop: "auto" }}>
         {keys.map((k) => (
-          <button key={k} className="fl-key" onClick={() => press(k)}>
+          <button key={k} className="fl-key" onClick={() => press(k)} aria-label={k === "del" ? "Delete" : undefined}>
             {k === "del" ? Ico.backspace("rgba(255,255,255,0.85)", 24) : k}
           </button>
         ))}

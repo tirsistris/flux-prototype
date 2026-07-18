@@ -59,7 +59,7 @@ export default function StakeAmountPage({ params }: { params: { id: string } }) 
   return (
     <PhoneFrame footer={footer}>
       <div className="fl-flow-head">
-        <button className="fl-roundbtn sm" onClick={() => router.back()}>{Ico.chevL("#fff", 20)}</button>
+        <button className="fl-roundbtn sm" onClick={() => router.back()} aria-label="Back">{Ico.chevL("#fff", 20)}</button>
         <span className="fl-flow-title">Stake {sym}</span>
         <div style={{ width: 34 }} />
       </div>
@@ -82,7 +82,7 @@ export default function StakeAmountPage({ params }: { params: { id: string } }) 
 
       <div className="fl-numpad">
         {keys.map((k) => (
-          <button key={k} className="fl-key" onClick={() => press(k)}>
+          <button key={k} className="fl-key" onClick={() => press(k)} aria-label={k === "del" ? "Delete" : undefined}>
             {k === "del" ? Ico.backspace("rgba(255,255,255,0.85)", 24) : k}
           </button>
         ))}

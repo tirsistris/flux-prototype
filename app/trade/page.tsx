@@ -60,8 +60,8 @@ export default function TradePage() {
           <CoinAvatar id="btc" size={22} />
         </div>
         <div style={{ display: "flex", gap: 8 }}>
-          <button className="fl-roundbtn sm">{Ico.chevD("#fff", 20)}</button>
-          <button className="fl-roundbtn sm">{Ico.dots("#fff", 20)}</button>
+          <button className="fl-roundbtn sm" aria-label="Expand">{Ico.chevD("#fff", 20)}</button>
+          <button className="fl-roundbtn sm" aria-label="More options">{Ico.dots("#fff", 20)}</button>
         </div>
       </div>
 
@@ -111,7 +111,7 @@ export default function TradePage() {
           <span className="fl-conv-amt">{eur(pay.val)}</span>
           <span className="fl-conv-sub">{fmtNum(pay.amt, 4)} {pay.coin.sym}</span>
         </div>
-        <button className="fl-conv-swap" onClick={() => setSwapped((s) => !s)}>{Ico.swap("#fff", 20)}</button>
+        <button className="fl-conv-swap" onClick={() => setSwapped((s) => !s)} aria-label="Reverse conversion">{Ico.swap("#fff", 20)}</button>
         <div className="fl-conv-side" style={{ textAlign: "right" }}>
           <span className="fl-conv-label">You receive</span>
           <span className="fl-conv-amt">{eur(rec.val)}</span>

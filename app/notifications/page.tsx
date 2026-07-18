@@ -74,7 +74,7 @@ export default function NotificationsPage() {
   return (
     <PhoneFrame scroll footer={<div style={{ height: 12 }} />}>
       <div className="fl-flow-head">
-        <button className="fl-roundbtn sm" onClick={() => router.back()}>{Ico.chevL("#fff", 20)}</button>
+        <button className="fl-roundbtn sm" onClick={() => router.back()} aria-label="Back">{Ico.chevL("#fff", 20)}</button>
         <span className="fl-flow-title">Notifications</span>
         {/* AUTHORED: the source has no way to reach ScreenPriceAlert from the list —
             without this there'd be no in-app entry point to /alerts/new at all. */}

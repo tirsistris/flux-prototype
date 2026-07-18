@@ -54,7 +54,7 @@ export default function CoinPage({ params }: { params: { id: string } }) {
   return (
     <PhoneFrame scroll footer={footer}>
       <div className="fl-detail-head">
-        <button className="fl-roundbtn sm" onClick={() => router.back()}>{Ico.chevL("#fff", 20)}</button>
+        <button className="fl-roundbtn sm" onClick={() => router.back()} aria-label="Back">{Ico.chevL("#fff", 20)}</button>
         <div className="fl-detail-coin">
           <CoinAvatar id={id} size={28} />
           <div style={{ display: "flex", flexDirection: "column", lineHeight: 1.1 }}>
@@ -62,7 +62,7 @@ export default function CoinPage({ params }: { params: { id: string } }) {
             <span style={{ fontSize: 11.5, color: "#8A91A3" }}>{c.sym}</span>
           </div>
         </div>
-        <button className={"fl-star" + (star ? " on" : "")} onClick={() => setStar((s) => !s)}>
+        <button className={"fl-star" + (star ? " on" : "")} onClick={() => setStar((s) => !s)} aria-label={star ? "Remove from watchlist" : "Add to watchlist"}>
           {Ico.star(star ? "#8A79FF" : "rgba(255,255,255,0.65)", 19, star)}
         </button>
       </div>
