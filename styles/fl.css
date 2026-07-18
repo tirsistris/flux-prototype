@@ -72,6 +72,7 @@
 .fl-bal-row { display: flex; align-items: baseline; justify-content: center; gap: 10px; }
 .fl-bal-amt { font-family: 'Archivo', 'Inter', sans-serif; font-size: 40px; font-weight: 800; letter-spacing: -1.8px; color: #fff; line-height: 1.02; display: inline-flex; align-items: baseline; font-variant-numeric: tabular-nums lining-nums; font-feature-settings: "tnum" 1, "lnum" 1; }
 .fl-bal-cur { font-family: 'Archivo', 'Inter', sans-serif; font-size: 0.56em; font-weight: 600; color: rgba(255,255,255,0.4); letter-spacing: 0; margin-left: 5px; }
+.fl-bal-cur.full { font-size: 1em; font-weight: inherit; color: inherit; }
 .fl-eye { background: none; border: none; display: flex; padding: 4px; align-self: center; }
 .fl-bal-change { margin-top: 9px; font-size: 14px; font-weight: 600; }
 

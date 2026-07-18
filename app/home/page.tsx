@@ -17,7 +17,7 @@ function BalanceBlock() {
     <div className="fl-balance">
       <div className="fl-bal-label">Total balance</div>
       <div className="fl-bal-row">
-        <BalAmt n={FLUX.balance} hidden={hidden} />
+        <BalAmt n={FLUX.balance} hidden={hidden} curFull />
         <button className="fl-eye" onClick={() => setHidden((h) => !h)}>
           {hidden ? Ico.eyeOff("rgba(255,255,255,0.55)", 21) : Ico.eye("rgba(255,255,255,0.55)", 21)}
         </button>

@@ -99,12 +99,12 @@ export function PrimaryBtn({
 }
 
 // ── big balance / price ──────────────────────────────────────
-export function BalAmt({ n, dec = 2, hidden = false }: { n: number; dec?: number; hidden?: boolean }) {
+export function BalAmt({ n, dec = 2, hidden = false, curFull = false }: { n: number; dec?: number; hidden?: boolean; curFull?: boolean }) {
   if (hidden) return <span className="fl-bal-amt">{"••••••"}</span>;
   return (
     <span className="fl-bal-amt">
       {fmtNum(n, dec)}
-      <span className="fl-bal-cur">€</span>
+      <span className={"fl-bal-cur" + (curFull ? " full" : "")}>€</span>
     </span>
   );
 }
