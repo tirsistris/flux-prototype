@@ -1,154 +1,169 @@
 "use client";
-// app/home/page.tsx — Flux Home (fl system), ported from screen-home.jsx.
-// Phase-1 pipeline check for the fl CSS + PhoneFrame + TabBar. Controls render
-// live (balance eye toggle, Trending/Watchlist/… segmented) but do not yet
-// navigate — routing/dead-control honesty lands in later phases.
+// app/home/page.tsx — Home (Figma 2312:5726 / 2312:5928). Balances come from the
+// store, so a finished purchase shows here at once: BTC quantity and value, and
+// the total as the sum of the rounded position values (as legend.md does it).
 import React from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { PhoneFrame } from "@/components/frame/PhoneFrame";
-import { ScreenHeader, RoundBtn, Segmented, Sparkline, CoinAvatar, BalAmt, ACCENT } from "@/components/fl/ui";
-import { Ico } from "@/components/icons";
-import { FLUX, eur, pct, signEur, chColor } from "@/lib/flux-data";
-
-function BalanceBlock() {
-  const [hidden, setHidden] = React.useState(false);
-  return (
-    <div className="fl-balance">
-      <div className="fl-bal-label">Total balance</div>
-      <div className="fl-bal-row">
-        <BalAmt n={FLUX.balance} hidden={hidden} curFull />
-        <button className="fl-eye" onClick={() => setHidden((h) => !h)} aria-label={hidden ? "Show balance" : "Hide balance"}>
-          {hidden ? Ico.eyeOff("rgba(255,255,255,0.55)", 21) : Ico.eye("rgba(255,255,255,0.55)", 21)}
-        </button>
-      </div>
-      <div className="fl-bal-change" style={{ color: chColor(FLUX.dayPct) }}>
-        {signEur(FLUX.dayAbs)} · {pct(FLUX.dayPct)} today
-      </div>
-    </div>
-  );
-}
-
-// `href` makes the tile a navigable link (Send/Receive/Swap flows land in 4b-1);
-// tiles without it stay inert until their destination exists.
-function ActionTile({ icon, label, primary, href }: { icon: React.ReactNode; label: string; primary?: boolean; href?: string }) {
-  const cls = "fl-action" + (primary ? " primary" : "");
-  const inner = (
-    <>
-      <span className={"fl-action-ico" + (primary ? " primary" : "")}>{icon}</span>
-      <span className="fl-action-label">{label}</span>
-    </>
-  );
-  if (href) return <Link href={href} className={cls} style={{ textDecoration: "none" }}>{inner}</Link>;
-  return <button className={cls}>{inner}</button>;
-}
-
-// `href` makes the card a navigable link.
-function TokenCard({ id, href }: { id: string; href?: string }) {
-  const c = FLUX.coins[id];
-  const inner = (
-    <>
-      <div style={{ display: "flex", alignItems: "center", gap: 9 }}>
-        <CoinAvatar id={id} size={30} />
-        <div style={{ display: "flex", flexDirection: "column" }}>
-          <span style={{ fontSize: 14, fontWeight: 600, color: "#fff" }}>{c.sym}</span>
-          <span style={{ fontSize: 11.5, color: "rgba(138,145,163,0.9)" }}>{c.name}</span>
-        </div>
-      </div>
-      <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginTop: 12 }}>
-        <span style={{ fontSize: 17, fontWeight: 700, color: "#fff", letterSpacing: -0.2 }}>{eur(c.price)}</span>
-      </div>
-      <span style={{ fontSize: 12.5, fontWeight: 600, color: chColor(c.ch) }}>{pct(c.ch)}</span>
-      <div style={{ marginTop: 6 }}>
-        <Sparkline vals={c.spark} w={150} h={40} id={"tok" + id} up={c.ch >= 0} color={ACCENT.from} />
-      </div>
-    </>
-  );
-  const cls = "fl-card fl-token-card";
-  if (href) {
-    return (
-      <Link href={href} className={cls} style={{ display: "block", textDecoration: "none", color: "inherit" }}>
-        {inner}
-      </Link>
-    );
-  }
-  return <div className={cls}>{inner}</div>;
-}
-
-function CoinRow({ id }: { id: string }) {
-  const c = FLUX.coins[id];
-  return (
-    <div className="fl-coinrow">
-      <CoinAvatar id={id} size={38} />
-      <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
-        <span style={{ fontSize: 15, fontWeight: 600, color: "#fff" }}>{c.name}</span>
-        <span style={{ fontSize: 12.5, color: "#8A91A3" }}>{c.sym}</span>
-      </div>
-      <div style={{ marginLeft: "auto", textAlign: "right", display: "flex", flexDirection: "column", gap: 2 }}>
-        <span style={{ fontSize: 15, fontWeight: 600, color: "#fff" }}>{eur(c.price)}</span>
-        <span style={{ fontSize: 12.5, fontWeight: 600, color: chColor(c.ch) }}>{pct(c.ch)}</span>
-      </div>
-    </div>
-  );
-}
+import { Screen } from "@/components/Screen";
+import { Num } from "@/components/Num";
+import { Chart, Person } from "@/components/Media";
+import { Coin, Divider, IconButton } from "@/components/ui";
+import { IconAddCircle, IconBell, IconChevR, IconEye, IconRecv, IconScan, IconSend, IconSwap } from "@/components/icons";
+import { ASSETS, ETH_STAKED, NOW, PERSONA, TODAY } from "@/lib/legend";
+import { portfolio } from "@/lib/money";
+import { crypto, eur, eurText, fixed, NNBSP, pct } from "@/lib/format";
+import { useStore } from "@/lib/store";
 
 export default function HomePage() {
-  const router = useRouter();
-  const [tab, setTab] = React.useState("Trending");
-  const lists: Record<string, string[]> = {
-    Trending: ["zec", "sol", "uni"],
-    Watchlist: ["btc", "eth", "sol"],
-    Gainers: ["btc", "eth", "ltc"],
-    Losers: ["zec", "sol", "uni"],
-  };
+  const { holdings } = useStore();
+  const [hidden, setHidden] = React.useState(false);
+  const p = portfolio(holdings);
+
   return (
-    <PhoneFrame active="home">
-      <ScreenHeader
-        left={
-          <div style={{ display: "flex", alignItems: "center", gap: 11 }}>
-            <div className="fl-avatar" style={{ width: 40, height: 40 }}>
-              <img
-                src="/nikola%20jokic.webp"
-                alt=""
-                style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "50%" }}
-              />
-            </div>
-            <span style={{ fontSize: 17, fontWeight: 700, color: "#fff" }}>Hello {FLUX.user.first}</span>
-          </div>
-        }
-        right={
-          <>
-            <RoundBtn onClick={() => router.push("/notifications")} aria-label="Notifications">{Ico.bell("#fff", 20)}</RoundBtn>
-            <RoundBtn aria-label="Menu">{Ico.menu("#fff", 20)}</RoundBtn>
-          </>
-        }
-      />
-
-      <BalanceBlock />
-
-      <div className="fl-actions">
-        <ActionTile icon={Ico.receive("rgba(255,255,255,0.92)", 22)} label="Receive" href="/receive" />
-        <ActionTile icon={Ico.send("rgba(255,255,255,0.92)", 22)} label="Send" href="/send" />
-        <ActionTile icon={Ico.swap("rgba(255,255,255,0.92)", 22)} label="Swap" href="/swap/confirm" />
+    <Screen tab="home">
+      <div className="home-greeting">
+        <Person who="mila" size={44} alt={`${PERSONA.first} ${PERSONA.last}`} />
+        <div className="hello">
+          <span className="t13 muted">{NOW.dateLong}</span>
+          <span className="serif">Good morning, {PERSONA.first}</span>
+        </div>
+        <IconButton label="Scan QR code" inert>
+          <IconScan />
+        </IconButton>
+        <span className="bell">
+          <IconButton label="Notifications" inert>
+            <IconBell />
+          </IconButton>
+          <span className="unread" aria-hidden="true" />
+        </span>
       </div>
 
-      <div className="fl-sec-head">
-        <span className="fl-sec-title">Tokens</span>
-        <span className="fl-sec-link">See all</span>
-      </div>
-      <div className="fl-token-grid">
-        <TokenCard id="btc" href="/coin/btc" />
-        <TokenCard id="eth" href="/coin/eth" />
+      <div className="home-balance">
+        <div className="label">
+          Total balance
+          <button type="button" onClick={() => setHidden((h) => !h)} aria-label={hidden ? "Show balance" : "Hide balance"} aria-pressed={hidden}>
+            <IconEye />
+          </button>
+        </div>
+        <div className="value mono">{hidden ? "••••••" : <Num faint>{eur(p.total)}</Num>}</div>
+        <div className="change-row">
+          <span className="badge gain">
+            <Num>{pct(TODAY.pct, true)}</Num>
+          </span>
+          <span className="t13">{eurText(TODAY.absCents, { sign: true })} today · mostly Bitcoin</span>
+        </div>
       </div>
 
-      <div style={{ marginTop: 16 }}>
-        <Segmented options={["Trending", "Watchlist", "Gainers", "Losers"]} value={tab} onChange={setTab} />
-      </div>
-      <div className="fl-coinlist">
-        {lists[tab].map((id) => (
-          <CoinRow key={id} id={id} />
+      <Chart kind="home" className="home-chart" />
+
+      <div className="periods" aria-hidden="true">
+        {["1D", "1W", "1M", "1Y", "All"].map((x) => (
+          <span key={x} className={"period" + (x === "1D" ? " on" : "")}>
+            {x}
+          </span>
         ))}
       </div>
-    </PhoneFrame>
+
+      <div className="home-actions">
+        <Link href="/buy" className="home-action primary">
+          <span className="circle">
+            <IconAddCircle size={24} weight={1.5} />
+          </span>
+          Buy
+        </Link>
+        <button type="button" className="home-action" data-inert disabled>
+          <span className="circle">
+            <IconSend />
+          </span>
+          Send
+        </button>
+        <button type="button" className="home-action" data-inert disabled>
+          <span className="circle">
+            <IconRecv />
+          </span>
+          Receive
+        </button>
+        <button type="button" className="home-action" data-inert disabled>
+          <span className="circle">
+            <IconSwap />
+          </span>
+          Swap
+        </button>
+      </div>
+
+      <section className="card assets" aria-label="Your assets">
+        <div className="assets-head">
+          <span>Your assets</span>
+          <IconChevR />
+        </div>
+        <div className="list-row">
+          <Coin asset="EUR" />
+          <div className="list-row-main">
+            <span className="list-row-title">Euro</span>
+            <span className="list-row-sub mono">EUR</span>
+          </div>
+          <div className="list-row-side">
+            <span className="primary">
+              <Num>{eur(p.eur)}</Num>
+            </span>
+          </div>
+        </div>
+        <Divider inset />
+        <Link href="/buy" className="list-row">
+          <Coin asset="BTC" />
+          <div className="list-row-main">
+            <span className="list-row-title">{ASSETS.BTC.name}</span>
+            <span className="list-row-sub mono">
+              <Num>{crypto(holdings.BTC, "BTC", 4)}</Num>
+            </span>
+          </div>
+          <div className="list-row-side">
+            <span className="primary">
+              <Num>{eur(p.btc)}</Num>
+            </span>
+            <span className="secondary gain">
+              <Num>{pct(ASSETS.BTC.changePct, true)}</Num>
+            </span>
+          </div>
+        </Link>
+        <Divider inset />
+        <div className="list-row">
+          <Coin asset="ETH" />
+          <div className="list-row-main">
+            <span className="list-row-title">{ASSETS.ETH.name}</span>
+            <span className="list-row-sub">
+              {fixed(holdings.ETH, 8, 4, NNBSP)}
+              {NNBSP}ETH · {fixed(ETH_STAKED, 8, 1, NNBSP)} earning
+            </span>
+          </div>
+          <div className="list-row-side">
+            <span className="primary">
+              <Num>{eur(p.eth)}</Num>
+            </span>
+            <span className="secondary loss">
+              <Num>{pct(ASSETS.ETH.changePct, false)}</Num>
+            </span>
+          </div>
+        </div>
+        <Divider inset />
+        <div className="list-row">
+          <Coin asset="SOL" />
+          <div className="list-row-main">
+            <span className="list-row-title">{ASSETS.SOL.name}</span>
+            <span className="list-row-sub mono">
+              <Num>{crypto(holdings.SOL, "SOL", 4)}</Num>
+            </span>
+          </div>
+          <div className="list-row-side">
+            <span className="primary">
+              <Num>{eur(p.sol)}</Num>
+            </span>
+            <span className="secondary gain">
+              <Num>{pct(ASSETS.SOL.changePct, true)}</Num>
+            </span>
+          </div>
+        </div>
+      </section>
+    </Screen>
   );
 }

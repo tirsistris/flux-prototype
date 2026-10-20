@@ -1,9 +1,8 @@
 "use client";
-// app/providers.tsx — client provider tree wrapping the whole app. Currently
-// just the Buy-flow store (phase 2a); future client providers compose here.
+// app/providers.tsx — client provider tree. Only the demo store for now.
 import React from "react";
-import { BuyProvider } from "@/lib/store";
+import { StoreProvider } from "@/lib/store";
 
 export function Providers({ children }: { children: React.ReactNode }) {
-  return <BuyProvider>{children}</BuyProvider>;
+  return <StoreProvider>{children}</StoreProvider>;
 }

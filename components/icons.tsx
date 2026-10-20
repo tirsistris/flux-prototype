@@ -1,241 +1,186 @@
-// icons.tsx — Flux token coins + UI glyphs, ported from the export's icons.jsx.
-// Coin marks are abstract/original (letters + simple geometry), not brand logos.
+// components/icons.tsx — glyphs exported from Figma Flux · Final (Solar icon set by
+// 480 Design, CC BY 4.0 — attribution required in the case study). Paths are the
+// Figma export verbatim; only the hard-coded stroke/fill colours became
+// currentColor so the same glyph follows the light and dark tokens.
 import React from "react";
 
-type CoinDef = {
-  bg: string;
-  glow: string;
-  glyph: (s: number) => React.ReactNode;
-};
+type P = { size?: number; className?: string; style?: React.CSSProperties };
 
-export const COINS: Record<string, CoinDef> = {
-  btc: {
-    bg: "radial-gradient(120% 120% at 30% 20%, #FBB552, #F7931A 55%, #E07C0A)",
-    glow: "rgba(247,147,26,0.45)",
-    glyph: (s) => <span style={{ fontSize: s * 0.56, fontWeight: 800, color: "#fff", lineHeight: 1 }}>₿</span>,
-  },
-  eth: {
-    bg: "radial-gradient(120% 120% at 30% 20%, #8A93FF, #5B6CE8 55%, #4254C9)",
-    glow: "rgba(91,108,232,0.45)",
-    glyph: (s) => (
-      <svg width={s * 0.5} height={s * 0.5} viewBox="0 0 24 36" fill="none">
-        <path d="M12 0L12 14.2L23 19.2L12 0Z" fill="#fff" fillOpacity="0.95" />
-        <path d="M12 0L1 19.2L12 14.2L12 0Z" fill="#fff" fillOpacity="0.7" />
-        <path d="M12 16.4L1 21.4L12 36L23 21.4L12 16.4Z" fill="#fff" fillOpacity="0.85" />
-      </svg>
-    ),
-  },
-  sol: {
-    bg: "radial-gradient(120% 120% at 25% 15%, #2A2F3A, #15181F)",
-    glow: "rgba(20,241,149,0.30)",
-    glyph: (s) => (
-      <svg width={s * 0.52} height={s * 0.52} viewBox="0 0 28 24" fill="none">
-        <defs>
-          <linearGradient id="solg" x1="0" y1="0" x2="28" y2="24">
-            <stop offset="0" stopColor="#9945FF" /><stop offset="1" stopColor="#14F195" />
-          </linearGradient>
-        </defs>
-        <path d="M5 4h18l-4 4H1l4-4Z" fill="url(#solg)" />
-        <path d="M5 10h18l-4 4H1l4-4Z" fill="url(#solg)" />
-        <path d="M5 16h18l-4 4H1l4-4Z" fill="url(#solg)" />
-      </svg>
-    ),
-  },
-  xrp: {
-    bg: "radial-gradient(120% 120% at 30% 20%, #3A4150, #20252E)",
-    glow: "rgba(120,140,170,0.35)",
-    glyph: (s) => (
-      <svg width={s * 0.46} height={s * 0.46} viewBox="0 0 24 20" fill="none" stroke="#fff" strokeWidth="2.4" strokeLinecap="round">
-        <path d="M2 2c3 4 7 4 10 0M22 2c-3 4-7 4-10 0" />
-        <path d="M2 18c3-4 7-4 10 0M22 18c-3-4-7-4-10 0" />
-      </svg>
-    ),
-  },
-  usdc: {
-    bg: "radial-gradient(120% 120% at 30% 20%, #4D93E6, #2775CA 55%, #1E63B0)",
-    glow: "rgba(39,117,202,0.42)",
-    glyph: (s) => <span style={{ fontSize: s * 0.5, fontWeight: 700, color: "#fff", lineHeight: 1 }}>$</span>,
-  },
-  uni: {
-    bg: "radial-gradient(120% 120% at 30% 20%, #FF5BA8, #FF007A 60%, #D60068)",
-    glow: "rgba(255,0,122,0.40)",
-    glyph: (s) => <span style={{ fontSize: s * 0.46, fontWeight: 800, color: "#fff", lineHeight: 1 }}>U</span>,
-  },
-  zec: {
-    bg: "radial-gradient(120% 120% at 30% 20%, #F9C552, #F4B728 55%, #D99700)",
-    glow: "rgba(244,183,40,0.42)",
-    glyph: (s) => <span style={{ fontSize: s * 0.5, fontWeight: 800, color: "#3A2A00", lineHeight: 1 }}>ⓩ</span>,
-  },
-  ltc: {
-    bg: "radial-gradient(120% 120% at 30% 20%, #6FA6E8, #345D9D 55%, #28477A)",
-    glow: "rgba(52,93,157,0.42)",
-    glyph: (s) => <span style={{ fontSize: s * 0.52, fontWeight: 700, color: "#fff", lineHeight: 1, fontStyle: "italic" }}>Ł</span>,
-  },
-};
-
-export function Coin({
-  id,
-  size = 44,
-  glowScale = 1,
-  style = {},
-}: {
-  id: string;
-  size?: number;
-  glowScale?: number;
-  style?: React.CSSProperties;
-}) {
-  const C = COINS[id] || COINS.btc;
+function svg(w: number, children: React.ReactNode, { size = w, className, style }: P) {
   return (
-    <div
-      style={{
-        width: size,
-        height: size,
-        borderRadius: "50%",
-        background: C.bg,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        boxShadow: `0 ${size * 0.16 * glowScale}px ${size * 0.46 * glowScale}px ${C.glow}, inset 0 1.5px 1.5px rgba(255,255,255,0.35), inset 0 -2px 4px rgba(0,0,0,0.25)`,
-        flexShrink: 0,
-        ...style,
-      }}
-    >
-      {C.glyph(size)}
-    </div>
+    <svg width={size} height={size} viewBox={`0 0 ${w} ${w}`} fill="none" aria-hidden="true" className={className} style={style}>
+      {children}
+    </svg>
   );
 }
 
-// ── UI glyphs (stroke icons) ──────────────────────────────────
-type Glyph = (c?: string, w?: number, fill?: boolean) => React.ReactElement;
+const s = (w: number) => ({ stroke: "currentColor", strokeWidth: w, strokeLinecap: "round" as const });
+const sj = (w: number) => ({ ...s(w), strokeLinejoin: "round" as const });
 
-export const Ico: Record<string, Glyph> = {
-  chevL: (c = "#fff", w = 22) => (
-    <svg width={w} height={w} viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 5l-7 7 7 7" /></svg>
-  ),
-  chevR: (c = "#fff", w = 22) => (
-    <svg width={w} height={w} viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 5l7 7-7 7" /></svg>
-  ),
-  arrowR: (c = "#fff", w = 20) => (
-    <svg width={w} height={w} viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 12h15M13 6l6 6-6 6" /></svg>
-  ),
-  card: (c = "#fff", w = 26) => (
-    <svg width={w} height={w} viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><rect x="2.5" y="5" width="19" height="14" rx="3" /><path d="M2.5 9.5h19M6 15h4" /></svg>
-  ),
-  faceid: (c = "#fff", w = 26) => (
-    <svg width={w} height={w} viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M4 8V6a2 2 0 012-2h2M16 4h2a2 2 0 012 2v2M20 16v2a2 2 0 01-2 2h-2M8 20H6a2 2 0 01-2-2v-2" />
-      <path d="M9 10v1M15 10v1M12 9v3.5a1.2 1.2 0 01-1.2 1.2M9.2 16c1.6 1.2 4 1.2 5.6 0" />
-    </svg>
-  ),
-  lock: (c = "#fff", w = 22) => (
-    <svg width={w} height={w} viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><rect x="4.5" y="10.5" width="15" height="10" rx="2.5" /><path d="M8 10.5V7a4 4 0 018 0v3.5" /><circle cx="12" cy="15.2" r="1.3" fill={c} stroke="none" /></svg>
-  ),
-  check: (c = "#fff", w = 22) => (
-    <svg width={w} height={w} viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12.5l4.5 4.5L19 7" /></svg>
-  ),
-  apple: (c = "#fff", w = 20) => (
-    <svg width={w} height={w} viewBox="0 0 24 24" fill={c}><path d="M16.4 12.7c0-2.3 1.9-3.4 2-3.5-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.1-2.8.8-3.5.8-.7 0-1.8-.8-3-.8-1.5 0-3 .9-3.8 2.3-1.6 2.8-.4 7 1.2 9.3.8 1.1 1.7 2.4 2.9 2.3 1.2-.05 1.6-.75 3-.75s1.8.75 3 .73c1.2-.02 2-1.1 2.8-2.2.9-1.3 1.2-2.5 1.3-2.6-.03-.01-2.4-.92-2.4-3.5ZM14.1 5.8c.65-.8 1.1-1.9 1-3-.95.04-2.1.63-2.8 1.42-.6.7-1.15 1.83-1 2.9 1.05.08 2.13-.53 2.8-1.32Z" /></svg>
-  ),
-  google: (c = "#fff", w = 19) => (
-    <svg width={w} height={w} viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.2c0 5-3.4 8.3-8.5 8.3A8.5 8.5 0 1112.5 3.5c2.3 0 4.2.85 5.6 2.2l-2.4 2.3c-.6-.6-1.66-1.3-3.2-1.3a5.3 5.3 0 100 10.6c3.1 0 4.5-2.2 4.7-3.6h-4.7v-3.1H21c.05.4.05.7.05 1.6Z" /></svg>
-  ),
-  search: (c = "#fff", w = 22) => (
-    <svg width={w} height={w} viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round"><circle cx="11" cy="11" r="7" /><path d="M16.5 16.5L21 21" /></svg>
-  ),
-  star: (c = "#fff", w = 22, fill = false) => (
-    <svg width={w} height={w} viewBox="0 0 24 24" fill={fill ? c : "none"} stroke={c} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3l2.6 5.5 6 .8-4.4 4.2 1.1 6L12 17.8 6.7 19.5l1.1-6L3.4 9.3l6-.8L12 3Z" /></svg>
-  ),
-  bank: (c = "#fff", w = 22) => (
-    <svg width={w} height={w} viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9.5L12 4l9 5.5M5 10v8M19 10v8M9.5 10v8M14.5 10v8M3 21h18" /></svg>
-  ),
-  backspace: (c = "#fff", w = 26) => (
-    <svg width={w} height={w} viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M21 5H8.5L3 12l5.5 7H21a1 1 0 001-1V6a1 1 0 00-1-1ZM11.5 9.5l5 5M16.5 9.5l-5 5" /></svg>
-  ),
-  camera: (c = "#fff", w = 22) => (
-    <svg width={w} height={w} viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M3 8.5a2 2 0 012-2h1.6L8 4.5h8l1.4 2H19a2 2 0 012 2V18a2 2 0 01-2 2H5a2 2 0 01-2-2V8.5Z" /><circle cx="12" cy="12.8" r="3.4" /></svg>
-  ),
-  external: (c = "#fff", w = 18) => (
-    <svg width={w} height={w} viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 4h6v6M20 4l-8.5 8.5M18 13.5V18a2 2 0 01-2 2H6a2 2 0 01-2-2V8a2 2 0 012-2h4.5" /></svg>
-  ),
-  close: (c = "#fff", w = 22) => (
-    <svg width={w} height={w} viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2.2" strokeLinecap="round"><path d="M6 6l12 12M18 6L6 18" /></svg>
-  ),
-  plus: (c = "#fff", w = 22) => (
-    <svg width={w} height={w} viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2.2" strokeLinecap="round"><path d="M12 5v14M5 12h14" /></svg>
-  ),
-  chevD: (c = "#fff", w = 20) => (
-    <svg width={w} height={w} viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 9l7 7 7-7" /></svg>
-  ),
-  eye: (c = "#fff", w = 22) => (
-    <svg width={w} height={w} viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z" /><circle cx="12" cy="12" r="3" /></svg>
-  ),
-  eyeOff: (c = "#fff", w = 22) => (
-    <svg width={w} height={w} viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M3 3l18 18M10.6 6.2A9.7 9.7 0 0112 6c6.4 0 10 6 10 6a16 16 0 01-3.3 4M6.6 6.7C3.7 8.3 2 12 2 12s3.6 7 10 7a9.7 9.7 0 004.1-.9M9.9 9.9a3 3 0 004.2 4.2" /></svg>
-  ),
-  receive: (c = "#fff", w = 24) => (
-    <svg width={w} height={w} viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 4v12M7 11l5 5 5-5M5 20h14" /></svg>
-  ),
-  send: (c = "#fff", w = 24) => (
-    <svg width={w} height={w} viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 3L10.5 13.5M21 3l-6.6 18-3.9-8.1L2.4 9 21 3Z" /></svg>
-  ),
-  swap: (c = "#fff", w = 24) => (
-    <svg width={w} height={w} viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 4l3 3-3 3M20 7H8M7 20l-3-3 3-3M4 17h12" /></svg>
-  ),
-  scan: (c = "#fff", w = 24) => (
-    <svg width={w} height={w} viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 8V6a2 2 0 012-2h2M16 4h2a2 2 0 012 2v2M20 16v2a2 2 0 01-2 2h-2M8 20H6a2 2 0 01-2-2v-2M3 12h18" /></svg>
-  ),
-  copy: (c = "#fff", w = 22) => (
-    <svg width={w} height={w} viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="11" height="11" rx="2.5" /><path d="M5 15V5a2 2 0 012-2h8" /></svg>
-  ),
-  share: (c = "#fff", w = 22) => (
-    <svg width={w} height={w} viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M12 15V4M8.5 7.5L12 4l3.5 3.5M6 12v6a2 2 0 002 2h8a2 2 0 002-2v-6" /></svg>
-  ),
-  sliders: (c = "#fff", w = 22) => (
-    <svg width={w} height={w} viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round"><path d="M4 7h10M18 7h2M4 17h2M10 17h10" /><circle cx="16" cy="7" r="2.2" /><circle cx="8" cy="17" r="2.2" /></svg>
-  ),
-  menu: (c = "#fff", w = 22) => (
-    <svg width={w} height={w} viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round"><path d="M4 7h16M4 12h16M4 17h10" /></svg>
-  ),
-  dots: (c = "#fff", w = 22) => (
-    <svg width={w} height={w} viewBox="0 0 24 24" fill={c}><circle cx="12" cy="5" r="1.8" /><circle cx="12" cy="12" r="1.8" /><circle cx="12" cy="19" r="1.8" /></svg>
-  ),
-  bell: (c = "#fff", w = 22) => (
-    <svg width={w} height={w} viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0" /></svg>
-  ),
-  user: (c = "#fff", w = 22) => (
-    <svg width={w} height={w} viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="4" /><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6" /></svg>
-  ),
-  shield: (c = "#fff", w = 22) => (
-    <svg width={w} height={w} viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3l8 3v5c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-3Z" /></svg>
-  ),
-  globe: (c = "#fff", w = 22) => (
-    <svg width={w} height={w} viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3c2.5 2.5 3.5 6 3.5 9s-1 6.5-3.5 9c-2.5-2.5-3.5-6-3.5-9s1-6.5 3.5-9Z" /></svg>
-  ),
-  crown: (c = "#fff", w = 22) => (
-    <svg width={w} height={w} viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M3 8l4 4 5-7 5 7 4-4-2 11H5L3 8Z" /></svg>
-  ),
-  edit: (c = "#fff", w = 20) => (
-    <svg width={w} height={w} viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M4 20h4L19 9l-4-4L4 16v4ZM14 6l4 4" /></svg>
-  ),
-  logout: (c = "#fff", w = 22) => (
-    <svg width={w} height={w} viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 4H6a2 2 0 00-2 2v12a2 2 0 002 2h3M16 17l5-5-5-5M21 12H9" /></svg>
-  ),
-  swapV: (c = "#fff", w = 22) => (
-    <svg width={w} height={w} viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M7 4v12M4 13l3 3 3-3M17 20V8M14 11l3-3 3 3" /></svg>
-  ),
-  tabHome: (c = "#fff", w = 24, fill = false) => (
-    <svg width={w} height={w} viewBox="0 0 24 24" fill={fill ? c : "none"} stroke={c} strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M4 11l8-7 8 7M6 10v9h12v-9" /></svg>
-  ),
-  tabMarkets: (c = "#fff", w = 24) => (
-    <svg width={w} height={w} viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M4 16l4-5 4 3 4-7 4 5" /><circle cx="8" cy="11" r="1" fill={c} /><circle cx="16" cy="7" r="1" fill={c} /></svg>
-  ),
-  tabWallet: (c = "#fff", w = 24) => (
-    <svg width={w} height={w} viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="6" width="18" height="13" rx="3" /><path d="M3 10h18" /><circle cx="16.5" cy="13.5" r="1.2" fill={c} /></svg>
-  ),
-  tabTrade: (c = "#fff", w = 24) => (
-    <svg width={w} height={w} viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><circle cx="8" cy="9" r="4.2" /><circle cx="15" cy="15" r="4.2" /></svg>
-  ),
-  tabProfile: (c = "#fff", w = 24) => (
-    <svg width={w} height={w} viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="4" /><path d="M5 20c0-3.5 3-5.5 7-5.5s7 2 7 5.5" /></svg>
-  ),
-};
+export const IconBack = (p: P) => svg(20, <path d="M12.5 4.16675L7.5 10.0001L12.5 15.8334" {...sj(1.25)} />, p);
+
+export const IconClose = (p: P) =>
+  svg(20, <>
+    <path d="M15.839 4.16675L4.17236 15.8334" {...s(1.25)} />
+    <path d="M15.8333 15.8334L4.16663 4.16675" {...s(1.25)} />
+  </>, p);
+
+export const IconBell = ({ weight = 1.25, ...p }: P & { weight?: number }) =>
+  svg(20, <>
+    <path d="M15.6243 8.09127V7.50409C15.6243 4.28015 13.1062 1.66663 10 1.66663C6.8938 1.66663 4.37573 4.28015 4.37573 7.50409V8.09127C4.37573 8.79596 4.17477 9.48479 3.79817 10.0711L2.8753 11.5079C2.03235 12.8202 2.67588 14.604 4.14197 15.019C7.97728 16.1047 12.0227 16.1047 15.858 15.019C17.3242 14.604 17.9677 12.8202 17.1247 11.5079L16.2018 10.0711C15.8252 9.48479 15.6243 8.79596 15.6243 8.09127Z" {...s(weight)} />
+    <path d="M6.25 15.8333C6.79586 17.2898 8.26872 18.3333 10 18.3333C11.7312 18.3333 13.2042 17.2898 13.75 15.8333" {...s(weight)} />
+  </>, p);
+
+export const IconScan = (p: P) =>
+  svg(20, <>
+    <path d="M8.33332 18.3333C5.19062 18.3333 3.61928 18.3333 2.64296 17.357C1.66666 16.3807 1.66666 15.6427 1.66666 12.5" {...s(1.25)} />
+    <path d="M18.3333 12.5C18.3333 15.6427 18.3333 16.3807 17.357 17.357C16.3807 18.3333 14.8093 18.3333 11.6667 18.3333" {...s(1.25)} />
+    <path d="M11.6667 1.66663C14.8093 1.66663 16.3807 1.66663 17.357 2.64293C18.3333 3.61925 18.3333 4.35726 18.3333 7.49996" {...s(1.25)} />
+    <path d="M8.33332 1.66663C5.19062 1.66663 3.61928 1.66663 2.64296 2.64293C1.66666 3.61925 1.66666 4.35726 1.66666 7.49996" {...s(1.25)} />
+    <path d="M1.66666 10H18.3333" {...s(1.25)} />
+  </>, p);
+
+export const IconSearch = (p: P) =>
+  svg(20, <>
+    <path d="M9.58329 17.5C13.9555 17.5 17.5 13.9555 17.5 9.58329C17.5 5.21104 13.9555 1.66663 9.58329 1.66663C5.21104 1.66663 1.66663 5.21104 1.66663 9.58329C1.66663 13.9555 5.21104 17.5 9.58329 17.5Z" {...s(1.25)} />
+    <path d="M15.181 15.1815L18.3332 18.3337" {...s(1.25)} />
+  </>, p);
+
+export const IconRefresh = (p: P) =>
+  svg(20, <path d="M15.3034 6.70741L14.7141 6.11815C12.1106 3.51466 7.88949 3.51466 5.286 6.11815C2.6825 8.72167 2.6825 12.9428 5.286 15.5463C7.88949 18.1498 12.1106 18.1498 14.7141 15.5463C16.2281 14.0323 16.8617 11.9712 16.6148 9.99926M11.7678 6.70741H15.3034V3.17188" {...sj(1.25)} />, p);
+
+export const IconShare = (p: P) =>
+  svg(20, <>
+    <path d="M16.25 4.58333C16.25 5.73392 15.3173 6.66667 14.1667 6.66667C13.0161 6.66667 12.0834 5.73392 12.0834 4.58333C12.0834 3.43274 13.0161 2.5 14.1667 2.5C15.3173 2.5 16.25 3.43274 16.25 4.58333Z" {...s(1.25)} />
+    <path d="M14.1667 13.3335C13.0161 13.3335 12.0834 14.2662 12.0834 15.4168C12.0834 16.5674 13.0161 17.5002 14.1667 17.5002C15.3173 17.5002 16.25 16.5674 16.25 15.4168C16.25 14.2662 15.3173 13.3335 14.1667 13.3335Z" {...s(1.25)} />
+    <path d="M5.83333 7.9165C4.68274 7.9165 3.75 8.84925 3.75 9.99984C3.75 11.1504 4.68274 12.0832 5.83333 12.0832C6.98392 12.0832 7.91667 11.1504 7.91667 9.99984C7.91667 8.84925 6.98392 7.9165 5.83333 7.9165Z" {...s(1.25)} />
+    <path d="M7.58057 11.1357C9.19367 12.1842 10.8067 13.2327 12.4198 14.2812" {...s(1.25)} />
+    <path d="M7.58057 8.86427C9.19367 7.81577 10.8068 6.76726 12.4199 5.71875" {...s(1.25)} />
+  </>, p);
+
+export const IconInfo = (p: P) =>
+  svg(18, <>
+    <path d="M9 16.5C13.1421 16.5 16.5 13.1421 16.5 9C16.5 4.85786 13.1421 1.5 9 1.5C4.85786 1.5 1.5 4.85786 1.5 9C1.5 13.1421 4.85786 16.5 9 16.5Z" {...s(1.125)} />
+    <path d="M9 12.75V8.25" {...s(1.125)} />
+  </>, p);
+
+export const IconShield = (p: P) =>
+  svg(18, <>
+    <path d="M2.25 7.81253C2.25 5.4143 2.25 4.21521 2.53314 3.81181C2.81627 3.4084 3.94374 3.02247 6.19868 2.25059L6.62829 2.10354C7.80375 1.70118 8.39145 1.5 9 1.5C9.60855 1.5 10.1963 1.70118 11.3717 2.10354L11.8013 2.25059C14.0563 3.02247 15.1837 3.4084 15.4669 3.81181C15.75 4.21521 15.75 5.4143 15.75 7.81253C15.75 8.1747 15.75 8.56755 15.75 8.99355C15.75 13.222 12.5708 15.2741 10.5761 16.1455C10.035 16.3818 9.76447 16.5 9 16.5C8.23553 16.5 7.965 16.3818 7.42392 16.1455C5.42922 15.2741 2.25 13.222 2.25 8.99355C2.25 8.56755 2.25 8.1747 2.25 7.81253Z" {...s(1.125)} />
+    <path d="M7.125 9.3L8.19645 10.5L10.875 7.5" {...sj(1.125)} />
+  </>, p);
+
+export const IconTimer = (p: P) =>
+  svg(18, <>
+    <path d="M15.75 9.75C15.75 13.478 12.728 16.5 9 16.5C5.27208 16.5 2.25 13.478 2.25 9.75C2.25 6.02208 5.27208 3 9 3C12.728 3 15.75 6.02208 15.75 9.75Z" {...s(1.125)} />
+    <path d="M9 9.75V6.75" {...sj(1.125)} />
+    <path d="M7.5 1.5H10.5" {...s(1.125)} />
+  </>, p);
+
+export const IconTimer22 = (p: P) =>
+  svg(22, <>
+    <path d="M19.25 11.917C19.25 16.4734 15.5564 20.167 11 20.167C6.44365 20.167 2.75 16.4734 2.75 11.917C2.75 7.36065 6.44365 3.66699 11 3.66699C15.5564 3.66699 19.25 7.36065 19.25 11.917Z" {...s(1.375)} />
+    <path d="M11 11.9167V8.25" {...sj(1.375)} />
+    <path d="M9.16669 1.8335H12.8334" {...s(1.375)} />
+  </>, p);
+
+export const IconBackspace = (p: P) =>
+  svg(24, <>
+    <path d="M11.142 20C8.91458 20 7.80085 20 6.87114 19.4986C5.94144 18.9971 5.35117 18.0781 4.17061 16.24L3.48981 15.18C2.4966 13.6336 2 12.8604 2 12C2 11.1396 2.4966 10.3664 3.48981 8.82001L4.17061 7.76001C5.35117 5.92191 5.94144 5.00286 6.87114 4.50143C7.80085 4 8.91458 4 11.142 4H13.779C17.6544 4 19.5921 4 20.7961 5.17157C22 6.34315 22 8.22876 22 12C22 15.7712 22 17.6569 20.7961 18.8284C19.5921 20 17.6544 20 13.779 20H11.142Z" {...s(1.5)} />
+    <path d="M15.5 9.50002L10.5 14.5M10.5 9.5L15.5 14.5" {...s(1.5)} />
+  </>, p);
+
+export const IconTransferV = (p: P) =>
+  svg(16, <>
+    <path d="M6.66669 2.66658L6.66669 13.3333L2.66669 9.66659" {...sj(1.5)} />
+    <path d="M9.33337 13.3333V2.66658L13.3334 6.33325" {...sj(1.5)} />
+  </>, p);
+
+export const IconWallet = (p: P) =>
+  svg(20, <>
+    <path d="M5 8.33325H8.33333" {...sj(1.25)} />
+    <path d="M17.3611 9.16675H15.1923C13.7054 9.16675 12.5 10.286 12.5 11.6667C12.5 13.0475 13.7054 14.1667 15.1923 14.1667H17.3611C17.4306 14.1667 17.4652 14.1667 17.4946 14.165C17.944 14.1376 18.3019 13.8052 18.3314 13.3879C18.3333 13.3607 18.3333 13.3284 18.3333 13.264V10.0695C18.3333 10.0051 18.3333 9.97283 18.3314 9.94558C18.3019 9.52825 17.944 9.19591 17.4946 9.1685C17.4652 9.16675 17.4306 9.16675 17.3611 9.16675Z" {...s(1.25)} />
+    <path d="M17.4709 9.16667C17.4061 7.60642 17.1972 6.64979 16.5237 5.97631C15.5474 5 13.976 5 10.8334 5H8.33335C5.19065 5 3.61931 5 2.643 5.97631C1.66669 6.95262 1.66669 8.524 1.66669 11.6667C1.66669 14.8093 1.66669 16.3807 2.643 17.357C3.61931 18.3333 5.19065 18.3333 8.33335 18.3333H10.8334C13.976 18.3333 15.5474 18.3333 16.5237 17.357C17.1972 16.6836 17.4061 15.7269 17.4709 14.1667" {...s(1.25)} />
+    <path d="M4.8446 5.10106C4.89637 5.06738 4.94814 5.03369 4.9999 5L8.1128 2.93594C8.98945 2.35469 10.177 2.35469 11.0537 2.93594L14.1665 5C14.2171 5.03355 14.2676 5.06709 14.3182 5.10064" {...s(1.25)} />
+    <path d="M14.9927 11.6667H15.0002" {...sj(1.25)} />
+  </>, p);
+
+export const IconCard = (p: P) =>
+  svg(20, <>
+    <path d="M1.66669 9.99992C1.66669 6.85722 1.66669 5.28588 2.643 4.30956C3.61931 3.33325 5.19065 3.33325 8.33335 3.33325H11.6667C14.8094 3.33325 16.3808 3.33325 17.357 4.30956C18.3334 5.28588 18.3334 6.85722 18.3334 9.99992C18.3334 13.1426 18.3334 14.714 17.357 15.6903C16.3808 16.6666 14.8094 16.6666 11.6667 16.6666H8.33335C5.19065 16.6666 3.61931 16.6666 2.643 15.6903C1.66669 14.714 1.66669 13.1426 1.66669 9.99992Z" {...s(1.25)} />
+    <path d="M8.33333 13.3333H5" {...s(1.25)} />
+    <path d="M11.6667 13.3333H10.4167" {...s(1.25)} />
+    <path d="M1.66669 8.33325H18.3334" {...s(1.25)} />
+  </>, p);
+
+export const IconBank = (p: P) =>
+  svg(20, <>
+    <path d="M16.3014 5.83333C16.492 4.74602 15.6553 3.75 14.5514 3.75H5.44826C4.34438 3.75 3.50771 4.74602 3.69822 5.83333" {...s(1.25)} />
+    <path d="M14.5832 3.75008C14.6069 3.53418 14.6187 3.42621 14.6189 3.33704C14.6208 2.48401 13.9782 1.76728 13.1301 1.67626C13.0414 1.66675 12.9328 1.66675 12.7157 1.66675H7.28415C7.06695 1.66675 6.95835 1.66675 6.86968 1.67626C6.02153 1.76728 5.37901 2.48401 5.38086 3.33703C5.38106 3.42621 5.39288 3.53416 5.41652 3.75008" {...s(1.25)} />
+    <path d="M12.5 15H7.5" {...s(1.25)} />
+    <path d="M1.98628 11.4943C1.61459 8.858 1.42875 7.53987 2.21862 6.68669C3.0085 5.8335 4.41467 5.8335 7.22701 5.8335H12.773C15.5854 5.8335 16.9915 5.8335 17.7814 6.68669C18.5713 7.53987 18.3854 8.858 18.0138 11.4943L17.6613 13.9943C17.3698 16.0617 17.2241 17.0954 16.4764 17.7145C15.7288 18.3335 14.626 18.3335 12.4205 18.3335H7.57949C5.37403 18.3335 4.2713 18.3335 3.52364 17.7145C2.77598 17.0954 2.63024 16.0617 2.33875 13.9943L1.98628 11.4943Z" {...s(1.25)} />
+  </>, p);
+
+export const IconAddCircle = ({ weight = 1.25, ...p }: P & { weight?: number }) =>
+  svg(20, <>
+    <path d="M9.99996 18.3334C14.6023 18.3334 18.3333 14.6025 18.3333 10.0001C18.3333 5.39771 14.6023 1.66675 9.99996 1.66675C5.39759 1.66675 1.66663 5.39771 1.66663 10.0001C1.66663 14.6025 5.39759 18.3334 9.99996 18.3334Z" {...s(weight)} />
+    <path d="M12.5 10H10M10 10H7.5M10 10V7.5M10 10V12.5" {...s(weight)} />
+  </>, p);
+
+export const IconEarn = ({ weight = 1.25, ...p }: P & { weight?: number }) =>
+  svg(20, <>
+    <path d="M1.66663 9.99996C1.66663 6.07158 1.66663 4.1074 2.88702 2.88702C4.1074 1.66663 6.07158 1.66663 9.99996 1.66663C13.9283 1.66663 15.8925 1.66663 17.1129 2.88702C18.3333 4.1074 18.3333 6.07158 18.3333 9.99996C18.3333 13.9283 18.3333 15.8925 17.1129 17.1129C15.8925 18.3333 13.9283 18.3333 9.99996 18.3333C6.07158 18.3333 4.1074 18.3333 2.88702 17.1129C1.66663 15.8925 1.66663 13.9283 1.66663 9.99996Z" {...s(weight)} />
+    <path d="M5.83325 11.6666L7.74399 9.75584C8.06943 9.43042 8.59709 9.43042 8.9225 9.75584L10.244 11.0773C10.5694 11.4028 11.0971 11.4028 11.4225 11.0773L14.1666 8.33325M14.1666 10.4166V8.33325H12.0833" {...sj(weight)} />
+  </>, p);
+
+export const IconEye = (p: P) =>
+  svg(18, <>
+    <path d="M2.45617 11.4718C1.81872 10.6436 1.5 10.2296 1.5 9C1.5 7.77045 1.81872 7.3564 2.45617 6.52825C3.72897 4.87467 5.86358 3 9 3C12.1364 3 14.271 4.87467 15.5438 6.52825C16.1812 7.3564 16.5 7.77045 16.5 9C16.5 10.2296 16.1812 10.6436 15.5438 11.4718C14.271 13.1253 12.1364 15 9 15C5.86358 15 3.72897 13.1253 2.45617 11.4718Z" {...s(1.125)} />
+    <path d="M11.25 9C11.25 10.2427 10.2427 11.25 9 11.25C7.75732 11.25 6.75 10.2427 6.75 9C6.75 7.75732 7.75732 6.75 9 6.75C10.2427 6.75 11.25 7.75732 11.25 9Z" {...s(1.125)} />
+  </>, p);
+
+export const IconSend = (p: P) => svg(24, <path d="M6 18L18 6M9 6H18V15" {...sj(1.5)} />, p);
+export const IconRecv = (p: P) => svg(24, <path d="M18 6L6 18M6 9V18H15" {...sj(1.5)} />, p);
+export const IconSwap = (p: P) =>
+  svg(24, <>
+    <path d="M20 10H4L9.5 4" {...sj(1.5)} />
+    <path d="M4 14H20L14.5 20" {...sj(1.5)} />
+  </>, p);
+export const IconChevR = (p: P) => svg(18, <path d="M6.75 3.75L11.25 9L6.75 14.25" {...sj(1.125)} />, p);
+
+export const IconCheckBold = (p: P) =>
+  svg(40, <path fillRule="evenodd" clipRule="evenodd" fill="currentColor" d="M36.6667 19.9999C36.6667 29.2046 29.2047 36.6666 20 36.6666C10.7953 36.6666 3.33337 29.2046 3.33337 19.9999C3.33337 10.7952 10.7953 3.33325 20 3.33325C29.2047 3.33325 36.6667 10.7952 36.6667 19.9999ZM26.7172 14.9494C27.2054 15.4375 27.2054 16.229 26.7172 16.7171L18.3839 25.0504C17.8957 25.5386 17.1044 25.5386 16.6162 25.0504L13.2828 21.7171C12.7947 21.2289 12.7947 20.4376 13.2828 19.9494C13.771 19.4613 14.5624 19.4613 15.0506 19.9494L17.5 22.3988L21.2247 18.6741L24.9495 14.9494C25.4377 14.4612 26.229 14.4612 26.7172 14.9494Z" />, p);
+
+// Tab bar glyphs (24 px). "On" variants are the filled Solar "bold" forms.
+export const TabHome = (p: P) =>
+  svg(24, <>
+    <path d="M2 12.2039C2 9.91549 2 8.77128 2.5192 7.82274C3.0384 6.87421 3.98695 6.28551 5.88403 5.10813L7.88403 3.86687C9.88939 2.62229 10.8921 2 12 2C13.1079 2 14.1106 2.62229 16.116 3.86687L18.116 5.10812C20.0131 6.28551 20.9616 6.87421 21.4808 7.82274C22 8.77128 22 9.91549 22 12.2039V13.725C22 17.6258 22 19.5763 20.8284 20.7881C19.6569 22 17.7712 22 14 22H10C6.22876 22 4.34315 22 3.17157 20.7881C2 19.5763 2 17.6258 2 13.725V12.2039Z" {...s(1.5)} />
+    <path d="M12 15V18" {...s(1.5)} />
+  </>, p);
+export const TabHomeOn = (p: P) =>
+  svg(24, <path fillRule="evenodd" clipRule="evenodd" fill="currentColor" d="M2.5192 7.82274C2 8.77128 2 9.91549 2 12.2039V13.725C2 17.6258 2 19.5763 3.17157 20.7881C4.34315 22 6.22876 22 10 22H14C17.7712 22 19.6569 22 20.8284 20.7881C22 19.5763 22 17.6258 22 13.725V12.2039C22 9.91549 22 8.77128 21.4808 7.82274C20.9616 6.87421 20.0131 6.28551 18.116 5.10812L16.116 3.86687C14.1106 2.62229 13.1079 2 12 2C10.8921 2 9.88939 2.62229 7.88403 3.86687L5.88403 5.10813C3.98695 6.28551 3.0384 6.87421 2.5192 7.82274ZM11.25 18C11.25 18.4142 11.5858 18.75 12 18.75C12.4142 18.75 12.75 18.4142 12.75 18V15C12.75 14.5858 12.4142 14.25 12 14.25C11.5858 14.25 11.25 14.5858 11.25 15V18Z" />, p);
+export const TabMarkets = (p: P) =>
+  svg(24, <>
+    <path d="M3 22H21" {...sj(1.5)} />
+    <path d="M3 11C3 10.0572 3 9.58579 3.29289 9.29289C3.58579 9 4.05719 9 5 9C5.94281 9 6.41421 9 6.70711 9.29289C7 9.58579 7 10.0572 7 11V17C7 17.9428 7 18.4142 6.70711 18.7071C6.41421 19 5.94281 19 5 19C4.05719 19 3.58579 19 3.29289 18.7071C3 18.4142 3 17.9428 3 17V11Z" {...s(1.5)} />
+    <path d="M10 7C10 6.05719 10 5.58579 10.2929 5.29289C10.5858 5 11.0572 5 12 5C12.9428 5 13.4142 5 13.7071 5.29289C14 5.58579 14 6.05719 14 7V17C14 17.9428 14 18.4142 13.7071 18.7071C13.4142 19 12.9428 19 12 19C11.0572 19 10.5858 19 10.2929 18.7071C10 18.4142 10 17.9428 10 17V7Z" {...s(1.5)} />
+    <path d="M17 4C17 3.05719 17 2.58579 17.2929 2.29289C17.5858 2 18.0572 2 19 2C19.9428 2 20.4142 2 20.7071 2.29289C21 2.58579 21 3.05719 21 4V17C21 17.9428 21 18.4142 20.7071 18.7071C20.4142 19 19.9428 19 19 19C18.0572 19 17.5858 19 17.2929 18.7071C17 18.4142 17 17.9428 17 17V4Z" {...s(1.5)} />
+  </>, p);
+export const TabEarn = (p: P) =>
+  svg(24, <>
+    <path d="M2 12C2 7.28595 2 4.92893 3.46447 3.46447C4.92893 2 7.28595 2 12 2C16.714 2 19.0711 2 20.5355 3.46447C22 4.92893 22 7.28595 22 12C22 16.714 22 19.0711 20.5355 20.5355C19.0711 22 16.714 22 12 22C7.28595 22 4.92893 22 3.46447 20.5355C2 19.0711 2 16.714 2 12Z" {...s(1.5)} />
+    <path d="M7 14L9.29289 11.7071C9.68342 11.3166 10.3166 11.3166 10.7071 11.7071L12.2929 13.2929C12.6834 13.6834 13.3166 13.6834 13.7071 13.2929L17 10M17 12.5V10H14.5" {...sj(1.5)} />
+  </>, p);
+export const TabActivity = (p: P) =>
+  svg(24, <>
+    <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" {...s(1.5)} />
+    <path d="M12 8V12L14.5 14.5" {...sj(1.5)} />
+  </>, p);
+export const TabActivityOn = (p: P) =>
+  svg(24, <path fillRule="evenodd" clipRule="evenodd" fill="currentColor" d="M12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2ZM12 7.25C11.5858 7.25 11.25 7.58579 11.25 8V12C11.25 12.1989 11.3291 12.3896 11.4697 12.5303L13.9697 15.0303C14.2626 15.3232 14.7374 15.3232 15.0303 15.0303C15.3232 14.7374 15.3232 14.2626 15.0303 13.9697L12.75 11.6895V8C12.75 7.58579 12.4142 7.25 12 7.25Z" />, p);
+export const TabProfile = (p: P) =>
+  svg(24, <>
+    <path d="M12 12C13.6569 12 15 10.6569 15 9C15 7.34315 13.6569 6 12 6C10.3431 6 9 7.34315 9 9C9 10.6569 10.3431 12 12 12Z" {...s(1.5)} />
+    <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" {...s(1.5)} />
+    <path d="M17.9691 20C17.81 17.1085 16.9247 15 11.9999 15C7.07521 15 6.18991 17.1085 6.03076 20" {...s(1.5)} />
+  </>, p);

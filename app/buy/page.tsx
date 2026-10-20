@@ -1,90 +1,109 @@
 "use client";
-// app/buy/page.tsx — Buy step 1 (Amount), ported from buyflow.jsx ScreenBuyAmount.
-// The numpad drives local input; Continue commits the EUR amount to the store
-// (which derives the BTC equivalent) and advances to /buy/payment.
+// app/buy/page.tsx — Buy 1 · Bitcoin (Figma 2297:1848 / 2297:2393). Position is
+// live: quantity and value from the store, gain = value − cost basis, average
+// price = cost basis / BTC (cost basis starts at 0,2105 × 96 699,71 € and grows
+// by the net of every buy).
 import React from "react";
 import { useRouter } from "next/navigation";
-import { PhoneFrame } from "@/components/frame/PhoneFrame";
-import { CoinAvatar } from "@/components/fl/ui";
-import { Ico } from "@/components/icons";
-import { FLUX, eur, fmtNum } from "@/lib/flux-data";
-import { useBuy } from "@/lib/store";
+import { Screen } from "@/components/Screen";
+import { Num } from "@/components/Num";
+import { Chart } from "@/components/Media";
+import { Button, Chip, DetailRow, Divider, IconButton, ScreenHeader } from "@/components/ui";
+import { IconBell } from "@/components/icons";
+import { ASSETS, BTC_DETAIL } from "@/lib/legend";
+import { btcPosition } from "@/lib/money";
+import { crypto, eur, eurText, monoLiteral, NNBSP, pct, pctX100, THIN } from "@/lib/format";
+import { useStore } from "@/lib/store";
 
-const BTC = FLUX.coins.btc;
-const fmtAmt = (str: string) => {
-  const [i, d] = String(str).split(".");
-  const gi = (i || "0").replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-  return d !== undefined ? gi + "," + d : gi;
-};
-
-export default function BuyAmountPage() {
+export default function BitcoinPage() {
   const router = useRouter();
-  const { setBuyAmount } = useBuy();
-  const [amt, setAmt] = React.useState("100");
-  const [unit, setUnit] = React.useState<"eur" | "btc">("eur");
-  const eurVal = parseFloat(amt || "0") || 0;
-  const btcVal = eurVal / BTC.price;
+  const { holdings, btcCostCents, resetBuy } = useStore();
+  const pos = btcPosition(holdings.BTC, btcCostCents);
+  const btc = ASSETS.BTC;
 
-  const press = (k: string) =>
-    setAmt((cur) => {
-      if (k === "del") return cur.length <= 1 ? "0" : cur.slice(0, -1);
-      if (k === ".") return cur.includes(".") ? cur : cur + ".";
-      if (cur === "0") return k;
-      return (cur + k).slice(0, 9);
-    });
-  const keys = ["1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "0", "del"];
-
-  const cont = () => {
-    setBuyAmount(eurVal);
-    router.push("/buy/payment");
+  const buy = () => {
+    resetBuy();
+    router.push("/buy/amount");
   };
 
-  const footer = (
-    <div className="fl-ctabar">
-      <button className="fl-cta-buy" style={{ width: "100%" }} onClick={cont}>Continue</button>
-    </div>
-  );
-
   return (
-    <PhoneFrame footer={footer}>
-      <div className="fl-flow-head">
-        <button className="fl-roundbtn sm" onClick={() => router.push("/coin/btc")} aria-label="Back">{Ico.chevL("#fff", 20)}</button>
-        <span className="fl-flow-title">Buy</span>
-        <div style={{ width: 34 }} />
-      </div>
-
-      <div style={{ display: "flex", justifyContent: "center", marginTop: 6 }}>
-        <button className="fl-coinchip"><CoinAvatar id="btc" size={24} /><span>Bitcoin</span>{Ico.chevD("rgba(255,255,255,0.55)", 16)}</button>
-      </div>
-
-      <div className="fl-amount-mid">
-        <div className="fl-amount-display">
-          {unit === "eur" ? (
-            <span className="fl-bal-amt" style={{ fontSize: 50 }}>{fmtAmt(amt)}<span className="fl-bal-cur">€</span></span>
-          ) : (
-            <span className="fl-bal-amt" style={{ fontSize: 44 }}>{fmtNum(btcVal, 6)}<span className="fl-bal-cur">BTC</span></span>
-          )}
+    <Screen
+      className="buy1"
+      actions={
+        <div className="bottom-actions-row">
+          {/* Sell is a later step; kept visible as in the frame, it does nothing yet. */}
+          <Button variant="secondary">Sell</Button>
+          <Button onClick={buy}>Buy</Button>
         </div>
-        <div className="fl-unittog">
-          <button className={unit === "eur" ? "on" : ""} onClick={() => setUnit("eur")}>EUR</button>
-          <button className={unit === "btc" ? "on" : ""} onClick={() => setUnit("btc")}>BTC</button>
+      }
+    >
+      <ScreenHeader
+        onLeading={() => router.push("/home")}
+        coin="BTC"
+        title={btc.name}
+        trailing={
+          <IconButton label="Price alerts" inert>
+            <IconBell weight={1.5} />
+          </IconButton>
+        }
+      />
+
+      <div className="coin-price">
+        <span className="t13 muted">Price</span>
+        <span className="value mono">
+          <Num faint>{eur(btc.priceCents)}</Num>
+        </span>
+        <div className="change-row">
+          <span className="badge gain">
+            <Num>{pct(btc.changePct, true)}</Num>
+          </span>
+          <span className="t13">{eurText(BTC_DETAIL.todayAbsCents, { sign: true })} today</span>
         </div>
-        <div className="fl-receive">≈ {fmtNum(btcVal, 6)} BTC · {eur(eurVal)} </div>
       </div>
 
-      <div className="fl-quick">
-        {["50", "100", "250"].map((q) => (
-          <button key={q} className={"fl-quickchip" + (amt === q ? " on" : "")} onClick={() => setAmt(q)}>{q} €</button>
+      <Chart kind="btc" className="coin-chart" />
+
+      <div className="chips coin-chips" aria-hidden="true">
+        {["1H", "1D", "1W", "1M", "1Y", "All"].map((x) => (
+          <Chip key={x} selected={x === "1D"}>
+            {x}
+          </Chip>
         ))}
       </div>
 
-      <div className="fl-numpad">
-        {keys.map((k) => (
-          <button key={k} className="fl-key" onClick={() => press(k)} aria-label={k === "del" ? "Delete" : undefined}>
-            {k === "del" ? Ico.backspace("rgba(255,255,255,0.85)", 24) : k}
-          </button>
-        ))}
+      <section className="card position" aria-label="Your position">
+        <span className="t13 muted">Your position</span>
+        <div className="value-row">
+          <span className="qty">
+            <Num>{crypto(holdings.BTC, "BTC", 4)}</Num>
+          </span>
+          <span className="eur">
+            <Num>{eur(pos.value)}</Num>
+          </span>
+        </div>
+        <p className={"since " + (pos.gain >= 0 ? "gain" : "loss")}>
+          {eurText(pos.gain, { sign: true })} · {pctX100(pos.gainPctX100, NNBSP)} since you started
+        </p>
+        <Divider />
+        <DetailRow label="Average buy price" value={<Num>{eur(pos.avgPriceCents)}</Num>} />
+      </section>
+
+      <div className="stats">
+        <div className="stat">
+          <span className="k">24h high</span>
+          <span className="v">{monoLiteral(BTC_DETAIL.high24h) + THIN}€</span>
+        </div>
+        <div className="stat">
+          <span className="k">24h low</span>
+          <span className="v">{monoLiteral(BTC_DETAIL.low24h) + THIN}€</span>
+        </div>
+        <div className="stat">
+          <span className="k">Volume 24h</span>
+          <span className="v">
+            <Num>{monoLiteral(BTC_DETAIL.volume24h) + THIN + "€"}</Num>
+          </span>
+        </div>
       </div>
-    </PhoneFrame>
+    </Screen>
   );
 }
