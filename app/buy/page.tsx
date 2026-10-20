@@ -2,7 +2,7 @@
 // app/buy/page.tsx — Buy 1 · Bitcoin (Figma 2297:1848 / 2297:2393). Position is
 // live: quantity and value from the store, gain = value − cost basis, average
 // price = cost basis / BTC (cost basis starts at 0,2105 × 96 699,71 € and grows
-// by the net of every buy).
+// by the full amount paid for every buy — the fee counts as cost).
 import React from "react";
 import { useRouter } from "next/navigation";
 import { Screen } from "@/components/Screen";

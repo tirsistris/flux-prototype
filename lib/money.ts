@@ -56,7 +56,7 @@ export function portfolio(h: Holdings) {
   return { eur: h.eurCents, btc, eth, sol, total: h.eurCents + btc + eth + sol };
 }
 
-/** Bitcoin position on the coin screen: cost basis grows by the net of each buy. */
+/** Bitcoin position on the coin screen: cost basis grows by the amount paid (fee included). */
 export function btcPosition(units: number, costCents: number) {
   const value = valueCents(units, ASSETS.BTC.priceCents);
   const gain = value - costCents;

@@ -37,7 +37,7 @@ export type Receipt = BuyQuote & {
 
 type State = {
   holdings: Holdings;
-  btcCostCents: number; // cost basis of the BTC position (Buy 1 screen)
+  btcCostCents: number; // cost basis of the BTC position incl. fees (Buy 1 screen)
   activity: ActivityItem[];
   lastOrder: number;
   draft: BuyDraft;
@@ -124,7 +124,8 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       return {
         ...p,
         holdings,
-        btcCostCents: p.btcCostCents + q.netCents,
+        // Fee is part of the cost (accounting view): cost basis grows by what was paid.
+        btcCostCents: p.btcCostCents + q.eurCents,
         activity: [row, ...p.activity],
         lastOrder: orderNo,
         quote: null,

@@ -367,7 +367,7 @@ p, h1, h2, h3 { margin: 0; }
 /* Home (2312:5726) */
 .home-greeting { display: flex; align-items: center; gap: 12px; margin: 6px 16px 0; }
 .home-greeting .hello { flex: 1; min-width: 0; display: flex; flex-direction: column; }
-.home-greeting .hello .serif { font-size: 20px; letter-spacing: -0.025em; white-space: nowrap; }
+.home-greeting .hello .serif { font-size: 20px; letter-spacing: -0.5px; white-space: nowrap; } /* Figma 2312:5771 */
 .home-greeting .bell { position: relative; }
 .home-greeting .unread {
   position: absolute; left: 30px; top: 6px; width: 8px; height: 8px; border-radius: 50%;
