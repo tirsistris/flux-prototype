@@ -94,7 +94,8 @@
   }
 }
 
-:root[data-theme="dark"] {
+:root[data-theme="dark"],
+.force-dark {
   --bg-canvas: #0e0e10;
   --surface-1: #18181b;
   --surface-2: #1c1d26;

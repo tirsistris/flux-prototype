@@ -95,7 +95,18 @@ export const DEFAULT_METHOD: PayMethod = "apple";
 
 // Activity — values at the time of each operation ("History values at time of tx").
 export type ActivityKind = "trade" | "transfer" | "earn";
-export type ActivityIcon = "buy" | "earn" | "bank" | "maxim" | "anna";
+export type ActivityIcon = "buy" | "earn" | "bank" | "maxim" | "anna" | "wallet";
+
+// Outgoing transfer details, shown on Transaction · Detail (Figma 2300:3713).
+export type SendDetail = {
+  recipient: RecipientRef;
+  toShort: string; // "0x7a3f…c41e"
+  note?: string;
+  feeUnits: number;
+  hash: string; // short form only — legend.md / Figma have no full hashes
+  date: string; // "Sun, 18 Oct · 19:12"
+  sentAt: number | null; // ms timestamp of a prototype send; null = long settled
+};
 
 export type ActivityItem = {
   id: string;
@@ -111,6 +122,7 @@ export type ActivityItem = {
   // Euro amount at the time of the operation, in cents, signed when it is the
   // primary amount (euro-only rows), otherwise unsigned secondary line.
   eurCents: number;
+  send?: SendDetail;
 };
 
 export const ACTIVITY: ActivityItem[] = [
@@ -119,7 +131,12 @@ export const ACTIVITY: ActivityItem[] = [
   // "7-day rewards 0,000100 ETH = 0,35 €"
   { id: "earn-7d", day: "today", kind: "earn", icon: "earn", title: "Staking rewards", sub: "Last 7 days · paid daily", asset: "ETH", qty: 10_000, qtyDp: 6, eurCents: 35 },
   // "Maxim −0,0500 ETH = 178,02 € then"
-  { id: "maxim", day: "yesterday", kind: "transfer", icon: "maxim", title: "Maxim Petrov", sub: "“Dinner split” · 19:12", asset: "ETH", qty: -5_000_000, qtyDp: 4, eurCents: 17_802 },
+  // "Maxim tx yesterday fee 0,0001 ETH 0,36 €"; date, hash and address from Figma 2300:3713.
+  {
+    id: "maxim", day: "yesterday", kind: "transfer", icon: "maxim", title: "Maxim Petrov", sub: "“Dinner split” · 19:12",
+    asset: "ETH", qty: -5_000_000, qtyDp: 4, eurCents: 17_802,
+    send: { recipient: { kind: "contact", id: "maxim" }, toShort: "0x7a3f…c41e", note: "Dinner split", feeUnits: 10_000, hash: "0x51d0…9e3a", date: "Sun, 18 Oct · 19:12", sentAt: null },
+  },
   // "Anna +0,5000 SOL = 77,06 € then"
   { id: "anna", day: "yesterday", kind: "transfer", icon: "anna", title: "Anna Volkova", sub: "“Concert tickets” · 12:40", asset: "SOL", qty: 50_000_000, qtyDp: 4, eurCents: 7_706 },
   // Figma Activity 2312:6011: Added money, Raiffeisen banka · SEPA, +500,00 €
@@ -131,3 +148,35 @@ export const DAY_LABEL: Record<ActivityItem["day"], string> = {
   yesterday: "YESTERDAY",
   fri16: "FRI, 16 OCT",
 };
+
+// ── Send ETH (step 2) ────────────────────────────────────────────────────────
+// "Send: 0,3 ETH to Maxim = 1 066,18 €, network fee 0,0001 ETH 0,36 €, total 0,3001 ETH 1 066,54 €."
+// "Send max after fee: 0,4199 ETH." Available = 0,6200 − 0,2000 staked = 0,4200 ETH.
+export const NETWORK_FEE_UNITS = 10_000; // 0,0001 ETH
+export const DATE_TODAY = "Mon, 19 Oct"; // legend "Now: Mon 19 Oct, 6:19"
+
+export type ContactId = "maxim" | "anna" | "ledger";
+export type RecipientRef = { kind: "contact"; id: ContactId } | { kind: "address"; address: string };
+
+// Send 1 · To (Figma 2298:2457). Only the short addresses exist in the design.
+export const SEND_CONTACTS: Record<ContactId, { name: string; short: string; first: string; tag?: string; own?: boolean }> = {
+  maxim: { name: "Maxim Petrov", first: "Maxim", short: "0x7a3f…c41e" },
+  anna: { name: "Anna Volkova", first: "Anna", short: "0x19be…77d0" },
+  ledger: { name: "My Ledger", first: "My Ledger", short: "0x88cd…1d10", tag: "your hardware wallet", own: true },
+};
+
+// Paste cycles through these two demo values (agreed); the second is legend's
+// "New address full: 0x91c4 a07e 3b5d 92f1 c8e6 04ab 7d29 e5f0 13c8 7be2".
+export const DEMO_PASTE = [
+  "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+  "0x91c4a07e3b5d92f1c8e604ab7d29e5f013c87be2",
+];
+
+// Hash for every prototype send (Figma Send 4 · Sent 2298:2785) — agreed.
+export const NEW_SEND_HASH = "0x9c4e…a71b";
+
+// Maxim's note in Figma Send 2 (prefilled for Maxim only — agreed).
+export const MAXIM_NOTE = "Rent · October";
+
+// Sent → status flips from "Confirming…" to "Completed" after this long.
+export const CONFIRM_MS = 4_000;

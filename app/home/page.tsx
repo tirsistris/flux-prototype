@@ -71,12 +71,12 @@ export default function HomePage() {
           </span>
           Buy
         </Link>
-        <button type="button" className="home-action" data-inert disabled>
+        <Link href="/send" className="home-action">
           <span className="circle">
             <IconSend />
           </span>
           Send
-        </button>
+        </Link>
         <button type="button" className="home-action" data-inert disabled>
           <span className="circle">
             <IconRecv />

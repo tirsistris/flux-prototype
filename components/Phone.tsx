@@ -3,6 +3,7 @@
 // Below 500 px wide the frame goes full-screen and the fake device chrome hides.
 import React from "react";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { PhoneShell } from "@/components/PhoneShell";
 import { NOW } from "@/lib/legend";
 
 function StatusBar() {
@@ -31,11 +32,11 @@ export function Stage({ children }: { children: React.ReactNode }) {
         <span className="stage-title">Flux v2 · prototype</span>
         <ThemeToggle />
       </div>
-      <div className="phone">
+      <PhoneShell>
         <StatusBar />
         <div className="phone-body">{children}</div>
         <div className="home-indicator" aria-hidden="true" />
-      </div>
+      </PhoneShell>
     </div>
   );
 }

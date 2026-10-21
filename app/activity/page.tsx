@@ -3,11 +3,12 @@
 // list, newest first, so a purchase appears as "Bought Bitcoin" at the top of
 // TODAY. The filter chips work on the row kind (trade / transfer / earn).
 import React from "react";
+import Link from "next/link";
 import { Screen } from "@/components/Screen";
 import { Num } from "@/components/Num";
 import { Person } from "@/components/Media";
 import { Chip, Divider, IconButton } from "@/components/ui";
-import { IconAddCircle, IconBank, IconEarn, IconSearch } from "@/components/icons";
+import { IconAddCircle, IconBank, IconEarn, IconSearch, IconWallet } from "@/components/icons";
 import { CONTACTS, DAY_LABEL, type ActivityItem, type ActivityKind } from "@/lib/legend";
 import { crypto, eur } from "@/lib/format";
 import { useStore } from "@/lib/store";
@@ -29,6 +30,8 @@ function RowIcon({ item }: { item: ActivityItem }) {
       return <span className="tile"><IconEarn /></span>;
     case "bank":
       return <span className="tile"><IconBank /></span>;
+    case "wallet":
+      return <span className="tile"><IconWallet /></span>;
     default:
       return <span className="tile"><IconAddCircle /></span>;
   }
@@ -36,8 +39,10 @@ function RowIcon({ item }: { item: ActivityItem }) {
 
 function Row({ item }: { item: ActivityItem }) {
   const incoming = item.asset ? (item.qty ?? 0) > 0 : item.eurCents > 0;
+  // Outgoing transfers open Transaction · Detail; other rows have no detail design yet.
+  const Tag = item.send ? Link : "div";
   return (
-    <div className="list-row">
+    <Tag className="list-row" href={item.send ? `/tx/${item.id}` : (undefined as unknown as string)}>
       <RowIcon item={item} />
       <div className="list-row-main">
         <span className="list-row-title">{item.title}</span>
@@ -59,7 +64,7 @@ function Row({ item }: { item: ActivityItem }) {
           </span>
         )}
       </div>
-    </div>
+    </Tag>
   );
 }
 
