@@ -1,7 +1,8 @@
 "use client";
 // app/earn/page.tsx — Earn tab (Figma 2296:1234 / 2296:1877). The stake card opens
 // Earn 1 · Ethereum, the Solana row opens Earn 2 · Solana; Polkadot and Cardano open
-// the "Not in this prototype" state. Every figure is legend.md "Earn ETH" / "More ways".
+// the "Not in this prototype" state. Rates and history are legend.md "Earn ETH" / "More
+// ways"; the stake, its value and the daily figures come from the staked quantity.
 import React from "react";
 import Link from "next/link";
 import { Screen } from "@/components/Screen";
@@ -9,12 +10,15 @@ import { NOT_IN_PROTOTYPE } from "@/components/NotInPrototype";
 import { Num } from "@/components/Num";
 import { RewardsChart } from "@/components/RewardsChart";
 import { Coin, Divider, Note } from "@/components/ui";
-import { IconAlarm, IconInfo } from "@/components/icons";
-import { ASSETS, EARN_ETH, EARN_MORE, ETH_STAKED } from "@/lib/legend";
-import { valueCents } from "@/lib/money";
-import { crypto, eur, eurText, THIN } from "@/lib/format";
+import { IconAlarm, IconInfo, IconTimer } from "@/components/icons";
+import { EARN_ETH, EARN_MORE, UNSTAKE_UNLOCKS } from "@/lib/legend";
+import { ethStake } from "@/lib/money";
+import { useStore } from "@/lib/store";
+import { crypto, cryptoText, eur, eurText, THIN } from "@/lib/format";
 
 export default function EarnPage() {
+  const { staked, unstaking } = useStore();
+  const est = ethStake(staked);
   return (
     <Screen tab="earn">
       <div className="large-title">
@@ -30,10 +34,10 @@ export default function EarnPage() {
           </span>
         </span>
         <span className="stake-big">
-          <Num>{crypto(ETH_STAKED, "ETH", 4)}</Num>
+          <Num>{crypto(staked, "ETH", 4)}</Num>
         </span>
         <span className="stake-eur">
-          <Num>{eur(valueCents(ETH_STAKED, ASSETS.ETH.priceCents))}</Num>
+          <Num>{eur(est.valueCents)}</Num>
         </span>
         <RewardsChart />
         <span className="earned">
@@ -41,15 +45,23 @@ export default function EarnPage() {
             <Num>{crypto(EARN_ETH.earnedUnits, "ETH", 4, { sign: true })}</Num>
           </span>
           <span className="earned-sub">
-            earned in {EARN_ETH.earnedDays} days · ≈ {eurText(EARN_ETH.dailyCents)} a day
+            earned in {EARN_ETH.earnedDays} days · ≈ {eurText(est.dayCents)} a day
           </span>
         </span>
         <span className="next-reward">
           <IconAlarm />
           <span>
-            Next reward ≈ {eurText(EARN_ETH.dailyCents)} at {EARN_ETH.payoutAt} — while you sleep
+            Next reward ≈ {eurText(est.dayCents)} at {EARN_ETH.payoutAt} — while you sleep
           </span>
         </span>
+        {unstaking > 0 && (
+          <span className="next-reward unlocking-line">
+            <IconTimer />
+            <span>
+              {cryptoText(unstaking, "ETH", 4)} unlocks around {UNSTAKE_UNLOCKS}
+            </span>
+          </span>
+        )}
       </Link>
 
       <h2 className="section-title">More ways to earn</h2>

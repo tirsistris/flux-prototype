@@ -6,16 +6,15 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 import { Screen } from "@/components/Screen";
-import { NOT_IN_PROTOTYPE } from "@/components/NotInPrototype";
 import { Num } from "@/components/Num";
 import { RecipientAvatar } from "@/components/RecipientAvatar";
 import { Button, Chip, Keypad, ScreenHeader, UnitSwitch } from "@/components/ui";
 import { IconWarn } from "@/components/icons";
-import { ASSETS, ETH_STAKED } from "@/lib/legend";
+import { ASSETS } from "@/lib/legend";
 import { unitsFor, valueCents } from "@/lib/money";
-import { crypto, eur, fixed, group, NNBSP, THIN } from "@/lib/format";
+import { crypto, eur, fixed, group, NNBSP, short4, THIN } from "@/lib/format";
 import { recipientInfo } from "@/lib/send";
-import { maxSendUnits, useStore } from "@/lib/store";
+import { ethAvailable, maxSendUnits, useStore } from "@/lib/store";
 
 const PRICE = ASSETS.ETH.priceCents;
 const LIMITS = { eth: { int: 3, dec: 8 }, eur: { int: 6, dec: 2 } } as const;
@@ -31,7 +30,8 @@ function toInput(value: number, scale: number): string {
 
 export default function SendAmountPage() {
   const router = useRouter();
-  const { send, holdings, setSendAmount, setSendNote } = useStore();
+  const store = useStore();
+  const { send, setSendAmount, setSendNote } = store;
 
   React.useEffect(() => {
     if (!send.recipient) router.replace("/send");
@@ -39,8 +39,12 @@ export default function SendAmountPage() {
   if (!send.recipient) return null;
 
   const info = recipientInfo(send.recipient);
-  const available = holdings.ETH - ETH_STAKED; // 0,4200 ETH
-  const max = maxSendUnits(holdings); // 0,4199 ETH
+  const available = ethAvailable(store); // 0,4200 ETH
+  // "0,2 ETH is staked" (+ ", 0,1 ETH is unlocking" after an unstake — agreed).
+  const locked =
+    `${short4(store.staked, NNBSP)}${NNBSP}ETH is staked` +
+    (store.unstaking > 0 ? `, ${short4(store.unstaking, NNBSP)}${NNBSP}ETH is unlocking` : "");
+  const max = maxSendUnits(store); // 0,4199 ETH
   const tooMuch = send.units > max;
   const eurCents = valueCents(send.units, PRICE);
 
@@ -127,16 +131,14 @@ export default function SendAmountPage() {
           <p className="field-error send-error" role="alert">
             <IconWarn />
             Up to {fixed(max, 8, 4, NNBSP)}
-            {NNBSP}ETH after fees — {fixed(ETH_STAKED, 8, 1, NNBSP)}
-            {NNBSP}ETH is staked
+            {NNBSP}ETH after fees — {locked}
           </p>
           <div className="chips send-chips not-enough">
             <Chip onClick={() => setUnits(max)}>
               Send {fixed(max, 8, 4, NNBSP)}
               {NNBSP}ETH
             </Chip>
-            {/* Unstaking is not in this prototype. */}
-            <Chip onClick={() => router.push(NOT_IN_PROTOTYPE)}>Unstake · 7 days</Chip>
+            <Chip onClick={() => router.push("/earn/unstake")}>Unstake · 7{NNBSP}days</Chip>
           </div>
         </>
       ) : (
@@ -150,8 +152,7 @@ export default function SendAmountPage() {
           </div>
           <p className="send-available">
             Available {fixed(available, 8, 4, NNBSP)}
-            {NNBSP}ETH · {fixed(ETH_STAKED, 8, 1, NNBSP)}
-            {NNBSP}ETH is staked
+            {NNBSP}ETH · {locked}
           </p>
           <label className="note-field">
             <span className="note-label">{info.noteLabel}</span>

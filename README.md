@@ -3,8 +3,9 @@
 An EUR-first crypto wallet concept for newcomers: a clickable design/UX prototype,
 not a financial product. Live: https://flux-concept.vercel.app
 
-It covers three flows — **Buy Bitcoin**, **Send ETH** and **Earn** — plus the Home and
-Activity screens they touch. Other tabs and buttons are placeholders.
+It covers **Buy**, **Sell**, **Swap**, **Send**, **Receive**, **Earn** (stake, unstake) and the
+euro balance (add money, withdraw), plus Home, Markets, Search, Activity and Profile. Some
+buttons (coin pickers, scan, payment methods…) are placeholders.
 
 ## How it is built
 

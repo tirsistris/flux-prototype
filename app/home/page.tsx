@@ -2,6 +2,7 @@
 // app/home/page.tsx — Home (Figma 2312:5726 / 2312:5928). Balances come from the
 // store, so a finished purchase shows here at once: BTC quantity and value, and
 // the total as the sum of the rounded position values (as legend.md does it).
+// Receive → Receive · BTC, Swap → Swap 1, the Euro row → Cash · Euro.
 import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -11,14 +12,14 @@ import { Num } from "@/components/Num";
 import { Chart, Person } from "@/components/Media";
 import { Coin, Divider, IconButton } from "@/components/ui";
 import { IconAddCircle, IconBell, IconChevR, IconEye, IconRecv, IconScan, IconSend, IconSwap } from "@/components/icons";
-import { ASSETS, ETH_STAKED, NOW, PERSONA, TODAY } from "@/lib/legend";
+import { ASSETS, NOW, PERSONA, TODAY } from "@/lib/legend";
 import { portfolio } from "@/lib/money";
-import { crypto, eur, eurText, fixed, NNBSP, pct } from "@/lib/format";
+import { crypto, eur, eurText, fixed, NNBSP, pct, short4 } from "@/lib/format";
 import { useStore } from "@/lib/store";
 
 export default function HomePage() {
   const router = useRouter();
-  const { holdings, hideBalances } = useStore();
+  const { holdings, staked, hideBalances } = useStore();
   // Safety & privacy → "Hide balances on open": Home opens with the balance hidden.
   const [hidden, setHidden] = React.useState(hideBalances);
   const p = portfolio(holdings);
@@ -81,13 +82,13 @@ export default function HomePage() {
           </span>
           Send
         </Link>
-        <Link href={NOT_IN_PROTOTYPE} className="home-action">
+        <Link href="/receive" className="home-action">
           <span className="circle">
             <IconRecv />
           </span>
           Receive
         </Link>
-        <Link href={NOT_IN_PROTOTYPE} className="home-action">
+        <Link href="/swap" className="home-action">
           <span className="circle">
             <IconSwap />
           </span>
@@ -100,7 +101,7 @@ export default function HomePage() {
           <span>Your assets</span>
           <IconChevR />
         </div>
-        <div className="list-row">
+        <Link href="/cash" className="list-row">
           <Coin asset="EUR" />
           <div className="list-row-main">
             <span className="list-row-title">Euro</span>
@@ -111,7 +112,7 @@ export default function HomePage() {
               <Num>{eur(p.eur)}</Num>
             </span>
           </div>
-        </div>
+        </Link>
         <Divider inset />
         <Link href="/buy" className="list-row">
           <Coin asset="BTC" />
@@ -137,7 +138,7 @@ export default function HomePage() {
             <span className="list-row-title">{ASSETS.ETH.name}</span>
             <span className="list-row-sub">
               {fixed(holdings.ETH, 8, 4, NNBSP)}
-              {NNBSP}ETH · {fixed(ETH_STAKED, 8, 1, NNBSP)} earning
+              {NNBSP}ETH · {short4(staked, NNBSP)} earning
             </span>
           </div>
           <div className="list-row-side">

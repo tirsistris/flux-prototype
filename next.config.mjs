@@ -2,8 +2,9 @@
 // shared before the v2 release keep opening v1. Temporary (307), not permanent.
 const V1 = "https://flux-concept-v1.vercel.app";
 
-// v1 used /earn/eth, /earn/sol, /earn/btc, /earn/usdc…; v2 owns /earn/ethereum and /earn/solana.
-const V1_EARN_ID = ":id((?!ethereum$|solana$)[^/]+)";
+// v1 used /earn/eth, /earn/sol, /earn/btc, /earn/usdc…; v2 owns /earn/ethereum, /earn/solana,
+// /earn/stake and /earn/unstake.
+const V1_EARN_ID = ":id((?!ethereum$|solana$|stake$|unstake$)[^/]+)";
 
 const V1_ONLY = [
   ["/alerts/:path*"],
@@ -16,11 +17,9 @@ const V1_ONLY = [
   [`/earn/${V1_EARN_ID}/amount`, "/earn/:id/amount"],
   ["/login"],
   ["/onboarding"],
-  ["/receive"],
   ["/send/confirm"],
   ["/send/success"],
   ["/settings/:path*"],
-  ["/swap/:path*"],
   ["/trade"],
   ["/wallet"],
 ];

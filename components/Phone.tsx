@@ -53,6 +53,8 @@ const TRY = [
   "Send 0,3 ETH to Maxim — a known contact",
   "Send → Paste, twice — a Bitcoin address, then a new one",
   "Send more than 0,4199 ETH — what happens when it doesn’t fit",
+  "Swap 0,1 BTC to ETH",
+  "Sell 250 €, then withdraw to your bank",
   "Open Earn — rates after Flux’s share",
   "Search “pepe”, then “bitcon”",
   "Set a price alert",

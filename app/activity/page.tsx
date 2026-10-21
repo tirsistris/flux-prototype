@@ -2,16 +2,18 @@
 // app/activity/page.tsx — Activity (Figma 2312:6011 / 2312:6154). Reads the store's
 // list, newest first, so a purchase appears as "Bought Bitcoin" at the top of
 // TODAY. The filter chips work on the row kind (trade / transfer / earn).
+// Right column (legend.md): a buy shows what was paid, a sale what reached the euro
+// balance, a swap what came in and its value; stake / unstake rows carry no sign.
 import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Screen } from "@/components/Screen";
 import { NOT_IN_PROTOTYPE } from "@/components/NotInPrototype";
 import { Num } from "@/components/Num";
-import { Person } from "@/components/Media";
 import { Chip, Divider, IconButton } from "@/components/ui";
-import { IconAddCircle, IconBank, IconEarn, IconSearch, IconWallet } from "@/components/icons";
-import { CONTACTS, DAY_LABEL, type ActivityItem, type ActivityKind } from "@/lib/legend";
+import { RowIcon } from "@/components/RowIcon";
+import { IconSearch } from "@/components/icons";
+import { DAY_LABEL, type ActivityItem, type ActivityKind } from "@/lib/legend";
 import { crypto, eur } from "@/lib/format";
 import { useStore } from "@/lib/store";
 
@@ -21,23 +23,6 @@ const FILTERS: { id: "all" | ActivityKind; label: string }[] = [
   { id: "transfer", label: "Transfers" },
   { id: "earn", label: "Earn" },
 ];
-
-function RowIcon({ item }: { item: ActivityItem }) {
-  switch (item.icon) {
-    case "maxim":
-      return <Person who="maxim" size={40} alt={`${CONTACTS.maxim.first} ${CONTACTS.maxim.last}`} />;
-    case "anna":
-      return <span className="avatar" aria-hidden="true">{CONTACTS.anna.initials}</span>;
-    case "earn":
-      return <span className="tile"><IconEarn /></span>;
-    case "bank":
-      return <span className="tile"><IconBank /></span>;
-    case "wallet":
-      return <span className="tile"><IconWallet /></span>;
-    default:
-      return <span className="tile"><IconAddCircle /></span>;
-  }
-}
 
 function Row({ item }: { item: ActivityItem }) {
   const incoming = item.asset ? (item.qty ?? 0) > 0 : item.eurCents > 0;
@@ -53,8 +38,8 @@ function Row({ item }: { item: ActivityItem }) {
       <div className="list-row-side">
         {item.asset ? (
           <>
-            <span className={"primary" + (incoming ? " gain" : "")}>
-              <Num>{crypto(item.qty ?? 0, item.asset, item.qtyDp ?? 4, { sign: true })}</Num>
+            <span className={"primary" + (incoming && !item.plain ? " gain" : "")}>
+              <Num>{crypto(item.qty ?? 0, item.asset, item.qtyDp ?? 4, { sign: !item.plain })}</Num>
             </span>
             <span className="secondary">
               <Num>{eur(item.eurCents)}</Num>

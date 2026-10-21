@@ -1,6 +1,6 @@
 "use client";
-// app/not-in-prototype/page.tsx — opened by placeholder buttons (Sell, Receive, Stake
-// more…): the quiet "Not in this prototype" state with a way back.
+// app/not-in-prototype/page.tsx — opened by placeholder buttons (coin pickers, scan,
+// payment methods…): the quiet "Not in this prototype" state with a way back.
 import React from "react";
 import { Screen } from "@/components/Screen";
 import { ScreenHeader } from "@/components/ui";

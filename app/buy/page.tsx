@@ -18,8 +18,8 @@ import { useStore } from "@/lib/store";
 
 export default function BitcoinPage() {
   const router = useRouter();
-  const { holdings, btcCostCents, resetBuy } = useStore();
-  const pos = btcPosition(holdings.BTC, btcCostCents);
+  const { holdings, btcCost, resetBuy } = useStore();
+  const pos = btcPosition(holdings.BTC, btcCost);
   const btc = ASSETS.BTC;
 
   const buy = () => {
@@ -33,7 +33,7 @@ export default function BitcoinPage() {
       actions={
         <div className="bottom-actions-row">
           {/* Sell is not in this prototype; kept visible as in the frame. */}
-          <Button variant="secondary" onClick={() => router.push(NOT_IN_PROTOTYPE)}>Sell</Button>
+          <Button variant="secondary" onClick={() => router.push("/sell")}>Sell</Button>
           <Button onClick={buy}>Buy</Button>
         </div>
       }

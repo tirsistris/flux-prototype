@@ -7,7 +7,7 @@ Buy today 6:12 Apple Pay 100 € → 0,000932 BTC, fee 1,49 € (1,49 %).
 Sell: 250 € of BTC = 0,002364 BTC, fee 1,49 % = 3,73 €, get 246,27 € → euro balance 746,27 €.
 Withdraw: 300,00 € to Raiffeisen, free, 1 business day → balance 200,00 €.
 Add money: Flux IBAN LT61 3250 0471 2209 4821 (fictional), BIC FLUXLT21 (fictional), reference FLUX-MO-4821.
-Unstake: 0,1000 ETH (355,39 €) unlocks Mon 26 Oct, still staked 0,1000 ETH, lose ≈ 0,04 €/day.
+Unstake: 0,1000 ETH (355,39 €) unlocks Mon 26 Oct, still staked 0,1000 ETH, lose ≈ 0,03 €/day.
 Alerts: BTC > 110 000 € (+4,03 %) on; ETH < 3 400 € (−4,33 %) on; SOL > 170 € (+6,68 %) paused; BTC > 105 000 € fired 5:48.
 Send: 0,3 ETH to Maxim = 1 066,18 €, network fee 0,0001 ETH 0,36 €, total 0,3001 ETH 1 066,54 €. Maxim tx yesterday fee 0,0001 ETH 0,36 €.
 Swap: 0,1 BTC → 2,9676 ETH, rate 29,7532, spread 25,38, fee 1,90.
@@ -22,3 +22,5 @@ Profile: Notifications & price alerts row; Statements & tax · 2025 ready; Log o
 Markets list: BTC, ETH, XRP, SOL, Cardano 0,61 € (22 B €, +1,8 %), ZEC, Polkadot 3,92 € (6,0 B €, −0,6 %), UNI.
 Markets caps & 24h (from Figma Markets / Search): BTC 2,11 T € (+2,1 %) | ETH 429 B € (−0,18 %) | XRP 129 B € +1,2 % | SOL 85 B € (+3,4 %) | ZEC 7,9 B € −2,6 % | UNI 5,4 B € +0,9 % | BCH 8,2 B € +1,4 % (Search only, not in the Markets list). Brackets = change already in Prices.
 Alert BTC>105 000 fired 5:48 at 105 012,40 €. Pay with default Apple Pay = last used. Unstake ETH 'usually 7 days', around Mon 26 Oct. Buy/Sell fee label 'Flux fee · 1,49 %'.
+Activity right column: buy — what was paid (100,00 €); sale — what reached the euro balance (246,27 €); swap — what came in and its value (+2,9676 ETH, 10 546,83 €); stake / unstake — the quantity without a sign or colour (the coins stay Mila's). Euro-only rows (Added money, Withdrawn to bank) — the signed euro amount.
+Pass B formulas (round2 = half-up to the cent, round8 = half-up to 1e-8): Swap value = round2(BTC × BTC price); spread = round(value × 0,24 %); Flux fee = flat 1,90 € (agreed assumption for any amount); ETH = round8((value − spread − fee) / ETH price) → 0,1 BTC = 10 574,11 − 25,38 − 1,90 = 10 546,83 € = 2,96764436 ETH. Sell: typed € → BTC = round8(€ / price), fee = round(€ × 1,49 %); BTC cost basis is kept exact (a fraction of cents, rounded only on screen) and keeps (held − sold) / held of itself on a sale or swap, so the average price never moves (average-cost method). Stake: ETH = round8(€ / ETH price), available = ETH − staked − unlocking; stake value, a year (× 2,6 %), a day (year / 365) and the next reward (staked × 2,6 % / 365) are computed from the staked quantity. Unstaking ETH earns nothing and can't be sent until around Mon, 26 Oct; repeated requests add up to the same date.
