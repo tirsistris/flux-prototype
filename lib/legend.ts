@@ -123,7 +123,7 @@ export const DEFAULT_METHOD: PayMethod = "apple";
 
 // Activity — values at the time of each operation ("History values at time of tx").
 export type ActivityKind = "trade" | "transfer" | "earn";
-export type ActivityIcon = "buy" | "earn" | "bank" | "maxim" | "anna" | "wallet";
+export type ActivityIcon = "buy" | "earn" | "bank" | "maxim" | "anna" | "wallet" | "swap" | "sell" | "unstake";
 
 // Outgoing transfer details, shown on Transaction · Detail (Figma 2300:3713).
 export type SendDetail = {
@@ -150,6 +150,11 @@ export type ActivityItem = {
   // Euro amount at the time of the operation, in cents, signed when it is the
   // primary amount (euro-only rows), otherwise unsigned secondary line.
   eurCents: number;
+  // Stake / unstake: the coins stay Mila's, so the quantity has no sign or colour.
+  plain?: boolean;
+  // Euro balance movement for Cash · Euro "RECENT" (signed cents) and its subtitle.
+  cashCents?: number;
+  cashSub?: string;
   send?: SendDetail;
 };
 
@@ -168,7 +173,8 @@ export const ACTIVITY: ActivityItem[] = [
   // "Anna +0,5000 SOL = 77,06 € then"
   { id: "anna", day: "yesterday", kind: "transfer", icon: "anna", title: "Anna Volkova", sub: "“Concert tickets” · 12:40", asset: "SOL", qty: 50_000_000, qtyDp: 4, eurCents: 7_706 },
   // Figma Activity 2312:6011: Added money, Raiffeisen banka · SEPA, +500,00 €
-  { id: "added", day: "fri16", kind: "transfer", icon: "bank", title: "Added money", sub: "Raiffeisen banka · SEPA", eurCents: 50_000 },
+  // Cash · Euro 2315:5708 shows the same row as "Raiffeisen banka · Fri, 16 Oct".
+  { id: "added", day: "fri16", kind: "transfer", icon: "bank", title: "Added money", sub: "Raiffeisen banka · SEPA", eurCents: 50_000, cashCents: 50_000, cashSub: "Raiffeisen banka · Fri, 16 Oct" },
 ];
 
 export const DAY_LABEL: Record<ActivityItem["day"], string> = {
@@ -279,3 +285,23 @@ export const NOTIFICATIONS: { day: string; items: Notif[] }[] = [
   { day: "YESTERDAY", items: [{ icon: "anna", title: "Anna sent you 0,5000 SOL", time: "12:40", body: "“Concert tickets”" }] },
   { day: "FRI, 16 OCT", items: [{ icon: "shield", title: "New sign-in on iPad", time: "18:03", body: "Belgrade. Not you? Review your devices." }] },
 ];
+
+// ── Pass B: Swap, Sell, Receive, Cash, Withdraw, Stake, Unstake ──────────────
+// "Swap: 0,1 BTC → 2,9676 ETH, rate 29,7532, spread 25,38, fee 1,90." The spread is
+// 0,24 % of the BTC value (Figma Swap 2 "Spread · 0,24 %"); the Flux fee is a flat
+// 1,90 € (legend gives one amount, no rate).
+export const SWAP_SPREAD_BP = 24;
+export const SWAP_FEE_CENTS = 190;
+
+// "Bank: Raiffeisen banka (existing, RS35 ···· 6113 79)." Withdraw 1–3 (Figma 2315:5927…).
+export const BANK = { name: "Raiffeisen banka", masked: "RS35 ···· 6113 79", arrives: "Tomorrow, by 18:00" };
+
+// "Add money: Flux IBAN LT61 3250 0471 2209 4821 (fictional), BIC FLUXLT21 (fictional),
+//  reference FLUX-MO-4821." Cash · Add money 2315:5812.
+export const FLUX_ACCOUNT = { holder: "Mila Orlova", iban: "LT61 3250 0471 2209 4821", bic: "FLUXLT21", reference: "FLUX-MO-4821" };
+
+// Receive · BTC 2298:3053 — Mila's own address (the same one Paste offers in Send).
+export const RECEIVE_BTC = { address: DEMO_PASTE[0], network: "Bitcoin network · Native SegWit" };
+
+// "Unstake: 0,1000 ETH (355,39 €) unlocks Mon 26 Oct" — 7 days after Mon 19 Oct.
+export const UNSTAKE_UNLOCKS = "Mon, 26 Oct";

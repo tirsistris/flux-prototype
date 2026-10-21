@@ -8,22 +8,13 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import { Screen } from "@/components/Screen";
 import { Num } from "@/components/Num";
+import { LockExpired, PriceLock, useLockClock } from "@/components/PriceLock";
 import { Button, Coin, DetailRow, Note, Perforation, Receipt, ScreenHeader } from "@/components/ui";
-import { IconRefresh, IconShield, IconTimer, IconTimer22 } from "@/components/icons";
-import { PAY_METHODS, QUOTE_TTL_MS } from "@/lib/legend";
+import { IconRefresh, IconShield } from "@/components/icons";
+import { PAY_METHODS } from "@/lib/legend";
 import { quoteBuy } from "@/lib/money";
 import { crypto, eur, eurText, NNBSP } from "@/lib/format";
 import { useStore } from "@/lib/store";
-
-function useNow(active: boolean) {
-  const [now, setNow] = React.useState(() => Date.now());
-  React.useEffect(() => {
-    if (!active) return;
-    const id = window.setInterval(() => setNow(Date.now()), 100);
-    return () => window.clearInterval(id);
-  }, [active]);
-  return now;
-}
 
 export default function ReviewPage() {
   const router = useRouter();
@@ -36,13 +27,9 @@ export default function ReviewPage() {
     else if (!quote) lockQuote();
   }, [draft.eurCents, quote, lockQuote, router]);
 
-  const now = useNow(!!quote);
-  // Before the effect has locked a quote (first paint) show the full 30 s.
-  const q = quote ?? { ...quoteBuy(draft.eurCents), method, expiresAt: now + QUOTE_TTL_MS, id: 0 };
-  // Clamp: right after a refresh `now` is up to one tick old.
-  const remaining = Math.min(QUOTE_TTL_MS, Math.max(0, q.expiresAt - now));
-  const expired = !!quote && remaining === 0;
-  const secs = Math.ceil(remaining / 1000);
+  const { remaining, expired } = useLockClock(quote ? quote.expiresAt : null);
+  // Before the effect has locked a quote (first paint) show the draft at full 30 s.
+  const q = quote ?? { ...quoteBuy(draft.eurCents), method };
   const label = PAY_METHODS[q.method].label;
 
   const buy = () => {
@@ -92,37 +79,7 @@ export default function ReviewPage() {
             </span>
           </div>
           <Perforation />
-          {expired ? (
-            <div className="banner banner-loss" role="alert">
-              <span className="banner-icon">
-                <IconTimer22 />
-              </span>
-              <span className="banner-text">
-                <span className="banner-title">Your price lock ran out</span>
-                <span className="banner-body">Refresh to lock the price again. Nothing has been charged.</span>
-              </span>
-            </div>
-          ) : (
-            <div className="price-lock">
-              <div className="row">
-                <IconTimer />
-                <span>Price locked</span>
-                <span className="count" aria-live="off">
-                  0:{String(secs).padStart(2, "0")}
-                </span>
-              </div>
-              <div
-                className="track"
-                role="progressbar"
-                aria-label="Time left on locked price"
-                aria-valuemin={0}
-                aria-valuemax={QUOTE_TTL_MS / 1000}
-                aria-valuenow={secs}
-              >
-                <div className="fill" style={{ transform: `scaleX(${remaining / QUOTE_TTL_MS})` }} />
-              </div>
-            </div>
-          )}
+          {expired ? <LockExpired body="Refresh to lock the price again. Nothing has been charged." /> : <PriceLock remaining={remaining} />}
           <Perforation />
           <div className={"receipt-section" + (expired ? " stale" : "")}>
             <DetailRow label="Price" value={<Num>{eur(q.priceCents) + "/BTC"}</Num>} />

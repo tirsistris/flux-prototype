@@ -62,7 +62,7 @@ export function ScreenHeader({
   leading?: "back" | "close";
   onLeading: () => void;
   title?: string;
-  coin?: "BTC" | "ETH";
+  coin?: "BTC" | "ETH" | "EUR";
   trailing?: React.ReactNode;
 }) {
   return (

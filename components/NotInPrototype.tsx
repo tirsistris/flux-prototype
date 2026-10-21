@@ -1,7 +1,7 @@
 "use client";
-// components/NotInPrototype.tsx — the quiet state for everything outside the three
-// flows (agreed copy): Markets / Profile tabs show it in place, placeholder buttons
-// open it as a screen (/not-in-prototype). Go back is the main action.
+// components/NotInPrototype.tsx — the quiet state for everything outside the
+// prototype's flows (agreed copy): placeholder buttons open it as a screen
+// (/not-in-prototype). Go back is the main action.
 import React from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui";
@@ -22,7 +22,7 @@ export function NotInPrototype() {
   return (
     <div className="nip">
       <h2 className="nip-title">Not in this prototype</h2>
-      <p className="nip-body">This prototype covers three flows: Buy Bitcoin, Send ETH and Earn.</p>
+      <p className="nip-body">This prototype covers Buy, Sell, Swap, Send, Receive, Earn and your euro balance.</p>
       <div className="nip-actions">
         <Button variant="secondary" onClick={back}>
           Go back

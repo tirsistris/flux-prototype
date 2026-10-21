@@ -290,3 +290,8 @@ export const IconClipboard = (p: P) =>
   </>, p);
 
 export const IconChevDown = (p: P) => svg(16, <path d="M12.6667 6L7.99999 10L3.33332 6" {...sj(1)} />, p);
+
+// arrow-down (Solar arrow-left-down, rotated as placed in Swap 1 "Switch" 2300:3271):
+// 28 px in Swap 1, 23 px in the Swap 2 pair divider.
+export const IconArrowDown = (p: P) =>
+  svg(29, <path d="M14.1421 7.07107V21.2132M8.83884 15.9099L14.1421 21.2132L19.4454 15.9099" {...sj(1.25)} />, p);

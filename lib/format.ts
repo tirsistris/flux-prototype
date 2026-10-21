@@ -46,9 +46,10 @@ export function crypto(units: number, ticker: string, dp: number, o: { sign?: bo
   return signed(fixed(units, 8, dp, THIN) + THIN + ticker, units, o.sign);
 }
 
-/** Crypto quantity inside prose / Literata headings: "0,000932 BTC". */
-export function cryptoText(units: number, ticker: string, dp: number): string {
-  return fixed(units, 8, dp, NNBSP) + NNBSP + ticker;
+/** Crypto quantity inside prose / Literata headings: "0,000932 BTC". Pass-B frames
+ *  write some of these with a plain space before the ticker — `sep` copies that. */
+export function cryptoText(units: number, ticker: string, dp: number, sep: string = NNBSP): string {
+  return fixed(units, 8, dp, NNBSP) + sep + ticker;
 }
 
 /** Percent for mono text from a legend string like "2,1": "+2,1 %". */
@@ -70,4 +71,15 @@ export function group(int: string, sep = THIN): string {
 /** Literal figure from legend/Figma written with plain spaces → mono spacing. */
 export function monoLiteral(s: string): string {
   return s.replace(/ /g, THIN);
+}
+
+/** Up to 4 decimals without trailing zeros (agreed): 0,2 · 0,3407 · 0,1. */
+export function short4(units: number, sep: string): string {
+  const s = fixed(units, 8, 4, sep);
+  return s.includes(",") ? s.replace(/0+$/, "").replace(/,$/, "") : s;
+}
+
+/** Mono euro without ",00" for whole amounts ("≈ 500 €" on Earn 4), else two decimals. */
+export function eurWhole(cents: number): string {
+  return cents % 100 === 0 ? group(String(cents / 100)) + THIN + "€" : eur(cents);
 }
