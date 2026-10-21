@@ -44,6 +44,7 @@ export default function SentPage() {
 
   return (
     <Screen
+      className="sent"
       actions={
         <>
           <Button onClick={() => router.push("/home")}>Done</Button>

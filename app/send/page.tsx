@@ -11,8 +11,7 @@ import { Button, Coin, Divider, Note, ScreenHeader } from "@/components/ui";
 import { IconArrowUpRight, IconChevDown, IconChevR, IconCloseCircle, IconScan, IconSearch, IconWarn } from "@/components/icons";
 import { SEND_CONTACTS, type ContactId } from "@/lib/legend";
 import { detectAddress } from "@/lib/address";
-import { crypto } from "@/lib/format";
-import { Num } from "@/components/Num";
+import { cryptoText } from "@/lib/format";
 import { useStore } from "@/lib/store";
 
 const ORDER: ContactId[] = ["maxim", "anna", "ledger"];
@@ -128,7 +127,7 @@ export default function SendToPage() {
             <div>
               <p className="suggestion-title">Send Bitcoin instead?</p>
               <p className="suggestion-body">
-                You have <Num>{crypto(holdings.BTC, "BTC", 4).replace(/ /g, " ")}</Num>. Ethereum can’t be sent to a Bitcoin address.
+                You have {cryptoText(holdings.BTC, "BTC", 4)}. Ethereum can’t be sent to a Bitcoin address.
               </p>
             </div>
           </div>

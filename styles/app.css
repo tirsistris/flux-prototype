@@ -90,12 +90,14 @@ p, h1, h2, h3 { margin: 0; }
   overflow: hidden;
   border-radius: 55px;
   background: var(--bg-canvas);
+  color: var(--text-fg); /* re-resolve here so .force-dark frames get dark-theme text */
   box-shadow: 0 0 0 10px #0b0b0c, 0 0 0 11px #2a2a2e, 0 30px 80px rgba(0, 0, 0, 0.28);
 }
 .phone-body { position: relative; flex: 1; min-height: 0; display: flex; flex-direction: column; }
 
 .statusbar {
   position: relative;
+  z-index: 1; /* stays above the full-bleed Scan QR camera */
   flex: none;
   height: 53px;
   display: grid;
@@ -475,7 +477,8 @@ section:first-of-type > .day-label { margin-top: 16px; }
 .banner-loss { background: var(--tint-loss); }
 .banner-loss .banner-icon { color: var(--money-loss); }
 .banner-icon { flex: none; display: inline-flex; }
-.banner-text { display: flex; flex-direction: column; gap: 2px; }
+.banner-neutral { background: var(--tint-neutral); }
+.banner-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
 .banner-title { font-size: 15px; line-height: 18px; font-weight: 590; }
 .banner-body { font-size: 13px; line-height: 16px; color: var(--text-muted); }
 .review-note { margin-top: 6px; }
@@ -487,10 +490,138 @@ section:first-of-type > .day-label { margin-top: 16px; }
 .done-hero p.sub { width: 300px; max-width: 100%; font-size: 15px; line-height: 18px; color: var(--text-muted); }
 .done-receipt { margin-top: 19px; }
 
+/* Send 1 · To (2298:2457) + Wrong network (2317:7128) */
+.to-field {
+  display: flex; align-items: center; gap: 10px;
+  margin: 13px 16px 0; min-height: 50px; padding: 6px 6px 6px 14px;
+  border-radius: 16px; background: var(--surface-1);
+}
+.to-field.filled { padding: 14px 12px 14px 14px; border: 1.5px solid transparent; }
+.to-field.filled.error { border-color: var(--money-loss); }
+.to-field-icon { flex: none; display: inline-flex; color: var(--text-muted); }
+.to-input {
+  flex: 1; min-width: 0; display: block; margin: 0; padding: 0; border: 0; outline: 0; resize: none; overflow: hidden;
+  background: none; color: var(--text-fg); font: inherit; font-size: 17px; line-height: 20px;
+}
+.to-input::placeholder { color: var(--text-idle); }
+.to-input.mono { font-family: var(--font-mono); font-size: 15px; line-height: 20px; word-break: break-all; }
+.to-clear { flex: none; display: inline-flex; color: var(--text-muted); }
+.paste-chip {
+  flex: none; padding: 10px 12px; border-radius: 12px; background: var(--surface-chip);
+  font-size: 15px; line-height: 18px; font-weight: 510;
+}
+.field-error {
+  display: flex; align-items: center; gap: 8px; margin: 9px 20px 0;
+  font-size: 13px; line-height: 16px; font-weight: 510; color: var(--money-loss);
+}
+.field-error svg { flex: none; }
+.network-row { display: flex; align-items: center; gap: 8px; margin: 16px 16px 0; padding-left: 4px; font-size: 15px; line-height: 18px; }
+.network-row > span:first-child { flex: 1; color: var(--text-muted); }
+.network-chip {
+  display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px 5px 6px; border-radius: 16px;
+  background: var(--surface-chip); font-weight: 510; white-space: nowrap;
+}
+.suggestion { margin-top: 18px; padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 10px; }
+.suggestion-top { display: flex; align-items: center; gap: 12px; }
+.suggestion-top > div { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.suggestion-title { font-size: 15px; line-height: 18px; font-weight: 590; }
+.suggestion-body { max-width: 270px; font-size: 13px; line-height: 16px; color: var(--text-muted); }
+.day-label.send-people-label { margin-top: 22px; }
+.day-label.send-people-label.after-suggestion { margin-top: 24px; }
+.row-chev { flex: none; display: inline-flex; color: var(--text-idle); }
+.send-note { margin-top: 30px; }
+
+/* Send 2 · Amount (2298:2589) + Not enough ETH (2298:2878) */
+.to-pill-wrap { display: flex; justify-content: center; margin: 9px 16px 0; }
+.to-pill {
+  display: inline-flex; align-items: center; gap: 8px; padding: 5px 14px 5px 6px; border-radius: 18px;
+  background: var(--surface-chip); font-size: 15px; line-height: 18px; font-weight: 510; white-space: nowrap;
+}
+.send-amount { display: flex; flex-direction: column; align-items: center; gap: 6px; margin: 14px 16px 0; }
+.send-value { display: flex; align-items: baseline; gap: 10px; height: 83px; font-family: var(--font-mono); font-weight: 500; white-space: nowrap; }
+.send-figure { line-height: 83px; }
+.send-value.loss .send-figure { color: var(--money-loss); }
+.send-unit { font-size: 28px; line-height: 36px; color: var(--text-muted); }
+.send-approx { font-family: var(--font-mono); font-size: 17px; line-height: 22px; color: var(--text-muted); }
+.chips.send-chips { justify-content: center; margin: 9px 16px 0; }
+.chips.send-chips.not-enough { margin-top: 16px; }
+.field-error.send-error { margin: 19px 16px 0 21px; }
+.send-available { margin: 10px 16px 0; text-align: center; font-size: 13px; line-height: 16px; color: var(--text-muted); }
+.note-field { display: flex; flex-direction: column; gap: 2px; margin: 28px 16px 0; padding: 12px 16px; border-radius: 16px; background: var(--surface-1); cursor: text; }
+.note-label { font-size: 12px; line-height: 14px; color: var(--text-muted); }
+.note-input { width: 100%; margin: 0; padding: 0; border: 0; outline: 0; background: none; color: var(--text-fg); font: inherit; font-size: 17px; line-height: 20px; }
+.note-input::placeholder { color: var(--text-idle); }
+
+/* Send 3 · Review (2298:2690) + New address review (2317:7221); Transaction · Detail (2300:3713).
+   Figma spacers sit between two 4 px gaps, so a 2/4/6 px spacer is a 6/8/10 px margin here. */
+.send-hero { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 16px 16px 14px; text-align: center; }
+.send-hero-name { margin-top: 6px; font-size: 17px; line-height: 20px; font-weight: 590; white-space: nowrap; }
+.send-hero-short { font-family: var(--font-mono); font-size: 13px; line-height: 17px; color: var(--text-muted); white-space: nowrap; }
+.send-hero-address { display: flex; flex-direction: column; font-family: var(--font-mono); font-size: 13px; line-height: 18px; color: var(--text-muted); white-space: nowrap; }
+.quote { margin-top: 8px; padding: 4px 10px; border-radius: 10px; background: var(--tint-neutral); font-size: 13px; line-height: 16px; white-space: nowrap; }
+.send-hero .big { margin-top: 10px; font-family: var(--font-mono); font-weight: 500; font-size: 34px; line-height: 44px; white-space: nowrap; }
+.send-hero .approx { font-family: var(--font-mono); font-size: 15px; line-height: 20px; color: var(--text-muted); }
+.send-banner { margin-top: 9px; }
+.send-banner.new-address { margin-top: 30px; }
+
+.send-hero.detail-hero { padding: 16px; }
+.detail-line { font-size: 15px; line-height: 18px; color: var(--text-muted); white-space: nowrap; }
+.detail-hero > :nth-child(2) { margin-top: 6px; }
+.detail-hero .big { margin-top: 0; }
+.status-badge { margin-top: 10px; padding: 3px 8px; border-radius: 8px; background: var(--tint-neutral); color: var(--text-muted); font-size: 13px; line-height: 16px; font-weight: 510; }
+.status-badge.done { background: var(--tint-gain); color: var(--money-gain); }
+.detail-hero .quote { margin-top: 6px; }
+.hash-copy { flex: none; display: inline-flex; margin-left: -4px; color: var(--text-muted); }
+
+/* Send 4 · Sent (2298:2785) */
+.hash { letter-spacing: 0.5px; }
+.sent .perforation + .receipt-section { padding-bottom: 4px; }
+
+/* Send · Scan QR (2298:2978, always dark). The camera fills the whole frame, status bar included. */
+.screen.scan { position: relative; z-index: 0; }
+.scan-camera {
+  position: absolute; z-index: -1; left: 0; right: 0; top: -53px; bottom: 0; overflow: hidden;
+  background: var(--camera-bg); box-shadow: 0 -60px 0 var(--camera-bg);
+}
+.scan-blur { position: absolute; background: center / 100% 100% no-repeat; }
+.scan-blur.b1 { left: -120px; top: 500px; width: 360px; height: 360px; background-image: url(/img/scan-blur-1.svg); }
+.scan-blur.b2 { left: 160px; top: 360px; width: 380px; height: 380px; background-image: url(/img/scan-blur-2.svg); }
+.scan-blur.b3 { left: -20px; top: 120px; width: 340px; height: 340px; background-image: url(/img/scan-blur-3.svg); }
+.viewfinder { position: relative; width: 260px; height: 260px; margin: 117px auto 0; }
+.viewfinder .c { position: absolute; width: 44px; height: 44px; }
+.viewfinder .c::before, .viewfinder .c::after { content: ""; position: absolute; border-radius: 2px; background: var(--action-primary); }
+.viewfinder .c::before { width: 44px; height: 4px; }
+.viewfinder .c::after { width: 4px; height: 44px; }
+.viewfinder .tl { left: 0; top: 0; }
+.viewfinder .tr { right: 0; top: 0; }
+.viewfinder .bl { left: 0; bottom: 0; }
+.viewfinder .br { right: 0; bottom: 0; }
+.viewfinder .tl::before, .viewfinder .tl::after, .viewfinder .bl::after { left: 0; top: 0; }
+.viewfinder .tr::before, .viewfinder .tr::after, .viewfinder .br::after { right: 0; top: 0; }
+.viewfinder .bl::before { left: 0; bottom: 0; }
+.viewfinder .br::before { right: 0; bottom: 0; }
+.scan-caption { display: flex; flex-direction: column; align-items: center; gap: 4px; margin: 24px 16px 0; text-align: center; white-space: nowrap; }
+.torch { display: flex; flex-direction: column; align-items: center; gap: 6px; margin-top: 56px; }
+.torch-btn { width: 56px; height: 56px; border-radius: 28px; display: flex; align-items: center; justify-content: center; background: var(--surface-chip); color: var(--text-fg); }
+
+/* Face ID — stand-in for the iOS system indicator (not a Figma frame) */
+.faceid-scrim { position: absolute; inset: 0; z-index: 10; display: flex; align-items: center; justify-content: center; }
+.faceid-hud {
+  width: 160px; height: 160px; border-radius: 28px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px;
+  background: var(--hud-bg); color: var(--hud-fg); -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px);
+  font-size: 15px; line-height: 18px; font-weight: 510;
+}
+
 /* Motion: screens fade/slide in; reduced-motion users get none. */
 @media (prefers-reduced-motion: no-preference) {
   .screen { animation: screen-in 220ms cubic-bezier(0.2, 0.8, 0.2, 1); }
   .state-icon { animation: pop 420ms cubic-bezier(0.2, 1.4, 0.4, 1); }
+  .faceid-hud { animation: pop 200ms ease-out; }
+  .faceid-face { animation: faceid-pulse 650ms ease-in-out; }
+  .faceid-check { stroke-dasharray: 48; stroke-dashoffset: 48; animation: draw 280ms ease-out forwards; }
 }
+@keyframes faceid-pulse { 50% { opacity: 0.5; } }
+@keyframes draw { to { stroke-dashoffset: 0; } }
 @keyframes screen-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 @keyframes pop { from { transform: scale(0.6); opacity: 0; } to { transform: none; opacity: 1; } }

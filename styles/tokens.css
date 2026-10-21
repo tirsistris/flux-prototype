@@ -46,6 +46,11 @@
   --unread: #ea9a1e;         /* bell unread dot */
   --avatar-lilac-bg: #dad1f4;
   --avatar-lilac-fg: #2a1f4f;
+  --camera-bg: #1a1a1c;      /* Send · Scan QR "Camera" fill (always-dark frame) */
+
+  /* Face ID indicator — not in the design; iOS system HUD look, follows the theme. */
+  --hud-bg: #f2f2f7eb;
+  --hud-fg: #141414;
 
   /* Prototype chrome outside the phone (not part of the design). */
   --stage-bg: #dddcd7;
@@ -88,6 +93,8 @@
     --control-knob-on: #18181b;
     --statusbar-fg: #ffffff;
     --unread: #ea9a1e;
+    --hud-bg: #2c2c2eeb;
+    --hud-fg: #ffffff;
     --stage-bg: #050506;
     --stage-fg: #8b8b93;
     color-scheme: dark;
@@ -128,6 +135,8 @@
   --control-knob-on: #18181b;
   --statusbar-fg: #ffffff;
   --unread: #ea9a1e;
+  --hud-bg: #2c2c2eeb;
+  --hud-fg: #ffffff;
   --stage-bg: #050506;
   --stage-fg: #8b8b93;
   color-scheme: dark;
