@@ -33,7 +33,7 @@ import {
   type RecipientRef,
   UNSTAKE_UNLOCKS,
 } from "@/lib/legend";
-import { costAfterSell, quoteBuy, quoteSell, quoteSwap, unitsFor, valueCents, type BuyQuote, type SellQuote, type SwapQuote } from "@/lib/money";
+import { costAdd, costAfterSell, costFromAvg, quoteBuy, quoteSell, quoteSwap, unitsFor, valueCents, type BuyQuote, type Cost, type SellQuote, type SwapQuote } from "@/lib/money";
 import { cryptoText, NNBSP } from "@/lib/format";
 import { recipientInfo } from "@/lib/send";
 
@@ -135,7 +135,7 @@ type State = {
   holdings: Holdings; // ETH here is the whole position, staked and unlocking included
   staked: number; // ETH earning, 1e-8 units (legend 0,2000)
   unstaking: number; // ETH asked back, unlocking until UNSTAKE_UNLOCKS, no rewards
-  btcCostCents: number; // cost basis of the BTC position incl. fees (Buy 1 screen)
+  btcCost: Cost; // exact cost basis of the BTC position incl. fees (Buy 1 screen)
   activity: ActivityItem[];
   lastOrder: number;
   draft: BuyDraft;
@@ -172,7 +172,7 @@ const initialState = (): State => ({
   holdings: { ...HOLDINGS },
   staked: ETH_STAKED,
   unstaking: 0,
-  btcCostCents: valueCents(HOLDINGS.BTC, BTC_DETAIL.avgBuyPriceCents),
+  btcCost: costFromAvg(HOLDINGS.BTC, BTC_DETAIL.avgBuyPriceCents),
   activity: ACTIVITY,
   lastOrder: LAST_ORDER_NO,
   draft: initialDraft(),
@@ -290,7 +290,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
         ...p,
         holdings,
         // Fee is part of the cost (accounting view): cost basis grows by what was paid.
-        btcCostCents: p.btcCostCents + q.eurCents,
+        btcCost: costAdd(p.btcCost, q.eurCents),
         activity: [row, ...p.activity],
         lastOrder: orderNo,
         quote: null,
@@ -412,7 +412,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
         ...p,
         holdings,
         // Average-cost method: the BTC that left takes its share of the cost basis.
-        btcCostCents: costAfterSell(p.btcCostCents, p.holdings.BTC, q.btcUnits),
+        btcCost: costAfterSell(p.btcCost, p.holdings.BTC, q.btcUnits),
         activity: [row, ...p.activity],
         lastOrder: orderNo,
         swapLock: null,
@@ -450,7 +450,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       return {
         ...p,
         holdings,
-        btcCostCents: costAfterSell(p.btcCostCents, p.holdings.BTC, q.units),
+        btcCost: costAfterSell(p.btcCost, p.holdings.BTC, q.units),
         activity: [row, ...p.activity],
         lastOrder: orderNo,
         sellLock: null,

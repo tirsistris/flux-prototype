@@ -72,7 +72,7 @@ export default function StakeAmountPage() {
             ))}
           </div>
           <p className="stake-available">
-            Available {cryptoText(available, "ETH", 4, " ")} ≈ {eurText(availableCents)}
+            Available {cryptoText(available, "ETH", 4)} ≈ {eurText(availableCents)}
           </p>
         </>
       )}

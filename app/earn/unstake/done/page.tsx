@@ -33,7 +33,7 @@ export default function UnstakeDonePage() {
         <span className="state-icon neutral">
           <IconTimer size={40} />
         </span>
-        <h1 className="serif">Unstaking {cryptoText(r.units, "ETH", 4, " ")}</h1>
+        <h1 className="serif">Unstaking {cryptoText(r.units, "ETH", 4)}</h1>
         <p className="sub">It should unlock around {UNSTAKE_UNLOCKS}. We’ll tell you when it’s ready to use.</p>
       </div>
 

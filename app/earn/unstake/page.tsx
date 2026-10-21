@@ -44,7 +44,7 @@ export default function UnstakeAmountPage() {
       <ScreenHeader coin="ETH" title="Unstake ETH" onLeading={back} />
 
       <div className="send-amount unstake-amount">
-        <span className="t13 muted">of {cryptoText(staked, "ETH", 4, " ")} staked</span>
+        <span className="t13 muted">of {cryptoText(staked, "ETH", 4)} staked</span>
         <div className={"send-value" + (tooMuch ? " loss" : "")} aria-live="polite">
           <span className="send-figure" style={{ fontSize: size }}>
             <Num>{typed}</Num>
@@ -82,7 +82,8 @@ export default function UnstakeAmountPage() {
         <span className="banner-text">
           <span className="banner-title">Usually 7 days</span>
           <span className="banner-body">
-            Rewards stop today. Your {short4(d.units, NNBSP)} ETH unlocks on {UNSTAKE_UNLOCKS}.
+            Rewards stop today. Your {short4(d.units, NNBSP)}
+            {NNBSP}ETH should unlock around {UNSTAKE_UNLOCKS}.
           </span>
         </span>
       </div>

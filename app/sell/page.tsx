@@ -81,7 +81,7 @@ export default function SellAmountPage() {
 
       <div className="amount-note sell-note">
         <Note icon={<IconInfo />}>
-          You have {cryptoText(holdings.BTC, "BTC", 4, " ")} ≈ {eurText(allCents)}. The fee is taken from what you get.
+          You have {cryptoText(holdings.BTC, "BTC", 4)} ≈ {eurText(allCents)}. The fee is taken from what you get.
         </Note>
       </div>
     </Screen>

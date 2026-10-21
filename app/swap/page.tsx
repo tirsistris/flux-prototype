@@ -54,7 +54,7 @@ export default function SwapAmountPage() {
         <section className="swap-card" aria-label="You pay">
           <div className="swap-card-top">
             <span>You pay</span>
-            <span>Balance {cryptoText(holdings.BTC, "BTC", 4, " ")}</span>
+            <span>Balance {cryptoText(holdings.BTC, "BTC", 4)}</span>
           </div>
           <div className="swap-card-row">
             {picker("BTC")}
@@ -98,7 +98,7 @@ export default function SwapAmountPage() {
       ) : (
         <p className="swap-rate">
           {q.ethUnits > 0 ? (
-            <>1 BTC = {fixed(effectiveRateX1e4(q), 4, 4, NNBSP)} ETH after all fees</>
+            <>1{NNBSP}BTC = {fixed(effectiveRateX1e4(q), 4, 4, NNBSP)}{NNBSP}ETH after all fees</>
           ) : (
             <>&nbsp;</>
           )}

@@ -39,9 +39,9 @@ export default function SwapDonePage() {
         <span className="state-icon">
           <IconCheckBold />
         </span>
-        <h1 className="serif">{cryptoText(r.q.ethUnits, "ETH", 4, " ")} is in your wallet</h1>
+        <h1 className="serif">{cryptoText(r.q.ethUnits, "ETH", 4)} is in your wallet</h1>
         <p className="sub">
-          Swapped from {cryptoText(r.q.btcUnits, "BTC", 4, " ")}. Fees of {eurText(fees)} were already included.
+          Swapped from {cryptoText(r.q.btcUnits, "BTC", 4)}. Fees of {eurText(fees)} were already included.
         </p>
       </div>
 

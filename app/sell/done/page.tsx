@@ -38,7 +38,7 @@ export default function SellDonePage() {
           <IconCheckBold />
         </span>
         <h1 className="serif">{eurText(r.q.getCents)} is in your euros</h1>
-        <p className="sub">Sold {cryptoText(r.q.units, "BTC", 6, " ")}. Spend it on crypto or move it to your bank.</p>
+        <p className="sub">Sold {cryptoText(r.q.units, "BTC", 6)}. Spend it on crypto or move it to your bank.</p>
       </div>
 
       <div className="done-receipt">

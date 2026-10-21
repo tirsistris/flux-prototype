@@ -62,7 +62,7 @@ export default function UnstakeReviewPage() {
           </div>
           <Perforation />
           <div className="receipt-section">
-            <DetailRow ui label="Unlocks" value={UNSTAKE_UNLOCKS} />
+            <DetailRow ui label="Unlocks" value={`Around ${UNSTAKE_UNLOCKS}`} />
             <DetailRow ui label="Rewards stop" value="Today" />
             <DetailRow ui label="You’ll earn less" value={`≈ ${eurText(less)} a day`} />
             <DetailRow strong label="Still staked" value={<Num>{crypto(staked - d.units, "ETH", 4)}</Num>} />

@@ -138,7 +138,7 @@ export default function SendAmountPage() {
               Send {fixed(max, 8, 4, NNBSP)}
               {NNBSP}ETH
             </Chip>
-            <Chip onClick={() => router.push("/earn/unstake")}>Unstake · 7 days</Chip>
+            <Chip onClick={() => router.push("/earn/unstake")}>Unstake · 7{NNBSP}days</Chip>
           </div>
         </>
       ) : (

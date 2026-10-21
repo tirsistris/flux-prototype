@@ -63,15 +63,40 @@ export function portfolio(h: Holdings) {
   return { eur: h.eurCents, btc, eth, sol, total: h.eurCents + btc + eth + sol };
 }
 
-/** Bitcoin position on the coin screen: cost basis grows by the amount paid (fee included). */
-export function btcPosition(units: number, costCents: number) {
+// ── BTC cost basis, kept exact ───────────────────────────────────────────────
+// The cost is a fraction of cents (n / d, BigInt) and is rounded only for display,
+// so the average price never moves on a sale or a swap (average-cost method).
+export type Cost = { n: bigint; d: bigint };
+
+const gcd = (a: bigint, b: bigint): bigint => (b === 0n ? (a < 0n ? -a : a) : gcd(b, a % b));
+const reduce = (c: Cost): Cost => {
+  const g = gcd(c.n, c.d) || 1n;
+  return { n: c.n / g, d: c.d / g };
+};
+/** half-up a / b for non-negative b. */
+const roundDiv = (a: bigint, b: bigint): bigint => (a >= 0n ? (2n * a + b) / (2n * b) : -((-2n * a + b) / (2n * b)));
+
+/** legend: 0,2105 BTC bought at 96 699,71 € on average → cost = avg × BTC, exactly. */
+export const costFromAvg = (units: number, avgCents: number): Cost => reduce({ n: B(units) * B(avgCents), d: B(UNIT) });
+/** A buy adds what was paid, fee included. */
+export const costAdd = (c: Cost, cents: number): Cost => reduce({ n: c.n + B(cents) * c.d, d: c.d });
+/** A sale or swap keeps (held − sold) / held of the cost: the average stays the same. */
+export function costAfterSell(c: Cost, units: number, soldUnits: number): Cost {
+  if (soldUnits >= units) return { n: 0n, d: 1n };
+  return reduce({ n: c.n * B(units - soldUnits), d: c.d * B(units) });
+}
+export const costCents = (c: Cost) => Number(roundDiv(c.n, c.d));
+
+/** Bitcoin position on the coin screen: value, gain, average price and gain %. */
+export function btcPosition(units: number, cost: Cost) {
   const value = valueCents(units, ASSETS.BTC.priceCents);
-  const gain = value - costCents;
-  // avg price = cost / BTC, in cents, half-up.
-  const avg = Number((B(costCents) * B(UNIT) * 2n + B(units)) / (2n * B(units)));
-  // percent with 2 decimals, as hundredths, half-up.
-  const pctX100 = Number((B(Math.abs(gain)) * 20_000n + B(costCents)) / (2n * B(costCents)));
-  return { value, gain, avgPriceCents: avg, gainPctX100: gain < 0 ? -pctX100 : pctX100 };
+  if (units <= 0 || cost.n <= 0n) return { value, gain: 0, avgPriceCents: 0, gainPctX100: 0 };
+  // gain = value − cost, avg = cost / BTC, % = gain / cost — each rounded once, half-up.
+  const gainN = B(value) * cost.d - cost.n; // gain × d
+  const gain = Number(roundDiv(gainN, cost.d));
+  const avg = Number(roundDiv(cost.n * B(UNIT), cost.d * B(units)));
+  const pctX100 = Number(roundDiv(gainN * 10_000n, cost.n));
+  return { value, gain, avgPriceCents: avg, gainPctX100: pctX100 };
 }
 
 // ── Swap BTC → ETH ──────────────────────────────────────────────────────────
@@ -102,12 +127,6 @@ export type SellQuote = { grossCents: number; units: number; feeCents: number; g
 export function quoteSell(grossCents: number, units: number): SellQuote {
   const fee = feeCents(grossCents);
   return { grossCents, units, feeCents: fee, getCents: grossCents - fee };
-}
-
-/** Average-cost method: the sold share of the position takes the same share of cost. */
-export function costAfterSell(costCents: number, units: number, soldUnits: number): number {
-  if (soldUnits >= units) return 0;
-  return costCents - Number((B(costCents) * B(soldUnits) * 2n + B(units)) / (2n * B(units)));
 }
 
 // ── ETH staking, from the staked quantity ───────────────────────────────────
