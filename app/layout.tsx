@@ -12,9 +12,17 @@ import "@/styles/app.css";
 // Large headings: Literata Regular, self-hosted by next/font.
 const literata = Literata({ subsets: ["latin"], weight: ["400"], variable: "--font-serif", display: "swap" });
 
+const TITLE = "Flux — prototype v2";
+const DESCRIPTION = "Flux v2 prototype — an EUR-first crypto wallet concept. Design/UX prototype, not a financial product.";
+
+// Link previews (messengers, social): title and description only — there is no
+// preview image yet.
 export const metadata: Metadata = {
-  title: "Flux — prototype v2",
-  description: "Flux v2 prototype — an EUR-first crypto wallet concept. Design/UX prototype, not a financial product.",
+  metadataBase: new URL("https://flux-concept.vercel.app"),
+  title: TITLE,
+  description: DESCRIPTION,
+  openGraph: { type: "website", siteName: "Flux", title: TITLE, description: DESCRIPTION, url: "/home" },
+  twitter: { card: "summary", title: TITLE, description: DESCRIPTION },
 };
 
 export const viewport: Viewport = {
