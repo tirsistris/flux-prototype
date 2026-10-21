@@ -39,6 +39,7 @@
   --applepay-fg: #ffffff;
   --control-on: #141414;
   --control-knob-on: #ffffff;
+  --toggle-knob-off: #ffffff; /* Figma Toggle off: white knob in both themes */
   --heritage-accent: #e8b547;
 
   /* Not variables in Figma — hard-coded in the frames, kept as tokens here. */
@@ -97,6 +98,7 @@
     --applepay-fg: #000000;
     --control-on: #f4f4f5;
     --control-knob-on: #18181b;
+    --toggle-knob-off: #ffffff; /* Figma Toggle off: white knob in both themes */
     --statusbar-fg: #ffffff;
     --unread: #ea9a1e;
     --hud-bg: #2c2c2eeb;
@@ -143,6 +145,7 @@
   --applepay-fg: #000000;
   --control-on: #f4f4f5;
   --control-knob-on: #18181b;
+  --toggle-knob-off: #ffffff; /* Figma Toggle off: white knob in both themes */
   --statusbar-fg: #ffffff;
   --unread: #ea9a1e;
   --hud-bg: #2c2c2eeb;

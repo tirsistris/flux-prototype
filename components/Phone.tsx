@@ -54,6 +54,8 @@ const TRY = [
   "Send → Paste, twice — a Bitcoin address, then a new one",
   "Send more than 0,4199 ETH — what happens when it doesn’t fit",
   "Open Earn — rates after Flux’s share",
+  "Search “pepe”, then “bitcon”",
+  "Set a price alert",
   "Switch light / dark",
 ];
 
@@ -67,7 +69,7 @@ function TryThis() {
         ))}
       </ul>
       <p className="try-foot">
-        Prototype of 3 flows · other tabs are placeholders ·{" "}
+        Clickable prototype · some buttons are placeholders ·{" "}
         <a href="https://flux-concept-v1.vercel.app" target="_blank" rel="noopener noreferrer">
           v1 archive →
         </a>

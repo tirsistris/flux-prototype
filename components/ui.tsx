@@ -6,13 +6,18 @@ import Image from "next/image";
 import { IconBack, IconBackspace, IconClose, IconTransferV } from "@/components/icons";
 
 // ── Coin ─────────────────────────────────────────────────────────────────────
-// DOT / ADA: SVG export of the Figma Coin variants 2351:774 / 2351:782 (served as-is).
+// Coin variants exported from Figma (DOT 2351:774, ADA 2351:782, BCH 2289:785 as SVG;
+// XRP / ZEC / UNI as the frames' PNG fills).
 const COIN_IMG = {
   BTC: "/img/coin-btc.png",
   ETH: "/img/coin-eth.png",
   SOL: "/img/coin-sol.png",
   DOT: "/img/coin-dot.svg",
   ADA: "/img/coin-ada.svg",
+  XRP: "/img/coin-xrp.png",
+  ZEC: "/img/coin-zec.png",
+  UNI: "/img/coin-uni.png",
+  BCH: "/img/coin-bch.svg",
 } as const;
 
 export function Coin({ asset, size = 40 }: { asset: keyof typeof COIN_IMG | "EUR"; size?: number }) {
@@ -106,6 +111,15 @@ export function DetailRow({ label, value, strong, ui }: { label: string; value: 
       <span className="detail-label">{label}</span>
       <span className={"detail-value" + (ui ? " ui" : "")}>{value}</span>
     </div>
+  );
+}
+
+// ── Toggle (Figma "Toggle" 51×31: on = control/on, off = surface/track) ─────────
+export function Toggle({ on, onChange, label }: { on: boolean; onChange: (on: boolean) => void; label: string }) {
+  return (
+    <button type="button" role="switch" aria-checked={on} aria-label={label} className={"toggle" + (on ? " on" : "")} onClick={() => onChange(!on)}>
+      <span className="toggle-knob" />
+    </button>
   );
 }
 

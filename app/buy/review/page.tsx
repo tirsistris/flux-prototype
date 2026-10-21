@@ -2,8 +2,8 @@
 // app/buy/review/page.tsx — Buy 4 · Review (Figma 2297:2191 / 2297:2559).
 // Opening the screen locks a quote for 30 s; the "Price locked" timer runs for
 // real. At 0:00 the screen switches to the expired state (modelled on Swap · Quote
-// expired 2300:3519, texts approved): nothing is charged, "Refresh quote" locks a
-// new 30 s quote at the legend price.
+// expired 2300:3519; copy agreed in step 5 — the price itself doesn't move): nothing
+// is charged, "Refresh quote" locks a new 30 s quote at the legend price.
 import React from "react";
 import { useRouter } from "next/navigation";
 import { Screen } from "@/components/Screen";
@@ -98,8 +98,8 @@ export default function ReviewPage() {
                 <IconTimer22 />
               </span>
               <span className="banner-text">
-                <span className="banner-title">The price moved while you were deciding</span>
-                <span className="banner-body">Refresh to get a new price. Nothing has been charged.</span>
+                <span className="banner-title">Your price lock ran out</span>
+                <span className="banner-body">Refresh to lock the price again. Nothing has been charged.</span>
               </span>
             </div>
           ) : (
@@ -137,7 +137,7 @@ export default function ReviewPage() {
       {!expired && (
         <div className="review-note">
           <Note icon={<IconShield />}>
-            If the timer runs out, you’ll see a new price before anything is charged. You never pay more than {eurText(q.eurCents)}.
+            Nothing is charged if the lock runs out. You never pay more than {eurText(q.eurCents)}.
           </Note>
         </div>
       )}

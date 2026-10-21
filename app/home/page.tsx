@@ -18,8 +18,9 @@ import { useStore } from "@/lib/store";
 
 export default function HomePage() {
   const router = useRouter();
-  const { holdings } = useStore();
-  const [hidden, setHidden] = React.useState(false);
+  const { holdings, hideBalances } = useStore();
+  // Safety & privacy → "Hide balances on open": Home opens with the balance hidden.
+  const [hidden, setHidden] = React.useState(hideBalances);
   const p = portfolio(holdings);
 
   return (
@@ -34,7 +35,7 @@ export default function HomePage() {
           <IconScan />
         </IconButton>
         <span className="bell">
-          <IconButton label="Notifications" onClick={() => router.push(NOT_IN_PROTOTYPE)}>
+          <IconButton label="Notifications" onClick={() => router.push("/notifications")}>
             <IconBell />
           </IconButton>
           <span className="unread" aria-hidden="true" />
