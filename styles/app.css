@@ -48,9 +48,20 @@ p, h1, h2, h3 { margin: 0; }
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 20px;
   padding: 24px 16px 32px;
   background: var(--stage-bg);
+}
+/* Bar 34 + gap 20 + phone 852 = 906 px, scaled by --stage-scale = min(1, (window
+   height − 56) / 906) — see stageFitScript. zoom (not transform) keeps text sharp. */
+.stage-fit { display: flex; flex-direction: column; align-items: center; gap: 20px; zoom: var(--stage-scale, 1); }
+
+/* Theme change, as in ufuq-dunes: only the stage background eases (240 ms ease-out);
+   on, after the first paint (data-page-anim), off for reduced motion. */
+:root[data-page-anim], :root[data-page-anim] body, :root[data-page-anim] .stage, :root[data-page-anim] .theme-toggle {
+  transition: background-color 240ms ease-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  :root[data-page-anim], :root[data-page-anim] body, :root[data-page-anim] .stage, :root[data-page-anim] .theme-toggle { transition: none; }
 }
 .stage-bar {
   width: 393px;
@@ -74,10 +85,11 @@ p, h1, h2, h3 { margin: 0; }
   padding: 5px 12px;
   border-radius: 8px;
   font-size: 13px;
+  line-height: 18px;
   font-weight: 510;
   color: var(--stage-fg);
 }
-.theme-toggle button.on { background: var(--surface-1); color: var(--text-fg); font-weight: 590; }
+.theme-toggle button.on { background: var(--surface-chip); color: var(--text-fg); font-weight: 590; }
 
 /* "Try this" — prototype chrome beside the phone, desktop only; stage colours, no accent */
 .stage-phone { position: relative; }
@@ -104,7 +116,7 @@ p, h1, h2, h3 { margin: 0; }
   border-radius: 55px;
   background: var(--bg-canvas);
   color: var(--text-fg); /* re-resolve here so .force-dark frames get dark-theme text */
-  box-shadow: 0 0 0 10px #0b0b0c, 0 0 0 11px #2a2a2e, 0 30px 80px rgba(0, 0, 0, 0.28);
+  box-shadow: 0 0 0 10px var(--device-body), 0 0 0 11px var(--device-edge), 0 30px 80px var(--device-shadow);
 }
 .phone-body { position: relative; flex: 1; min-height: 0; display: flex; flex-direction: column; }
 
@@ -146,6 +158,7 @@ p, h1, h2, h3 { margin: 0; }
 /* Phone width: the frame becomes the screen; fake device chrome steps aside. */
 @media (max-width: 500px) {
   .stage { padding: 0; gap: 0; display: block; }
+  .stage-fit { display: block; zoom: 1; }
   .stage-bar { display: none; }
   .phone { width: 100%; height: 100vh; height: 100dvh; border-radius: 0; box-shadow: none; }
   .statusbar { height: max(53px, env(safe-area-inset-top)); }

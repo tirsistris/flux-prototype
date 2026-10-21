@@ -21,6 +21,16 @@ export function ThemeToggle() {
       const v = localStorage.getItem(KEY);
       if (v === "light" || v === "dark") setChoice(v);
     } catch {}
+    // As in ufuq-dunes: the stage background transition switches on only after the
+    // first paint, so the page loads straight into the right theme (no flash).
+    let b = 0;
+    const a = requestAnimationFrame(() => {
+      b = requestAnimationFrame(() => document.documentElement.setAttribute("data-page-anim", ""));
+    });
+    return () => {
+      cancelAnimationFrame(a);
+      cancelAnimationFrame(b);
+    };
   }, []);
 
   const pick = (c: Choice) => {

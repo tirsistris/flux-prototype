@@ -28,17 +28,20 @@ function StatusBar() {
 export function Stage({ children }: { children: React.ReactNode }) {
   return (
     <div className="stage">
-      <div className="stage-bar">
-        <span className="stage-title">Flux v2 · prototype</span>
-        <ThemeToggle />
-      </div>
-      <div className="stage-phone">
-        <PhoneShell>
-          <StatusBar />
-          <div className="phone-body">{children}</div>
-          <div className="home-indicator" aria-hidden="true" />
-        </PhoneShell>
-        <TryThis />
+      {/* Scaled as a whole to fit the window height (lib/theme.ts stageFitScript). */}
+      <div className="stage-fit">
+        <div className="stage-bar">
+          <span className="stage-title">Flux v2 · prototype</span>
+          <ThemeToggle />
+        </div>
+        <div className="stage-phone">
+          <PhoneShell>
+            <StatusBar />
+            <div className="phone-body">{children}</div>
+            <div className="home-indicator" aria-hidden="true" />
+          </PhoneShell>
+          <TryThis />
+        </div>
       </div>
     </div>
   );

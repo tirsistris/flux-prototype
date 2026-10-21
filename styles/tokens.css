@@ -56,6 +56,10 @@
   /* Prototype chrome outside the phone (not part of the design). */
   --stage-bg: #dddcd7;
   --stage-fg: #5d5b55;
+  /* Device frame around the phone (prototype chrome). */
+  --device-body: #0b0b0c;
+  --device-edge: #2a2a2e;
+  --device-shadow: #00000047;
 
   color-scheme: light;
 }
@@ -97,8 +101,11 @@
     --unread: #ea9a1e;
     --hud-bg: #2c2c2eeb;
     --hud-fg: #ffffff;
-    --stage-bg: #050506;
+    --stage-bg: #18181b; /* dark surface/1: one step above bg/canvas */
     --stage-fg: #8b8b93;
+    --device-body: #36363b;
+    --device-edge: #ffffff24;
+    --device-shadow: #00000080;
     color-scheme: dark;
   }
 }
@@ -140,7 +147,14 @@
   --unread: #ea9a1e;
   --hud-bg: #2c2c2eeb;
   --hud-fg: #ffffff;
-  --stage-bg: #050506;
+  --stage-bg: #18181b; /* dark surface/1: one step above bg/canvas */
   --stage-fg: #8b8b93;
   color-scheme: dark;
+}
+
+/* Dark stage only — not .force-dark, so an always-dark screen keeps the page's frame. */
+:root[data-theme="dark"] {
+  --device-body: #36363b;   /* graphite, clearly lighter than the #18181b stage */
+  --device-edge: #ffffff24; /* 1 px light rim on the outer edge */
+  --device-shadow: #00000080;
 }

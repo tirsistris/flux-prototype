@@ -3,7 +3,7 @@ import { Literata } from "next/font/google";
 import { GeistMono } from "geist/font/mono";
 import { Providers } from "@/app/providers";
 import { Stage } from "@/components/Phone";
-import { themeBootScript } from "@/lib/theme";
+import { stageFitScript, themeBootScript } from "@/lib/theme";
 import "@/styles/tokens.css";
 import "@/styles/app.css";
 
@@ -28,6 +28,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`${GeistMono.variable} ${literata.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeBootScript }} />
+        <script dangerouslySetInnerHTML={{ __html: stageFitScript }} />
       </head>
       <body>
         <Providers>
