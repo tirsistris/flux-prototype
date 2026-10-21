@@ -4,7 +4,9 @@
 // TODAY. The filter chips work on the row kind (trade / transfer / earn).
 import React from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Screen } from "@/components/Screen";
+import { NOT_IN_PROTOTYPE } from "@/components/NotInPrototype";
 import { Num } from "@/components/Num";
 import { Person } from "@/components/Media";
 import { Chip, Divider, IconButton } from "@/components/ui";
@@ -70,6 +72,7 @@ function Row({ item }: { item: ActivityItem }) {
 
 export default function ActivityPage() {
   const { activity } = useStore();
+  const router = useRouter();
   const [filter, setFilter] = React.useState<"all" | ActivityKind>("all");
   const rows = activity.filter((a) => filter === "all" || a.kind === filter);
   const days = (Object.keys(DAY_LABEL) as ActivityItem["day"][]).filter((d) => rows.some((r) => r.day === d));
@@ -78,7 +81,7 @@ export default function ActivityPage() {
     <Screen tab="activity">
       <div className="large-title">
         <h1>Activity</h1>
-        <IconButton label="Search activity" inert>
+        <IconButton label="Search activity" onClick={() => router.push(NOT_IN_PROTOTYPE)}>
           <IconSearch />
         </IconButton>
       </div>

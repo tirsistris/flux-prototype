@@ -6,6 +6,7 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 import { Screen } from "@/components/Screen";
+import { NOT_IN_PROTOTYPE } from "@/components/NotInPrototype";
 import { Num } from "@/components/Num";
 import { Chart } from "@/components/Media";
 import { Button, Chip, DetailRow, Divider, IconButton, ScreenHeader } from "@/components/ui";
@@ -31,8 +32,8 @@ export default function BitcoinPage() {
       className="buy1"
       actions={
         <div className="bottom-actions-row">
-          {/* Sell is a later step; kept visible as in the frame, it does nothing yet. */}
-          <Button variant="secondary">Sell</Button>
+          {/* Sell is not in this prototype; kept visible as in the frame. */}
+          <Button variant="secondary" onClick={() => router.push(NOT_IN_PROTOTYPE)}>Sell</Button>
           <Button onClick={buy}>Buy</Button>
         </div>
       }
@@ -42,7 +43,7 @@ export default function BitcoinPage() {
         coin="BTC"
         title={btc.name}
         trailing={
-          <IconButton label="Price alerts" inert>
+          <IconButton label="Price alerts" onClick={() => router.push(NOT_IN_PROTOTYPE)}>
             <IconBell weight={1.5} />
           </IconButton>
         }

@@ -32,11 +32,43 @@ export function Stage({ children }: { children: React.ReactNode }) {
         <span className="stage-title">Flux v2 · prototype</span>
         <ThemeToggle />
       </div>
-      <PhoneShell>
-        <StatusBar />
-        <div className="phone-body">{children}</div>
-        <div className="home-indicator" aria-hidden="true" />
-      </PhoneShell>
+      <div className="stage-phone">
+        <PhoneShell>
+          <StatusBar />
+          <div className="phone-body">{children}</div>
+          <div className="home-indicator" aria-hidden="true" />
+        </PhoneShell>
+        <TryThis />
+      </div>
     </div>
+  );
+}
+
+// Desktop-only hints beside the phone (agreed copy). Hidden at 900 px and below.
+const TRY = [
+  "Buy 100 € of Bitcoin — watch the price lock run out",
+  "Send 0,3 ETH to Maxim — a known contact",
+  "Send → Paste, twice — a Bitcoin address, then a new one",
+  "Send more than 0,4199 ETH — what happens when it doesn’t fit",
+  "Open Earn — rates after Flux’s share",
+  "Switch light / dark",
+];
+
+function TryThis() {
+  return (
+    <aside className="try" aria-label="Try this">
+      <h2 className="try-title">Try this</h2>
+      <ul className="try-list">
+        {TRY.map((t) => (
+          <li key={t}>{t}</li>
+        ))}
+      </ul>
+      <p className="try-foot">
+        Prototype of 3 flows · other tabs are placeholders ·{" "}
+        <a href="https://flux-concept-v1.vercel.app" target="_blank" rel="noopener noreferrer">
+          v1 archive →
+        </a>
+      </p>
+    </aside>
   );
 }

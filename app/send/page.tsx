@@ -6,6 +6,7 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 import { Screen } from "@/components/Screen";
+import { NOT_IN_PROTOTYPE } from "@/components/NotInPrototype";
 import { RecipientAvatar } from "@/components/RecipientAvatar";
 import { Button, Coin, Divider, Note, ScreenHeader } from "@/components/ui";
 import { IconArrowUpRight, IconChevDown, IconChevR, IconCloseCircle, IconScan, IconSearch, IconWarn } from "@/components/icons";
@@ -133,8 +134,8 @@ export default function SendToPage() {
               </p>
             </div>
           </div>
-          {/* Sending Bitcoin is a later step; the button is a placeholder for now. */}
-          <Button variant="secondary" glyph={<IconArrowUpRight />}>
+          {/* Sending Bitcoin is not in this prototype. */}
+          <Button variant="secondary" glyph={<IconArrowUpRight />} onClick={() => router.push(NOT_IN_PROTOTYPE)}>
             Send Bitcoin
           </Button>
         </section>

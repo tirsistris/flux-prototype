@@ -79,6 +79,19 @@ p, h1, h2, h3 { margin: 0; }
 }
 .theme-toggle button.on { background: var(--surface-1); color: var(--text-fg); font-weight: 590; }
 
+/* "Try this" — prototype chrome beside the phone, desktop only; stage colours, no accent */
+.stage-phone { position: relative; }
+.try {
+  position: absolute; top: 50%; left: calc(100% + 44px); width: 210px; transform: translateY(-50%);
+  color: var(--stage-fg); font-size: 13px; line-height: 18px;
+}
+.try-title { margin-bottom: 10px; font-size: 13px; line-height: 18px; font-weight: 590; color: var(--text-fg); }
+.try-list { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.try-foot { margin-top: 24px; font-size: 11px; line-height: 15px; }
+.try-foot a { text-decoration: underline; text-underline-offset: 2px; }
+.try-foot a:hover { color: var(--text-fg); }
+@media (max-width: 900px) { .try { display: none; } }
+
 /* ── Phone frame 393×852 ───────────────────────────────────────────────── */
 .phone {
   position: relative;
@@ -409,8 +422,13 @@ p, h1, h2, h3 { margin: 0; }
 section:first-of-type > .day-label { margin-top: 16px; }
 .activity-empty { margin: 24px 20px; font-size: 15px; line-height: 18px; color: var(--text-muted); }
 
-/* Stubs */
-.stub { margin: 24px 20px 0; font-size: 15px; line-height: 20px; color: var(--text-muted); }
+/* Not in this prototype — quiet state (not a Figma frame; system styles only) */
+.nip { display: flex; flex-direction: column; align-items: center; gap: 6px; margin: 140px 32px 0; text-align: center; }
+.nip-title { font-size: 17px; line-height: 20px; font-weight: 590; }
+.nip-body { max-width: 280px; font-size: 15px; line-height: 20px; color: var(--text-muted); }
+.nip-actions { width: 200px; margin-top: 18px; }
+.nip-link { margin-top: 14px; padding: 6px 8px; font-size: 13px; line-height: 16px; color: var(--text-muted); }
+.nip-link:hover { color: var(--text-fg); }
 
 /* Buy 1 · Bitcoin (2297:1848) */
 .coin-price { margin: 13px 20px 0; display: flex; flex-direction: column; gap: 4px; }
@@ -456,7 +474,7 @@ section:first-of-type > .day-label { margin-top: 16px; }
   margin: 16px 16px 0; width: calc(100% - 32px);
   display: flex; align-items: center; justify-content: center; gap: 8px;
   padding: 14px 0; border-radius: 20px; border: 1.5px dashed var(--text-idle);
-  font-size: 15px; line-height: 18px; font-weight: 510; color: var(--text-fg); cursor: default;
+  font-size: 15px; line-height: 18px; font-weight: 510; color: var(--text-fg);
 }
 .pay-note { margin-top: 25px; }
 
@@ -635,7 +653,6 @@ section:first-of-type > .day-label { margin-top: 16px; }
 .earn-list { margin-top: 10px; }
 .earn-list .list-row { width: 100%; }
 .earn-list .list-row-side .secondary { color: var(--text-muted); }
-.earn-list [aria-disabled="true"] { cursor: default; }
 .earn-note { margin-top: 20px; }
 
 /* Earn 1 · Ethereum (2301:3823) */

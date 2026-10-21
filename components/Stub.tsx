@@ -1,6 +1,8 @@
-// components/Stub.tsx — placeholder for tabs that are built in later steps.
+// components/Stub.tsx — tabs outside the prototype (Markets, Profile): the large
+// title, then the quiet "Not in this prototype" state; the tab bar stays.
 import React from "react";
 import { Screen } from "@/components/Screen";
+import { NotInPrototype } from "@/components/NotInPrototype";
 import type { TabId } from "@/components/TabBar";
 
 export function Stub({ tab, title }: { tab: TabId; title: string }) {
@@ -9,7 +11,7 @@ export function Stub({ tab, title }: { tab: TabId; title: string }) {
       <div className="large-title">
         <h1>{title}</h1>
       </div>
-      <p className="stub">This tab comes in a later step of the v2 prototype. Buy Bitcoin from Home to try the flow.</p>
+      <NotInPrototype />
     </Screen>
   );
 }

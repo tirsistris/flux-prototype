@@ -7,6 +7,7 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 import { Screen } from "@/components/Screen";
+import { NOT_IN_PROTOTYPE } from "@/components/NotInPrototype";
 import { Num } from "@/components/Num";
 import { FaceId } from "@/components/FaceId";
 import { RecipientAvatar } from "@/components/RecipientAvatar";
@@ -62,8 +63,10 @@ export default function SendReviewPage() {
             <Button glyph={<IconFace />} onClick={() => setScanning(true)} disabled={scanning}>
               I checked it · Send with Face ID
             </Button>
-            {/* Saving contacts is a later flow; placeholder for now. */}
-            <Button variant="secondary">Save as contact first</Button>
+            {/* Saving contacts is not in this prototype. */}
+            <Button variant="secondary" onClick={() => router.push(NOT_IN_PROTOTYPE)}>
+              Save as contact first
+            </Button>
           </>
         ) : (
           <Button glyph={<IconFace />} onClick={() => setScanning(true)} disabled={scanning}>

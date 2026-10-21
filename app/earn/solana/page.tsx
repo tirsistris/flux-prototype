@@ -1,10 +1,11 @@
 "use client";
 // app/earn/solana/page.tsx — Earn 2 · Solana, not staked (Figma 2301:3967 / 2301:4393).
 // The estimate is derived from legend: SOL position value × 5,8 % (round2), and a day
-// = that / 365. Start earning is a placeholder until the staking flow is designed.
+// = that / 365. Start earning opens the "Not in this prototype" state.
 import React from "react";
 import { useRouter } from "next/navigation";
 import { Screen } from "@/components/Screen";
+import { NOT_IN_PROTOTYPE } from "@/components/NotInPrototype";
 import { Num } from "@/components/Num";
 import { Button, Coin, Divider, ScreenHeader } from "@/components/ui";
 import { ASSETS, EARN_MORE } from "@/lib/legend";
@@ -27,7 +28,7 @@ export default function EarnSolanaPage() {
   const est = stakeEstimate(valueCents(holdings.SOL, ASSETS.SOL.priceCents), SOL.apyX1000);
 
   return (
-    <Screen actions={<Button>Start earning</Button>}>
+    <Screen actions={<Button onClick={() => router.push(NOT_IN_PROTOTYPE)}>Start earning</Button>}>
       <ScreenHeader title="Earn with Solana" onLeading={() => router.push("/earn")} />
 
       <div className="earn-hero">

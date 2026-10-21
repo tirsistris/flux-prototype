@@ -1,10 +1,11 @@
 "use client";
 // app/earn/page.tsx — Earn tab (Figma 2296:1234 / 2296:1877). The stake card opens
-// Earn 1 · Ethereum, the Solana row opens Earn 2 · Solana; Polkadot and Cardano have
-// no screens yet and are shown inert. Every figure is legend.md "Earn ETH" / "More ways".
+// Earn 1 · Ethereum, the Solana row opens Earn 2 · Solana; Polkadot and Cardano open
+// the "Not in this prototype" state. Every figure is legend.md "Earn ETH" / "More ways".
 import React from "react";
 import Link from "next/link";
 import { Screen } from "@/components/Screen";
+import { NOT_IN_PROTOTYPE } from "@/components/NotInPrototype";
 import { Num } from "@/components/Num";
 import { RewardsChart } from "@/components/RewardsChart";
 import { Coin, Divider, Note } from "@/components/ui";
@@ -72,16 +73,9 @@ export default function EarnPage() {
           return (
             <React.Fragment key={m.id}>
               {i > 0 && <Divider inset />}
-              {"href" in m ? (
-                <Link href={m.href} className="list-row">
-                  {body}
-                </Link>
-              ) : (
-                // Polkadot / Cardano screens are not designed yet — inert row.
-                <div className="list-row" aria-disabled="true">
-                  {body}
-                </div>
-              )}
+              <Link href={"href" in m ? m.href : NOT_IN_PROTOTYPE} className="list-row">
+                {body}
+              </Link>
             </React.Fragment>
           );
         })}

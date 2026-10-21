@@ -1,10 +1,11 @@
 "use client";
 // app/earn/ethereum/page.tsx — Earn 1 · Ethereum (Figma 2301:3823 / 2301:4309).
 // The stake is ETH_STAKED, not the wallet balance: a send never changes this screen.
-// Unstake and Stake more are placeholders until their flows are designed.
+// Unstake and Stake more open the "Not in this prototype" state.
 import React from "react";
 import { useRouter } from "next/navigation";
 import { Screen } from "@/components/Screen";
+import { NOT_IN_PROTOTYPE } from "@/components/NotInPrototype";
 import { Num } from "@/components/Num";
 import { RewardsChart } from "@/components/RewardsChart";
 import { Button, DetailRow, Divider, ScreenHeader } from "@/components/ui";
@@ -19,8 +20,10 @@ export default function EarnEthereumPage() {
     <Screen
       actions={
         <div className="bottom-actions-row">
-          <Button variant="secondary">Unstake</Button>
-          <Button>Stake more</Button>
+          <Button variant="secondary" onClick={() => router.push(NOT_IN_PROTOTYPE)}>
+            Unstake
+          </Button>
+          <Button onClick={() => router.push(NOT_IN_PROTOTYPE)}>Stake more</Button>
         </div>
       }
     >

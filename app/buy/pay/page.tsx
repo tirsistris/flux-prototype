@@ -6,6 +6,7 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 import { Screen } from "@/components/Screen";
+import { NOT_IN_PROTOTYPE } from "@/components/NotInPrototype";
 import { Num } from "@/components/Num";
 import { Button, Coin, Divider, Note, Radio, ScreenHeader } from "@/components/ui";
 import { IconAddCircle, IconBank, IconCard, IconShield, IconWallet } from "@/components/icons";
@@ -90,10 +91,10 @@ export default function PayWithPage() {
       </div>
 
       {/* Adding a method needs a payments backend that a prototype doesn't have. */}
-      <div className="add-method" aria-disabled="true">
+      <button type="button" className="add-method" onClick={() => router.push(NOT_IN_PROTOTYPE)}>
         <IconAddCircle />
         Add payment method
-      </div>
+      </button>
 
       <div className="pay-note">
         <Note icon={<IconShield />}>Card details stay with our payment partner. Flux never sees your full card number.</Note>

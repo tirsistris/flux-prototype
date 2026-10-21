@@ -13,7 +13,7 @@ import "@/styles/app.css";
 const literata = Literata({ subsets: ["latin"], weight: ["400"], variable: "--font-serif", display: "swap" });
 
 export const metadata: Metadata = {
-  title: "Flux v2 — prototype",
+  title: "Flux — prototype v2",
   description: "Flux v2 prototype — an EUR-first crypto wallet concept. Design/UX prototype, not a financial product.",
 };
 

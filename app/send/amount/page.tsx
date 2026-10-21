@@ -6,6 +6,7 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 import { Screen } from "@/components/Screen";
+import { NOT_IN_PROTOTYPE } from "@/components/NotInPrototype";
 import { Num } from "@/components/Num";
 import { RecipientAvatar } from "@/components/RecipientAvatar";
 import { Button, Chip, Keypad, ScreenHeader, UnitSwitch } from "@/components/ui";
@@ -134,8 +135,8 @@ export default function SendAmountPage() {
               Send {fixed(max, 8, 4, NNBSP)}
               {NNBSP}ETH
             </Chip>
-            {/* Unstaking is a later flow (Earn); placeholder for now. */}
-            <Chip onClick={() => undefined}>Unstake · 7 days</Chip>
+            {/* Unstaking is not in this prototype. */}
+            <Chip onClick={() => router.push(NOT_IN_PROTOTYPE)}>Unstake · 7 days</Chip>
           </div>
         </>
       ) : (

@@ -4,7 +4,9 @@
 // the total as the sum of the rounded position values (as legend.md does it).
 import React from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Screen } from "@/components/Screen";
+import { NOT_IN_PROTOTYPE } from "@/components/NotInPrototype";
 import { Num } from "@/components/Num";
 import { Chart, Person } from "@/components/Media";
 import { Coin, Divider, IconButton } from "@/components/ui";
@@ -15,6 +17,7 @@ import { crypto, eur, eurText, fixed, NNBSP, pct } from "@/lib/format";
 import { useStore } from "@/lib/store";
 
 export default function HomePage() {
+  const router = useRouter();
   const { holdings } = useStore();
   const [hidden, setHidden] = React.useState(false);
   const p = portfolio(holdings);
@@ -27,11 +30,11 @@ export default function HomePage() {
           <span className="t13 muted">{NOW.dateLong}</span>
           <span className="serif">Good morning, {PERSONA.first}</span>
         </div>
-        <IconButton label="Scan QR code" inert>
+        <IconButton label="Scan QR code" onClick={() => router.push(NOT_IN_PROTOTYPE)}>
           <IconScan />
         </IconButton>
         <span className="bell">
-          <IconButton label="Notifications" inert>
+          <IconButton label="Notifications" onClick={() => router.push(NOT_IN_PROTOTYPE)}>
             <IconBell />
           </IconButton>
           <span className="unread" aria-hidden="true" />
@@ -77,18 +80,18 @@ export default function HomePage() {
           </span>
           Send
         </Link>
-        <button type="button" className="home-action" data-inert disabled>
+        <Link href={NOT_IN_PROTOTYPE} className="home-action">
           <span className="circle">
             <IconRecv />
           </span>
           Receive
-        </button>
-        <button type="button" className="home-action" data-inert disabled>
+        </Link>
+        <Link href={NOT_IN_PROTOTYPE} className="home-action">
           <span className="circle">
             <IconSwap />
           </span>
           Swap
-        </button>
+        </Link>
       </div>
 
       <section className="card assets" aria-label="Your assets">

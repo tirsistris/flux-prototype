@@ -6,6 +6,7 @@
 import React from "react";
 import { useParams, useRouter } from "next/navigation";
 import { Screen } from "@/components/Screen";
+import { NOT_IN_PROTOTYPE } from "@/components/NotInPrototype";
 import { Num } from "@/components/Num";
 import { RecipientAvatar } from "@/components/RecipientAvatar";
 import { Button, DetailRow, Perforation, Receipt, ScreenHeader } from "@/components/ui";
@@ -48,7 +49,9 @@ export default function TxDetailPage() {
             Send again
           </Button>
           {/* No real transaction exists, so there is nothing to open on Etherscan. */}
-          <Button variant="secondary">View on Etherscan</Button>
+          <Button variant="secondary" onClick={() => router.push(NOT_IN_PROTOTYPE)}>
+            View on Etherscan
+          </Button>
         </>
       }
     >
