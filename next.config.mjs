@@ -28,7 +28,12 @@ const V1_ONLY = [
 const nextConfig = {
   reactStrictMode: true,
   async redirects() {
-    return V1_ONLY.map(([source, path = source]) => ({ source, destination: V1 + path, permanent: false }));
+    return [
+      // The prototype starts on Home. A config redirect answers 307 with a Location
+      // header (a page-level redirect() on a static page sent 307 without one).
+      { source: "/", destination: "/home", permanent: false },
+      ...V1_ONLY.map(([source, path = source]) => ({ source, destination: V1 + path, permanent: false })),
+    ];
   },
 };
 
