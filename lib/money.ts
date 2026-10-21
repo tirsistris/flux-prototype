@@ -22,6 +22,12 @@ export function valueCents(units: number, priceCents: number): number {
   return Number(n / (2n * B(UNIT)));
 }
 
+/** Staking estimate: a year = round2(value × APY), a day = round2(year / 365). APY in tenths of a percent. */
+export function stakeEstimate(valueCentsNow: number, apyX1000: number) {
+  const yearCents = Math.round((valueCentsNow * apyX1000) / 1_000);
+  return { yearCents, dayCents: Math.round(yearCents / 365) };
+}
+
 export type BuyQuote = {
   eurCents: number; // what the user pays (fee included)
   feeCents: number;

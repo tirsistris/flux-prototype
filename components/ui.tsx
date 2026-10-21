@@ -6,9 +6,16 @@ import Image from "next/image";
 import { IconBack, IconBackspace, IconClose, IconTransferV } from "@/components/icons";
 
 // ── Coin ─────────────────────────────────────────────────────────────────────
-const COIN_IMG = { BTC: "/img/coin-btc.png", ETH: "/img/coin-eth.png", SOL: "/img/coin-sol.png" } as const;
+// DOT / ADA: SVG export of the Figma Coin variants 2351:774 / 2351:782 (served as-is).
+const COIN_IMG = {
+  BTC: "/img/coin-btc.png",
+  ETH: "/img/coin-eth.png",
+  SOL: "/img/coin-sol.png",
+  DOT: "/img/coin-dot.svg",
+  ADA: "/img/coin-ada.svg",
+} as const;
 
-export function Coin({ asset, size = 40 }: { asset: "BTC" | "ETH" | "SOL" | "EUR"; size?: number }) {
+export function Coin({ asset, size = 40 }: { asset: keyof typeof COIN_IMG | "EUR"; size?: number }) {
   if (asset === "EUR") {
     return (
       <span className="coin-eur" style={{ width: size, height: size, fontSize: Math.round(size * 0.475) }} aria-hidden="true">
@@ -16,7 +23,8 @@ export function Coin({ asset, size = 40 }: { asset: "BTC" | "ETH" | "SOL" | "EUR
       </span>
     );
   }
-  return <Image src={COIN_IMG[asset]} alt="" width={size} height={size} className="coin" />;
+  const src = COIN_IMG[asset];
+  return <Image src={src} alt="" width={size} height={size} className="coin" unoptimized={src.endsWith(".svg")} />;
 }
 
 // ── Icon button (44 px chip circle) ─────────────────────────────────────────

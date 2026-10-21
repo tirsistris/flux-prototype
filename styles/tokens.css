@@ -32,6 +32,7 @@
   --tint-neutral: #1414140d;
   --tint-accent: #ffa15c3d;
   --glow-gain: #1f8a4c38;
+  --chart-bar: #ffa15c61;
   --tab-indicator: #ffa15c3d;
   --tab-icon-on: #141414;
   --applepay-bg: #000000;
@@ -85,6 +86,7 @@
     --tint-neutral: #ffffff0f;
     --tint-accent: #ffa15c29;
     --glow-gain: #5fe09a59;
+    --chart-bar: #ffffff29;
     --tab-indicator: #ffffff17;
     --tab-icon-on: #ffa15c;
     --applepay-bg: #ffffff;
@@ -127,6 +129,7 @@
   --tint-neutral: #ffffff0f;
   --tint-accent: #ffa15c29;
   --glow-gain: #5fe09a59;
+  --chart-bar: #ffffff29;
   --tab-indicator: #ffffff17;
   --tab-icon-on: #ffa15c;
   --applepay-bg: #ffffff;

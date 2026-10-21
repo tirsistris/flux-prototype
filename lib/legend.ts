@@ -57,6 +57,34 @@ export const HOLDINGS: Holdings = {
 
 export const ETH_STAKED = 20_000_000; // 0,2000 ETH — "0,2 earning" on Home
 
+// "Earn ETH: 2,6 % net (after Flux 15 % share), daily 03:00, earned 0,0005 ETH (1,77 €)
+//  in 35 days, ≈ 0,05 €/day, ≈ 0,000014 ETH/day, … per year 18,48 €."
+// The stake is its own constant: sending ETH never touches it.
+export const EARN_ETH = {
+  apy: "2,6",
+  fluxSharePct: "15",
+  earnedUnits: 50_000, // 0,0005 ETH
+  earnedCents: 177,
+  earnedDays: 35,
+  since: "14 Sep", // 35 days before Mon 19 Oct
+  dailyCents: 5,
+  nextRewardUnits: 1_400, // 0,000014 ETH
+  payoutAt: "03:00",
+  yearCents: 1_848,
+  unstake: "Usually 7 days",
+};
+
+// "More ways: SOL 5,8 %; Polkadot 11,5 % (28 days to unstake); Cardano 2,4 % (no lock-up)."
+// Solana copy (minimum, unstake time) is Figma Earn 2 · Solana 2301:3967.
+export const EARN_MORE = [
+  { id: "SOL", name: "Solana", apy: "5,8", apyX1000: 58, sub: "Staking · paid daily", href: "/earn/solana" },
+  { id: "DOT", name: "Polkadot", apy: "11,5", apyX1000: 115, sub: "Staking · 28 days to unstake" },
+  { id: "ADA", name: "Cardano", apy: "2,4", apyX1000: 24, sub: "Staking · no lock-up" },
+] as const;
+
+// Daily rewards, last 35 days — bar heights (px of 52) from Figma "Rewards chart" 2296:1269.
+export const EARN_BARS = [47, 49, 41, 47, 39, 46, 48, 44, 51, 41, 49, 48, 47, 38, 44, 42, 50, 42, 48, 48, 41, 38, 49, 40, 41, 39, 44, 52, 41, 39, 50, 42, 43, 52, 41];
+
 // "Today +466,59 € (+1,88 %)." — fixed for the session; a buy is not a gain.
 export const TODAY = { absCents: 46_659, pct: "1,88" };
 
