@@ -20,4 +20,5 @@ New address full: 0x91c4 a07e 3b5d 92f1 c8e6 04ab 7d29 e5f0 13c8 7be2.
 Onboarding B: B1 Welcome, B2 Phone (+terms, iOS pad), B3 Code (iOS pad + From Messages 481620, Wrong number?), B4 Email, B5 Passcode, B6 Face ID, B7 Verify, B8 Scan ID, B9 In review.
 Profile: Notifications & price alerts row; Statements & tax · 2025 ready; Log out as text link. Markets label 'On Flux, by market cap'.
 Markets list: BTC, ETH, XRP, SOL, Cardano 0,61 € (22 B €, +1,8 %), ZEC, Polkadot 3,92 € (6,0 B €, −0,6 %), UNI.
+Markets caps & 24h (from Figma Markets / Search): BTC 2,11 T € (+2,1 %) | ETH 429 B € (−0,18 %) | XRP 129 B € +1,2 % | SOL 85 B € (+3,4 %) | ZEC 7,9 B € −2,6 % | UNI 5,4 B € +0,9 % | BCH 8,2 B € +1,4 % (Search only, not in the Markets list). Brackets = change already in Prices.
 Alert BTC>105 000 fired 5:48 at 105 012,40 €. Pay with default Apple Pay = last used. Unstake ETH 'usually 7 days', around Mon 26 Oct. Buy/Sell fee label 'Flux fee · 1,49 %'.

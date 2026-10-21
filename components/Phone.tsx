@@ -69,7 +69,7 @@ function TryThis() {
         ))}
       </ul>
       <p className="try-foot">
-        Prototype of 3 flows · other tabs are placeholders ·{" "}
+        Clickable prototype · some buttons are placeholders ·{" "}
         <a href="https://flux-concept-v1.vercel.app" target="_blank" rel="noopener noreferrer">
           v1 archive →
         </a>

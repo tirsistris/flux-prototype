@@ -81,7 +81,11 @@ type State = {
   addedBanks: string[]; // IBANs added in this session (Raiffeisen is the 1 existing)
   alerts: Alert[];
   alertSeq: number;
+  // New alert kept while the user looks at "Not in this prototype" (coin picker).
+  alertDraft: AlertDraft | null;
 };
+
+export type AlertDraft = { above: boolean; input: string; push: boolean };
 
 const initialDraft = (): BuyDraft => ({ mode: "eur", input: "100", eurCents: 10_000 });
 
@@ -104,6 +108,7 @@ const initialState = (): State => ({
   addedBanks: [],
   alerts: ALERTS,
   alertSeq: 0,
+  alertDraft: null,
 });
 
 type Store = State & {
@@ -124,6 +129,7 @@ type Store = State & {
   addBank: (iban: string) => void;
   setAlertOn: (id: string, on: boolean) => void;
   addAlert: (a: Omit<Alert, "id">) => void;
+  setAlertDraft: (d: AlertDraft | null) => void;
 };
 
 const Ctx = React.createContext<Store | null>(null);
@@ -248,6 +254,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     (a: Omit<Alert, "id">) => set((p) => ({ ...p, alertSeq: p.alertSeq + 1, alerts: [{ ...a, id: `new-${p.alertSeq + 1}` }, ...p.alerts] })),
     [set]
   );
+  const setAlertDraft = React.useCallback((d: AlertDraft | null) => set((p) => ({ ...p, alertDraft: d })), [set]);
 
   // Executes the send once: ETH −(amount + fee), Activity row on top. Returns the
   // row id, or null when the draft isn't sendable (so a double tap can't send twice).
@@ -296,8 +303,8 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   }, [set]);
 
   const value = React.useMemo(
-    () => ({ ...s, setDraft, setMethod, lockQuote, confirmBuy, resetBuy, setSendTo, nextPaste, pickRecipient, setSendAmount, setSendNote, confirmSend, resetSend, setToggle, signOutIpad, addBank, setAlertOn, addAlert }),
-    [s, setDraft, setMethod, lockQuote, confirmBuy, resetBuy, setSendTo, nextPaste, pickRecipient, setSendAmount, setSendNote, confirmSend, resetSend, setToggle, signOutIpad, addBank, setAlertOn, addAlert]
+    () => ({ ...s, setDraft, setMethod, lockQuote, confirmBuy, resetBuy, setSendTo, nextPaste, pickRecipient, setSendAmount, setSendNote, confirmSend, resetSend, setToggle, signOutIpad, addBank, setAlertOn, addAlert, setAlertDraft }),
+    [s, setDraft, setMethod, lockQuote, confirmBuy, resetBuy, setSendTo, nextPaste, pickRecipient, setSendAmount, setSendNote, confirmSend, resetSend, setToggle, signOutIpad, addBank, setAlertOn, addAlert, setAlertDraft]
   );
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }

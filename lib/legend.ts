@@ -174,7 +174,7 @@ export const ACTIVITY: ActivityItem[] = [
 export const DAY_LABEL: Record<ActivityItem["day"], string> = {
   today: "TODAY",
   yesterday: "YESTERDAY",
-  fri16: "FRI, 16 OCT",
+  fri16: "FRI, 16 OCT",
 };
 
 // ── Send ETH (step 2) ────────────────────────────────────────────────────────
@@ -211,24 +211,24 @@ export const CONFIRM_MS = 4_000;
 
 // ── Markets & Search (Figma Markets 2296:1076, Search 2303:4921 / 2303:5017 / 2303:5075) ──
 // Prices: legend "Prices" line; Cardano / Polkadot price, cap and change: legend
-// "Markets list". Caps are written exactly as in Figma ("BTC · 2,11 T €": thin
-// space before T/B, plain spaces around · and before €). Market caps and the 24h change of XRP, ZEC, UNI, BCH are from the
-// Figma frames only (not in legend.md — flagged in step 5).
+// "Markets list". Caps are written exactly as in Figma ("BTC · 2,11 T €"): thin
+// spaces before T/B and €, plain spaces around ·. The caps and 24h changes of the
+// other coins are from the Figma frames (copied into legend.md, marked "from Figma").
 export type MarketId = "BTC" | "ETH" | "XRP" | "SOL" | "ADA" | "ZEC" | "DOT" | "UNI" | "BCH";
 export type Market = { id: MarketId; name: string; priceCents: number; cap: string; change: string; up: boolean };
 
 export const MARKETS: Market[] = [
-  { id: "BTC", name: "Bitcoin", priceCents: 10_574_112, cap: "2,11 T €", change: "2,1", up: true },
-  { id: "ETH", name: "Ethereum", priceCents: 355_394, cap: "429 B €", change: "0,18", up: false },
-  { id: "XRP", name: "XRP", priceCents: 218, cap: "129 B €", change: "1,2", up: true },
-  { id: "SOL", name: "Solana", priceCents: 15_936, cap: "85 B €", change: "3,4", up: true },
+  { id: "BTC", name: "Bitcoin", priceCents: 10_574_112, cap: "2,11 T €", change: "2,1", up: true },
+  { id: "ETH", name: "Ethereum", priceCents: 355_394, cap: "429 B €", change: "0,18", up: false },
+  { id: "XRP", name: "XRP", priceCents: 218, cap: "129 B €", change: "1,2", up: true },
+  { id: "SOL", name: "Solana", priceCents: 15_936, cap: "85 B €", change: "3,4", up: true },
   { id: "ADA", name: "Cardano", priceCents: 61, cap: "22 B €", change: "1,8", up: true },
-  { id: "ZEC", name: "Zcash", priceCents: 48_133, cap: "7,9 B €", change: "2,6", up: false },
+  { id: "ZEC", name: "Zcash", priceCents: 48_133, cap: "7,9 B €", change: "2,6", up: false },
   { id: "DOT", name: "Polkadot", priceCents: 392, cap: "6,0 B €", change: "0,6", up: false },
-  { id: "UNI", name: "Uniswap", priceCents: 854, cap: "5,4 B €", change: "0,9", up: true },
+  { id: "UNI", name: "Uniswap", priceCents: 854, cap: "5,4 B €", change: "0,9", up: true },
 ];
 // Listed on Flux but not in "On Flux, by market cap": found by Search only.
-export const SEARCH_EXTRA: Market[] = [{ id: "BCH", name: "Bitcoin Cash", priceCents: 41_207, cap: "8,2 B €", change: "1,4", up: true }];
+export const SEARCH_EXTRA: Market[] = [{ id: "BCH", name: "Bitcoin Cash", priceCents: 41_207, cap: "8,2 B €", change: "1,4", up: true }];
 export const SEARCH_RECENT: MarketId[] = ["SOL", "ZEC", "ETH"];
 export const SEARCH_TRENDING: MarketId[] = ["SOL", "BTC", "ZEC"];
 

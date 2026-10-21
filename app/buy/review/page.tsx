@@ -137,7 +137,7 @@ export default function ReviewPage() {
       {!expired && (
         <div className="review-note">
           <Note icon={<IconShield />}>
-            If the timer runs out, you’ll see a new price before anything is charged. You never pay more than {eurText(q.eurCents)}.
+            Nothing is charged if the lock runs out. You never pay more than {eurText(q.eurCents)}.
           </Note>
         </div>
       )}

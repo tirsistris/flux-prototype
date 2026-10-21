@@ -3,7 +3,8 @@
 // Keypad edits the target; the % line is recomputed from today's Bitcoin price.
 // Chips set ±2/5/10 % from that price, rounded to whole euros. Create adds the alert
 // to Price alerts (needs a target on the chosen side of the price). Picking another
-// coin is outside this prototype.
+// coin is outside this prototype; the draft survives the trip there and back, and
+// is dropped when the user leaves with Back.
 import React from "react";
 import { useRouter } from "next/navigation";
 import { Screen } from "@/components/Screen";
@@ -27,10 +28,12 @@ function toCents(input: string): number {
 export default function NewAlertPage() {
   const router = useRouter();
   const back = useGoBack();
-  const { addAlert } = useStore();
-  const [above, setAbove] = React.useState(true);
-  const [input, setInput] = React.useState("110000"); // Figma default target
-  const [push, setPush] = React.useState(true);
+  const { addAlert, alertDraft, setAlertDraft } = useStore();
+  const [above, setAbove] = React.useState(alertDraft?.above ?? true);
+  const [input, setInput] = React.useState(alertDraft?.input ?? "110000"); // Figma default target
+  const [push, setPush] = React.useState(alertDraft?.push ?? true);
+  // The draft is read once on arrival; Back or Create leaves nothing behind.
+  React.useEffect(() => setAlertDraft(null), [setAlertDraft]);
 
   const target = toCents(input);
   const away = awayX100(target, PRICE);
@@ -76,7 +79,14 @@ export default function NewAlertPage() {
       <ScreenHeader title="New price alert" onLeading={back} />
 
       <div className="to-pill-wrap">
-        <button type="button" className="asset-chip" onClick={() => router.push(NOT_IN_PROTOTYPE)}>
+        <button
+          type="button"
+          className="asset-chip"
+          onClick={() => {
+            setAlertDraft({ above, input, push });
+            router.push(NOT_IN_PROTOTYPE);
+          }}
+        >
           <Coin asset="BTC" size={26} />
           Bitcoin
           <IconChevDown />
