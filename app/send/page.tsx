@@ -1,67 +1,174 @@
 "use client";
-// app/send/page.tsx — Send step 1 (Recipient), ported from sendflow.jsx
-// ScreenSendRecipient. Send is ETH throughout (source hardcode). The address field
-// is a display placeholder (the source has no real text input); [Continue] and
-// tapping any Recent both advance to /send/amount. Scan → /send/scan. Send is a
-// static demo flow off the golden path — no store, no tx injection.
+// app/send/page.tsx — Send 1 · To (Figma 2298:2457 / 2298:3564) and its address
+// states: Wrong network (2317:7128 / 2317:7381) and "doesn't look like an address"
+// (agreed copy). Entry from Home's Send goes straight here — there is no coin
+// picker in the design, ETH is assumed. Paste cycles the two demo values.
 import React from "react";
 import { useRouter } from "next/navigation";
-import { PhoneFrame } from "@/components/frame/PhoneFrame";
-import { CoinAvatar } from "@/components/fl/ui";
-import { Ico } from "@/components/icons";
+import { Screen } from "@/components/Screen";
+import { NOT_IN_PROTOTYPE } from "@/components/NotInPrototype";
+import { RecipientAvatar } from "@/components/RecipientAvatar";
+import { Button, Coin, Divider, Note, ScreenHeader } from "@/components/ui";
+import { IconArrowUpRight, IconChevDown, IconChevR, IconCloseCircle, IconScan, IconSearch, IconWarn } from "@/components/icons";
+import { SEND_CONTACTS, type ContactId } from "@/lib/legend";
+import { detectAddress } from "@/lib/address";
+import { cryptoText } from "@/lib/format";
+import { useStore } from "@/lib/store";
 
-// Demo recipients — placeholder names + truncated addresses (not real wallets).
-const RECENTS = [
-  { name: "Hardware wallet", addr: "0x7d3…a14", hue: 262 },
-  { name: "Anna", addr: "0x4f9…2ab", hue: 205 },
-  { name: "Saved address", addr: "0x88c…d10", hue: 150 },
-];
+const ORDER: ContactId[] = ["maxim", "anna", "ledger"];
 
-function Ident({ hue }: { hue: number }) {
-  return <div className="fl-ident" style={{ background: `linear-gradient(135deg, hsl(${hue} 70% 62%), hsl(${hue + 40} 65% 48%))` }} />;
-}
-
-export default function SendRecipientPage() {
+export default function SendToPage() {
   const router = useRouter();
-  const footer = (
-    <div className="fl-ctabar"><button className="fl-cta-buy" style={{ width: "100%" }} onClick={() => router.push("/send/amount")}>Continue</button></div>
+  const { send, setSendTo, nextPaste, pickRecipient, resetSend, activity, holdings } = useStore();
+  const value = send.to;
+  const trimmed = value.trim();
+  const kind = trimmed ? detectAddress(trimmed) : "none";
+  const q = trimmed.toLowerCase();
+  const matches = ORDER.filter((id) => !q || kind !== "none" || SEND_CONTACTS[id].name.toLowerCase().includes(q))
+    // Wrong network (Figma 2317:7128) lists people only — no My Ledger (agreed).
+    .filter((id) => kind !== "btc" || !SEND_CONTACTS[id].own);
+  // A name that matches a contact is a filter, not an error (agreed).
+  const garbage = !!trimmed && kind === "none" && matches.length === 0;
+  const error = kind === "btc" || garbage;
+  const addressLike = kind !== "none" || /^(0x|bc1)/i.test(trimmed);
+
+  // Maxim's subtitle names the last note sent to him (Figma: last “Dinner split”).
+  const lastMaximNote = activity.find((a) => a.send?.recipient.kind === "contact" && a.send.recipient.id === "maxim" && a.send.note)?.send?.note;
+  const subFor = (id: ContactId) => {
+    const c = SEND_CONTACTS[id];
+    if (id === "maxim" && lastMaximNote) return `${c.short} · last “${lastMaximNote}”`;
+    return c.tag ? `${c.short} · ${c.tag}` : c.short;
+  };
+
+  const choose = (id: ContactId) => {
+    pickRecipient({ kind: "contact", id });
+    router.push("/send/amount");
+  };
+  const toAddress = () => {
+    pickRecipient({ kind: "address", address: trimmed });
+    router.push("/send/amount");
+  };
+
+  const textRef = React.useRef<HTMLTextAreaElement>(null);
+  React.useLayoutEffect(() => {
+    const t = textRef.current;
+    if (!t) return;
+    t.style.height = "0px";
+    t.style.height = t.scrollHeight + "px";
+  }, [value, addressLike]);
+
+  const actions = !trimmed || (kind === "none" && !garbage) ? (
+    <Button variant="secondary" glyph={<IconScan />} onClick={() => router.push("/send/scan")}>
+      Scan QR code
+    </Button>
+  ) : (
+    <Button disabled={kind !== "eth"} onClick={toAddress}>
+      Continue
+    </Button>
   );
+
   return (
-    <PhoneFrame footer={footer}>
-      <div className="fl-flow-head">
-        <button className="fl-roundbtn sm" onClick={() => router.back()} aria-label="Back">{Ico.chevL("#fff", 20)}</button>
-        <span className="fl-flow-title">Send</span>
-        <div style={{ width: 34 }} />
-      </div>
+    <Screen actions={actions}>
+      <ScreenHeader
+        coin="ETH"
+        title="Send ETH"
+        onLeading={() => {
+          resetSend();
+          router.push("/home");
+        }}
+      />
 
-      <div style={{ marginTop: 8 }}>
-        <h2 className="fl-flow-h2">Send to</h2>
-        <p className="fl-flow-sub">Paste, type or scan a wallet address.</p>
-      </div>
-
-      <div className="fl-addr-field">
-        <span className="fl-addr-placeholder">Address or ENS name</span>
-        <button className="fl-addr-scan" onClick={() => router.push("/send/scan")} aria-label="Scan QR code">{Ico.camera("#fff", 21)}</button>
-      </div>
-
-      <div className="fl-net-row">
-        <span className="fl-flow-sub" style={{ margin: 0 }}>Network</span>
-        <button className="fl-coinchip" style={{ padding: "6px 11px 6px 6px" }}><CoinAvatar id="eth" size={22} /><span>Ethereum</span>{Ico.chevD("rgba(255,255,255,0.55)", 15)}</button>
-      </div>
-
-      <div className="fl-sec-head" style={{ marginTop: 18, marginBottom: 8 }}><span className="fl-sec-title">Recent</span></div>
-      <div style={{ display: "flex", flexDirection: "column" }}>
-        {RECENTS.map((r, i) => (
-          <button key={i} className="fl-recent-row" onClick={() => router.push("/send/amount")}>
-            <Ident hue={r.hue} />
-            <div style={{ display: "flex", flexDirection: "column", gap: 2, textAlign: "left" }}>
-              <span style={{ fontSize: 14.5, fontWeight: 600, color: "#fff" }}>{r.name}</span>
-              <span style={{ fontSize: 12.5, color: "#8A91A3", fontVariantNumeric: "tabular-nums" }}>{r.addr}</span>
-            </div>
-            <span style={{ marginLeft: "auto", display: "flex" }}>{Ico.chevR("rgba(255,255,255,0.3)", 18)}</span>
+      <div className={"to-field" + (trimmed ? " filled" : "") + (error ? " error" : "")}>
+        {!trimmed && (
+          <span className="to-field-icon">
+            <IconSearch />
+          </span>
+        )}
+        <textarea
+          ref={textRef}
+          rows={1}
+          className={"to-input" + (addressLike ? " mono" : "")}
+          placeholder="Name, address or ENS"
+          aria-label="Recipient name or address"
+          value={value}
+          spellCheck={false}
+          autoCapitalize="off"
+          autoCorrect="off"
+          onChange={(e) => setSendTo(e.target.value.replace(/\n/g, ""))}
+        />
+        {trimmed ? (
+          <button type="button" className="to-clear" aria-label="Clear" onClick={() => setSendTo("")}>
+            <IconCloseCircle />
           </button>
-        ))}
+        ) : (
+          <button type="button" className="paste-chip" onClick={nextPaste}>
+            Paste
+          </button>
+        )}
       </div>
-    </PhoneFrame>
+
+      {error ? (
+        <p className="field-error" role="alert">
+          <IconWarn size={16} />
+          {kind === "btc" ? "This is a Bitcoin address, not Ethereum" : "This doesn’t look like an address"}
+        </p>
+      ) : (
+        <div className="network-row">
+          <span>Network</span>
+          <span className="network-chip">
+            <Coin asset="ETH" size={22} />
+            Ethereum
+            <IconChevDown />
+          </span>
+        </div>
+      )}
+
+      {kind === "btc" && (
+        <section className="card suggestion" aria-label="Send Bitcoin instead">
+          <div className="suggestion-top">
+            <Coin asset="BTC" size={36} />
+            <div>
+              <p className="suggestion-title">Send Bitcoin instead?</p>
+              <p className="suggestion-body">
+                You have {cryptoText(holdings.BTC, "BTC", 4)}. Ethereum can’t be sent to a Bitcoin address.
+              </p>
+            </div>
+          </div>
+          {/* Sending Bitcoin is not in this prototype. */}
+          <Button variant="secondary" glyph={<IconArrowUpRight />} onClick={() => router.push(NOT_IN_PROTOTYPE)}>
+            Send Bitcoin
+          </Button>
+        </section>
+      )}
+
+      {matches.length > 0 && (
+        <>
+          <h2 className={"day-label send-people-label" + (kind === "btc" ? " after-suggestion" : "")}>PEOPLE</h2>
+          <div className="card">
+            {matches.map((id, i) => (
+              <React.Fragment key={id}>
+                {i > 0 && <Divider inset />}
+                <button type="button" className="list-row method" onClick={() => choose(id)}>
+                  <RecipientAvatar kind={id === "ledger" ? "wallet" : id} size={40} />
+                  <span className="list-row-main">
+                    <span className="list-row-title">{SEND_CONTACTS[id].name}</span>
+                    <span className="list-row-sub">{subFor(id)}</span>
+                  </span>
+                  <span className="row-chev">
+                    <IconChevR />
+                  </span>
+                </button>
+              </React.Fragment>
+            ))}
+          </div>
+        </>
+      )}
+
+      {!error && (
+        <div className="send-note">
+          <Note icon={<IconWarn />}>Only send ETH and Ethereum tokens here. Coins sent on another network can’t be recovered.</Note>
+        </div>
+      )}
+    </Screen>
   );
 }

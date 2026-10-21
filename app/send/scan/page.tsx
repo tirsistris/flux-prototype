@@ -1,39 +1,56 @@
 "use client";
-// app/send/scan/page.tsx — QR scanner, ported from sendflow.jsx ScreenScanQR. A
-// standalone full-screen scanner with its own chassis (.fl-phone.fl-phone-scan, own
-// StatusBar, no tab bar), opened from the Recipient scan button. [X] and [Paste
-// address instead] both → router.back() to /send. Demo only: there is no camera —
-// the viewfinder is decorative.
+// app/send/scan/page.tsx — Send · Scan QR (Figma 2298:2978, always dark). No
+// camera is opened (agreed): the viewfinder is drawn as in the frame, Torch is
+// decorative, and "Paste address" feeds the same demo-address cycle as Send 1.
 import React from "react";
 import { useRouter } from "next/navigation";
-import { StatusBar } from "@/components/frame/StatusBar";
-import { Ico } from "@/components/icons";
+import { Screen } from "@/components/Screen";
+import { Button, ScreenHeader } from "@/components/ui";
+import { IconClipboard, IconTorch } from "@/components/icons";
+import { useStore } from "@/lib/store";
 
-export default function SendScanPage() {
+export default function ScanPage() {
   const router = useRouter();
+  const { nextPaste } = useStore();
+
   return (
-    <div className="device-stage">
-      <div className="fl-phone fl-phone-scan">
-        <div className="fl-island" />
-        <StatusBar system="fl" />
-        <div className="fl-scan-body">
-          <div className="fl-scan-top">
-            <button className="fl-roundbtn sm" onClick={() => router.back()} aria-label="Close">{Ico.close("#fff", 20)}</button>
-            <span className="fl-flow-title">Scan QR</span>
-            <div style={{ width: 34 }} />
-          </div>
-          <div className="fl-scan-center">
-            <div className="fl-viewfinder">
-              <div className="fl-vf-corner tl" /><div className="fl-vf-corner tr" />
-              <div className="fl-vf-corner bl" /><div className="fl-vf-corner br" />
-              <div className="fl-scanline" />
-            </div>
-            <p className="fl-scan-hint">Point at an address QR code</p>
-          </div>
-          <button className="fl-scan-paste" onClick={() => router.back()}>Paste address instead</button>
-        </div>
-        <div className="fl-home-ind" />
+    <Screen
+      className="scan"
+      actions={
+        <Button
+          variant="secondary"
+          glyph={<IconClipboard />}
+          onClick={() => {
+            nextPaste();
+            router.push("/send");
+          }}
+        >
+          Paste address
+        </Button>
+      }
+    >
+      <div className="scan-camera" aria-hidden="true">
+        <span className="scan-blur b1" />
+        <span className="scan-blur b2" />
+        <span className="scan-blur b3" />
       </div>
-    </div>
+      <ScreenHeader leading="close" title="Scan" onLeading={() => router.push("/send")} />
+      <div className="viewfinder" aria-hidden="true">
+        <span className="c tl" />
+        <span className="c tr" />
+        <span className="c bl" />
+        <span className="c br" />
+      </div>
+      <div className="scan-caption">
+        <p className="t17 w590">Point at a wallet QR code</p>
+        <p className="t13 muted">Ethereum addresses only</p>
+      </div>
+      <div className="torch">
+        <span className="torch-btn" aria-hidden="true">
+          <IconTorch />
+        </span>
+        <span className="t13 w510">Torch</span>
+      </div>
+    </Screen>
   );
 }

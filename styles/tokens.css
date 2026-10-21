@@ -1,0 +1,160 @@
+/* styles/tokens.css — Flux v2 colour tokens.
+   Source: Figma J1q4yN3iVwYQzoEySCwyFZ, collection "Color", modes "Light · Flux"
+   and "Dark · Flux" — the modes the Flux · Final frames actually resolve to. The
+   collection also has legacy "Light"/"Dark" modes (blue v1 palette); they are NOT
+   used here. Values are the resolved hexes, aliases already followed.
+
+   Theme selection: light by default, dark when the OS asks for it, and an explicit
+   override through <html data-theme="light|dark"> set by the prototype's toggle. */
+
+:root {
+  --bg-canvas: #f3f2ee;
+  --surface-1: #ffffff;
+  --surface-2: #f5f5f9;
+  --surface-3: #e9eaf2;
+  --surface-chip: #ffffff;
+  --surface-track: #1414140f;
+  --text-fg: #141414;
+  --text-muted: #6f6d66;
+  --text-idle: #9a988f;
+  --text-faint: #1414145c;
+  --line-divider: #14141414;
+  --border-subtle: #12131c14;
+  --border-strong: #12131c24;
+  --state-pressed: #12131c0f;
+  --action-primary: #ffa15c;
+  --action-on-primary: #1c1206;
+  --action-secondary: #12131c0f;
+  --money-gain: #1f8a4c;
+  --money-loss: #d2304a;
+  --tint-gain: #1f8a4c1f;
+  --tint-loss: #d2304a1a;
+  --tint-neutral: #1414140d;
+  --tint-accent: #ffa15c3d;
+  --glow-gain: #1f8a4c38;
+  --chart-bar: #ffa15c61;
+  --tab-indicator: #ffa15c3d;
+  --tab-icon-on: #141414;
+  --applepay-bg: #000000;
+  --applepay-fg: #ffffff;
+  --control-on: #141414;
+  --control-knob-on: #ffffff;
+  --heritage-accent: #e8b547;
+
+  /* Not variables in Figma — hard-coded in the frames, kept as tokens here. */
+  --statusbar-fg: #101010;   /* status bar time + icons (light frames) */
+  --island: #101010;         /* dynamic island, both themes */
+  --unread: #ea9a1e;         /* bell unread dot */
+  --avatar-lilac-bg: #dad1f4;
+  --avatar-lilac-fg: #2a1f4f;
+  --camera-bg: #1a1a1c;      /* Send · Scan QR "Camera" fill (always-dark frame) */
+
+  /* Face ID indicator — not in the design; iOS system HUD look, follows the theme. */
+  --hud-bg: #f2f2f7eb;
+  --hud-fg: #141414;
+
+  /* Prototype chrome outside the phone (not part of the design). */
+  --stage-bg: #dddcd7;
+  --stage-fg: #5d5b55;
+  /* Device frame around the phone (prototype chrome). */
+  --device-body: #0b0b0c;
+  --device-edge: #2a2a2e;
+  --device-shadow: #00000047;
+
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg-canvas: #0e0e10;
+    --surface-1: #18181b;
+    --surface-2: #1c1d26;
+    --surface-3: #24252f;
+    --surface-chip: #232327;
+    --surface-track: #ffffff14;
+    --text-fg: #f4f4f5;
+    --text-muted: #9a9aa3;
+    --text-idle: #6e6e78;
+    --text-faint: #f4f4f561;
+    --line-divider: #ffffff14;
+    --border-subtle: #ffffff14;
+    --border-strong: #ffffff29;
+    --state-pressed: #ffffff1a;
+    --action-primary: #ffa15c;
+    --action-on-primary: #1c1206;
+    --action-secondary: #ffffff1a;
+    --money-gain: #5fe09a;
+    --money-loss: #ff7a8a;
+    --tint-gain: #5fe09a24;
+    --tint-loss: #ff7a8a24;
+    --tint-neutral: #ffffff0f;
+    --tint-accent: #ffa15c29;
+    --glow-gain: #5fe09a59;
+    --chart-bar: #ffffff29;
+    --tab-indicator: #ffffff17;
+    --tab-icon-on: #ffa15c;
+    --applepay-bg: #ffffff;
+    --applepay-fg: #000000;
+    --control-on: #f4f4f5;
+    --control-knob-on: #18181b;
+    --statusbar-fg: #ffffff;
+    --unread: #ea9a1e;
+    --hud-bg: #2c2c2eeb;
+    --hud-fg: #ffffff;
+    --stage-bg: #18181b; /* dark surface/1: one step above bg/canvas */
+    --stage-fg: #8b8b93;
+    --device-body: #36363b;
+    --device-edge: #ffffff24;
+    --device-shadow: #00000080;
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"],
+.force-dark {
+  --bg-canvas: #0e0e10;
+  --surface-1: #18181b;
+  --surface-2: #1c1d26;
+  --surface-3: #24252f;
+  --surface-chip: #232327;
+  --surface-track: #ffffff14;
+  --text-fg: #f4f4f5;
+  --text-muted: #9a9aa3;
+  --text-idle: #6e6e78;
+  --text-faint: #f4f4f561;
+  --line-divider: #ffffff14;
+  --border-subtle: #ffffff14;
+  --border-strong: #ffffff29;
+  --state-pressed: #ffffff1a;
+  --action-primary: #ffa15c;
+  --action-on-primary: #1c1206;
+  --action-secondary: #ffffff1a;
+  --money-gain: #5fe09a;
+  --money-loss: #ff7a8a;
+  --tint-gain: #5fe09a24;
+  --tint-loss: #ff7a8a24;
+  --tint-neutral: #ffffff0f;
+  --tint-accent: #ffa15c29;
+  --glow-gain: #5fe09a59;
+  --chart-bar: #ffffff29;
+  --tab-indicator: #ffffff17;
+  --tab-icon-on: #ffa15c;
+  --applepay-bg: #ffffff;
+  --applepay-fg: #000000;
+  --control-on: #f4f4f5;
+  --control-knob-on: #18181b;
+  --statusbar-fg: #ffffff;
+  --unread: #ea9a1e;
+  --hud-bg: #2c2c2eeb;
+  --hud-fg: #ffffff;
+  --stage-bg: #18181b; /* dark surface/1: one step above bg/canvas */
+  --stage-fg: #8b8b93;
+  color-scheme: dark;
+}
+
+/* Dark stage only — not .force-dark, so an always-dark screen keeps the page's frame. */
+:root[data-theme="dark"] {
+  --device-body: #36363b;   /* graphite, clearly lighter than the #18181b stage */
+  --device-edge: #ffffff24; /* 1 px light rim on the outer edge */
+  --device-shadow: #00000080;
+}

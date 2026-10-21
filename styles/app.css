@@ -1,0 +1,709 @@
+/* styles/app.css — Flux v2 base, prototype chrome, components and screens.
+   Sizes are Figma Flux · Final values (393×852 frame). Colours only via tokens. */
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html, body { margin: 0; padding: 0; }
+
+body {
+  --font-ui: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  font-family: var(--font-ui);
+  background: var(--stage-bg);
+  color: var(--text-fg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; margin: 0; cursor: pointer; }
+button:disabled { cursor: default; }
+a { color: inherit; text-decoration: none; }
+p, h1, h2, h3 { margin: 0; }
+
+:focus-visible { outline: 2px solid var(--action-primary); outline-offset: 2px; }
+
+/* ── Typography helpers ─────────────────────────────────────────────────── */
+.mono { font-family: var(--font-mono); font-weight: 400; line-height: 1.3; }
+.mono.medium, .medium.mono { font-weight: 500; }
+.serif { font-family: var(--font-serif), Georgia, serif; font-weight: 400; letter-spacing: -0.02em; line-height: 1.1; }
+.num { white-space: nowrap; }
+.kern { letter-spacing: -0.22em; }
+.faint { color: var(--text-faint); }
+.muted { color: var(--text-muted); }
+.gain { color: var(--money-gain); }
+.loss { color: var(--money-loss); }
+.t13 { font-size: 13px; line-height: 16px; }
+.t15 { font-size: 15px; line-height: 18px; }
+.t17 { font-size: 17px; line-height: 20px; }
+.w510 { font-weight: 510; }
+.w590 { font-weight: 590; }
+
+/* ── Prototype stage (outside the phone) ───────────────────────────────── */
+.stage {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px 32px;
+  background: var(--stage-bg);
+}
+/* Bar 34 + gap 20 + phone 852 = 906 px, scaled by --stage-scale = min(1, (window
+   height − 56) / 906) — see stageFitScript. zoom (not transform) keeps text sharp. */
+.stage-fit { display: flex; flex-direction: column; align-items: center; gap: 20px; zoom: var(--stage-scale, 1); }
+
+/* Theme change, as in ufuq-dunes: only the stage background eases (240 ms ease-out);
+   on, after the first paint (data-page-anim), off for reduced motion. */
+:root[data-page-anim], :root[data-page-anim] body, :root[data-page-anim] .stage, :root[data-page-anim] .theme-toggle {
+  transition: background-color 240ms ease-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  :root[data-page-anim], :root[data-page-anim] body, :root[data-page-anim] .stage, :root[data-page-anim] .theme-toggle { transition: none; }
+}
+.stage-bar {
+  width: 393px;
+  max-width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--stage-fg);
+  font-size: 13px;
+}
+.stage-title { font-weight: 590; letter-spacing: 0.01em; }
+.theme-toggle {
+  display: inline-flex;
+  padding: 2px;
+  border-radius: 10px;
+  background: var(--surface-track);
+  border: 1px solid var(--border-subtle);
+}
+.theme-toggle button {
+  padding: 5px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 510;
+  color: var(--stage-fg);
+}
+.theme-toggle button.on { background: var(--surface-chip); color: var(--text-fg); font-weight: 590; }
+
+/* "Try this" — prototype chrome beside the phone, desktop only; stage colours, no accent */
+.stage-phone { position: relative; }
+.try {
+  position: absolute; top: 50%; left: calc(100% + 44px); width: 210px; transform: translateY(-50%);
+  color: var(--stage-fg); font-size: 13px; line-height: 18px;
+}
+.try-title { margin-bottom: 10px; font-size: 13px; line-height: 18px; font-weight: 590; color: var(--text-fg); }
+.try-list { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.try-foot { margin-top: 24px; font-size: 11px; line-height: 15px; }
+.try-foot a { text-decoration: underline; text-underline-offset: 2px; }
+.try-foot a:hover { color: var(--text-fg); }
+@media (max-width: 900px) { .try { display: none; } }
+
+/* ── Phone frame 393×852 ───────────────────────────────────────────────── */
+.phone {
+  position: relative;
+  width: 393px;
+  height: 852px;
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 55px;
+  background: var(--bg-canvas);
+  color: var(--text-fg); /* re-resolve here so .force-dark frames get dark-theme text */
+  box-shadow: 0 0 0 10px var(--device-body), 0 0 0 11px var(--device-edge), 0 30px 80px var(--device-shadow);
+}
+.phone-body { position: relative; flex: 1; min-height: 0; display: flex; flex-direction: column; }
+
+.statusbar {
+  position: relative;
+  z-index: 1; /* stays above the full-bleed Scan QR camera */
+  flex: none;
+  height: 53px;
+  display: grid;
+  grid-template-columns: 1fr 125px 1fr;
+  color: var(--statusbar-fg);
+}
+.statusbar-time {
+  align-self: center;
+  justify-self: center;
+  padding-top: 2px;
+  font-size: 17px;
+  line-height: 22px;
+  font-weight: 590;
+  letter-spacing: -0.408px;
+  font-feature-settings: "case" 1;
+}
+.island { margin-top: 8px; height: 37px; border-radius: 100px; background: var(--island); }
+.statusbar-icons { align-self: center; justify-self: center; padding-top: 2px; }
+
+.home-indicator {
+  position: absolute;
+  left: 50%;
+  bottom: 8px;
+  width: 134px;
+  height: 5px;
+  margin-left: -67px;
+  border-radius: 3px;
+  background: var(--text-fg);
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* Phone width: the frame becomes the screen; fake device chrome steps aside. */
+@media (max-width: 500px) {
+  .stage { padding: 0; gap: 0; display: block; }
+  .stage-fit { display: block; zoom: 1; }
+  .stage-bar { display: none; }
+  .phone { width: 100%; height: 100vh; height: 100dvh; border-radius: 0; box-shadow: none; }
+  .statusbar { height: max(53px, env(safe-area-inset-top)); }
+  .statusbar > * { visibility: hidden; }
+  .home-indicator { display: none; }
+}
+
+/* ── Screen scaffold ───────────────────────────────────────────────────── */
+.screen { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+.screen-content { flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden; scrollbar-width: none; }
+.screen-content::-webkit-scrollbar { display: none; }
+.bottom-actions {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px 16px 30px;
+}
+.bottom-actions-row { display: flex; gap: 12px; }
+.bottom-actions-row > * { flex: 1; min-width: 0; }
+@media (max-width: 500px) {
+  .bottom-actions { padding-bottom: max(30px, calc(env(safe-area-inset-bottom) + 8px)); }
+}
+
+/* ── Header ────────────────────────────────────────────────────────────── */
+.screen-header {
+  display: flex;
+  align-items: center;
+  height: 44px;
+  margin: 6px 16px 0;
+}
+.screen-header-title {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 590;
+  white-space: nowrap;
+}
+.screen-header-trailing { width: 44px; height: 44px; flex: none; }
+
+.icon-btn {
+  width: 44px;
+  height: 44px;
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 22px;
+  background: var(--surface-chip);
+  color: var(--text-fg);
+  position: relative;
+}
+.icon-btn[data-inert] { cursor: default; }
+
+/* ── Buttons (Figma Button 2289:828) ───────────────────────────────────── */
+.btn {
+  height: 52px;
+  width: 100%;
+  border-radius: 26px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 590;
+  white-space: nowrap;
+  transition: transform 120ms ease, filter 120ms ease;
+}
+.btn:not(:disabled):active { transform: scale(0.98); filter: brightness(0.96); }
+.btn-primary { background: var(--action-primary); color: var(--action-on-primary); }
+.btn-secondary { background: var(--surface-1); color: var(--text-fg); box-shadow: inset 0 0 0 1px var(--line-divider); }
+.btn-destructive { background: var(--tint-loss); color: var(--money-loss); }
+.btn-applepay { background: var(--applepay-bg); color: var(--applepay-fg); }
+.btn:disabled { background: var(--surface-track); color: var(--text-idle); box-shadow: none; }
+
+/* ── Chips ─────────────────────────────────────────────────────────────── */
+.chips { display: flex; gap: 8px; }
+.chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 4px 0;
+  padding: 9px 14px;
+  border-radius: 18px;
+  background: var(--surface-chip);
+  color: var(--text-fg);
+  font-size: 15px;
+  line-height: 18px;
+  font-weight: 510;
+  white-space: nowrap;
+}
+.chip.selected { background: var(--text-fg); color: var(--bg-canvas); }
+
+/* ── Cards, rows, dividers ─────────────────────────────────────────────── */
+.card { margin: 0 16px; background: var(--surface-1); border-radius: 24px; padding: 4px 16px; overflow: hidden; }
+.divider { height: 1px; background: var(--line-divider); }
+.divider.inset { margin-left: 52px; }
+
+.detail-row { display: flex; align-items: center; gap: 12px; padding: 12px 0; font-size: 15px; line-height: 18px; }
+.detail-label { flex: 1; min-width: 0; color: var(--text-muted); }
+.detail-value { font-family: var(--font-mono); line-height: 20px; text-align: right; white-space: nowrap; }
+.detail-value.ui { font-family: var(--font-ui); line-height: 18px; }
+.detail-row.strong { font-size: 17px; line-height: 20px; }
+.detail-row.strong .detail-label { color: var(--text-fg); font-weight: 590; }
+.detail-row.strong .detail-value { font-weight: 500; line-height: 22px; }
+
+.list-row { display: flex; align-items: center; gap: 12px; padding: 10px 0; }
+.list-row-main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.list-row-title { font-size: 17px; line-height: 20px; font-weight: 590; white-space: nowrap; }
+.list-row-sub { font-size: 13px; line-height: 16px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.list-row-side { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; white-space: nowrap; }
+.list-row-side .primary { font-family: var(--font-mono); font-weight: 500; font-size: 15px; line-height: 20px; }
+.list-row-side .secondary { font-family: var(--font-mono); font-size: 13px; line-height: 17px; color: var(--text-muted); }
+.list-row-side .secondary.gain { color: var(--money-gain); }
+.list-row-side .secondary.loss { color: var(--money-loss); }
+
+.tile {
+  width: 40px; height: 40px; flex: none;
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 12px; background: var(--bg-canvas); color: var(--text-fg);
+}
+
+.coin { display: block; flex: none; border-radius: 50%; }
+.coin-eur {
+  flex: none; display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 50%; background: var(--text-fg); color: var(--bg-canvas); font-weight: 700; line-height: 1;
+}
+.person { position: relative; flex: none; overflow: hidden; border-radius: 20px; }
+.person img { position: absolute; max-width: none; }
+.avatar {
+  width: 40px; height: 40px; flex: none; border-radius: 20px;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--avatar-lilac-bg); color: var(--avatar-lilac-fg); font-size: 15px; font-weight: 590;
+}
+
+.badge {
+  display: inline-flex; padding: 3px 8px; border-radius: 8px;
+  font-family: var(--font-mono); font-weight: 500; font-size: 13px; line-height: 17px;
+}
+.badge.gain { background: var(--tint-gain); color: var(--money-gain); }
+.badge.loss { background: var(--tint-loss); color: var(--money-loss); }
+
+/* ── Note ──────────────────────────────────────────────────────────────── */
+.note { display: flex; gap: 10px; align-items: flex-start; margin: 0 20px; color: var(--text-muted); }
+.note-icon { flex: none; display: inline-flex; }
+.note p { font-size: 13px; line-height: 16px; }
+
+/* ── Keypad (Figma 2292:1028) ──────────────────────────────────────────── */
+.keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin: 0 16px; }
+.key {
+  height: 52px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px; line-height: 31px; font-weight: 400; color: var(--text-fg);
+  -webkit-tap-highlight-color: transparent;
+}
+.key:active { background: var(--state-pressed); }
+
+/* ── Unit switch ───────────────────────────────────────────────────────── */
+.unit-switch {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 10px 4px 12px; border-radius: 100px;
+  background: var(--surface-chip); color: var(--text-muted);
+  font-family: var(--font-mono); font-size: 17px; line-height: 22px;
+}
+
+/* ── Radio ─────────────────────────────────────────────────────────────── */
+.radio { width: 22px; height: 22px; flex: none; border-radius: 50%; box-shadow: inset 0 0 0 1.5px var(--text-idle); }
+.radio.on { box-shadow: none; border: 7px solid var(--control-on); background: var(--control-knob-on); }
+
+/* ── Receipt paper ─────────────────────────────────────────────────────── */
+.receipt { margin: 0 16px; color: var(--surface-1); }
+.receipt-paper {
+  position: relative;
+  background: var(--surface-1);
+  color: var(--text-fg);
+  border-radius: 24px 24px 0 0;
+  padding: 6px 0;
+  overflow: hidden;
+}
+.receipt-edge { display: block; width: 100%; height: 10px; }
+.receipt-section { padding: 0 16px; }
+.perforation { position: relative; height: 20px; }
+.perforation .notch {
+  position: absolute; top: 0; width: 20px; height: 20px; border-radius: 50%; background: var(--bg-canvas);
+}
+.perforation .notch.left { left: -10px; }
+.perforation .notch.right { right: -10px; }
+.perforation .dash {
+  position: absolute; left: 20px; right: 20px; top: 8.5px; height: 1.5px;
+  background: repeating-linear-gradient(90deg, var(--line-divider) 0 5.016px, transparent 5.016px 10.031px);
+}
+.receipt-head {
+  display: flex; padding: 12px 0 8px;
+  font-family: var(--font-mono); font-weight: 500; font-size: 11px; line-height: 14px;
+  letter-spacing: 1.2px; color: var(--text-muted);
+}
+.receipt-head span:first-child { flex: 1; }
+
+/* ── Tab bar (Figma 2292:926) ──────────────────────────────────────────── */
+.tabbar {
+  flex: none;
+  display: flex;
+  padding: 6px 8px 28px;
+  background: var(--bg-canvas);
+  border-top: 1px solid var(--line-divider);
+}
+.tab { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--text-muted); }
+.tab-indicator { width: 56px; height: 32px; border-radius: 16px; display: flex; align-items: center; justify-content: center; }
+.tab-label { font-size: 11px; line-height: 13px; font-weight: 510; }
+.tab.on .tab-indicator { background: var(--tab-indicator); color: var(--tab-icon-on); }
+.tab.on .tab-label { color: var(--text-fg); font-weight: 590; }
+@media (max-width: 500px) {
+  .tabbar { padding-bottom: max(28px, env(safe-area-inset-bottom)); }
+}
+
+/* ── Charts ────────────────────────────────────────────────────────────── */
+.chart { position: relative; margin: 0 16px; color: var(--money-gain); }
+.chart svg { display: block; width: 100%; overflow: visible; }
+.chart path { filter: drop-shadow(0 6px 5px var(--glow-gain)); }
+.chart .now {
+  position: absolute; right: -5px; width: 10px; height: 10px; border-radius: 50%;
+  background: var(--money-gain); box-shadow: 0 0 0 2px var(--bg-canvas);
+  transform: scale(0.8);
+}
+
+/* ═════════════════════════ Screens ═════════════════════════════════════ */
+
+/* Home (2312:5726) */
+.home-greeting { display: flex; align-items: center; gap: 12px; margin: 6px 16px 0; }
+.home-greeting .hello { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.home-greeting .hello .serif { font-size: 20px; letter-spacing: -0.5px; white-space: nowrap; } /* Figma 2312:5771 */
+.home-greeting .bell { position: relative; }
+.home-greeting .unread {
+  position: absolute; left: 30px; top: 6px; width: 8px; height: 8px; border-radius: 50%;
+  background: var(--unread); box-shadow: 0 0 0 2px var(--bg-canvas);
+}
+.home-balance { margin: 15px 20px 0; display: flex; flex-direction: column; gap: 4px; }
+.home-balance .label { display: flex; align-items: center; gap: 6px; font-size: 15px; line-height: 18px; color: var(--text-muted); }
+.home-balance .label button { display: inline-flex; color: var(--text-muted); }
+.home-balance .value { font-size: 44px; line-height: 57px; font-weight: 500; }
+.home-chart { margin-top: 8px; }
+.change-row { display: flex; align-items: center; gap: 8px; }
+.change-row .t13 { color: var(--text-muted); }
+.periods { display: flex; gap: 4px; margin: 8px 16px 0; }
+.period { flex: 1; text-align: center; padding: 5px 0; border-radius: 10px; font-size: 13px; line-height: 16px; font-weight: 510; color: var(--text-muted); }
+.period.on { background: var(--text-fg); color: var(--bg-canvas); font-weight: 590; }
+.home-actions { display: flex; gap: 8px; margin: 20px 16px 0; }
+.home-action { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: 13px; line-height: 16px; font-weight: 510; }
+.home-action .circle {
+  width: 56px; height: 56px; border-radius: 28px; display: flex; align-items: center; justify-content: center;
+  background: var(--surface-chip); color: var(--text-fg);
+}
+.home-action.primary .circle { background: var(--action-primary); color: var(--action-on-primary); }
+.home-action[data-inert] { cursor: default; }
+.assets { margin: 18px 16px 16px; padding: 12px 16px 4px; }
+.assets-head { display: flex; align-items: center; padding-bottom: 4px; font-size: 17px; line-height: 20px; font-weight: 590; }
+.assets-head span { flex: 1; }
+.assets-head svg { color: var(--text-idle); }
+
+/* Activity (2312:6011) */
+.large-title { display: flex; align-items: center; gap: 8px; margin: 9px 16px 0; }
+.large-title h1 { flex: 1; font-size: 34px; line-height: 41px; font-weight: 700; }
+.activity-chips { margin: 6px 16px 0; }
+.day-label {
+  margin: 20px 20px 6px;
+  font-family: var(--font-mono); font-weight: 500; font-size: 11px; line-height: 14px; letter-spacing: 1.2px; color: var(--text-muted);
+}
+section:first-of-type > .day-label { margin-top: 16px; }
+.activity-empty { margin: 24px 20px; font-size: 15px; line-height: 18px; color: var(--text-muted); }
+
+/* Not in this prototype — quiet state (not a Figma frame; system styles only) */
+.nip { display: flex; flex-direction: column; align-items: center; gap: 6px; margin: 140px 32px 0; text-align: center; }
+.nip-title { font-size: 17px; line-height: 20px; font-weight: 590; }
+.nip-body { max-width: 280px; font-size: 15px; line-height: 20px; color: var(--text-muted); }
+.nip-actions { width: 200px; margin-top: 18px; }
+.nip-link { margin-top: 14px; padding: 6px 8px; font-size: 13px; line-height: 16px; color: var(--text-muted); }
+.nip-link:hover { color: var(--text-fg); }
+
+/* Buy 1 · Bitcoin (2297:1848) */
+.coin-price { margin: 13px 20px 0; display: flex; flex-direction: column; gap: 4px; }
+.coin-price .value { font-size: 40px; line-height: 52px; font-weight: 500; }
+.coin-chart { margin-top: 1px; height: 170px; }
+.coin-chips { justify-content: center; margin: 8px 16px 0; }
+.position { margin: 10px 16px 0; padding: 14px 16px 6px; }
+.position .value-row { display: flex; align-items: baseline; font-family: var(--font-mono); font-weight: 500; }
+.position .value-row .qty { flex: 1; font-size: 22px; line-height: 29px; }
+.position .value-row .eur { font-size: 17px; line-height: 22px; }
+.position .since { margin: 4px 0 6px; font-size: 13px; line-height: 16px; }
+.stats { display: flex; gap: 8px; margin: 40px 16px 16px; }
+.stat { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; padding: 10px 12px; border-radius: 16px; background: var(--surface-1); white-space: nowrap; }
+.stat .k { font-size: 12px; line-height: 14px; color: var(--text-muted); }
+.stat .v { font-family: var(--font-mono); font-weight: 500; font-size: 15px; line-height: 20px; }
+
+/* Buy 2 · Amount (2297:1979) */
+.amount { display: flex; flex-direction: column; align-items: center; gap: 6px; margin: 15px 16px 0; }
+.amount .value {
+  height: 83px; display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono); font-weight: 500; line-height: 83px; white-space: nowrap;
+}
+.amount-chips { justify-content: center; margin: 9px 16px 0; }
+.breakdown { margin-top: 14px; }
+.amount-note { margin-top: 24px; }
+.amount-keypad { margin-bottom: -4px; }
+.amount-keypad .keypad { margin: 0; }
+
+/* Buy 3 · Pay with (2297:2092) */
+.order-pill {
+  align-self: center; display: inline-flex; align-items: center; gap: 8px;
+  margin: 13px auto 0; padding: 6px 14px 6px 8px; border-radius: 18px; background: var(--surface-chip);
+  font-family: var(--font-mono); font-weight: 500; font-size: 13px; line-height: 17px;
+}
+.pay-top { display: flex; flex-direction: column; }
+.methods { margin-top: 14px; }
+.method { width: 100%; text-align: left; }
+.method[aria-disabled="true"] { cursor: default; }
+.method[aria-disabled="true"] .list-row-main,
+.method[aria-disabled="true"] .tile,
+.method[aria-disabled="true"] .coin-eur { opacity: 0.4; }
+.add-method {
+  margin: 16px 16px 0; width: calc(100% - 32px);
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 14px 0; border-radius: 20px; border: 1.5px dashed var(--text-idle);
+  font-size: 15px; line-height: 18px; font-weight: 510; color: var(--text-fg);
+}
+.pay-note { margin-top: 25px; }
+
+/* Buy 4 · Review (2297:2191) + expired (after Swap · Quote expired 2300:3519) */
+.review { margin-top: 9px; }
+.review-hero { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 16px 16px 14px; }
+.review-hero .you-get { margin-top: 8px; }
+.review-hero .big { font-family: var(--font-mono); font-weight: 500; font-size: 34px; line-height: 44px; }
+.review-hero .approx { font-family: var(--font-mono); font-size: 15px; line-height: 20px; color: var(--text-muted); }
+.price-lock { margin: 8px 16px; padding: 10px 12px 12px; border-radius: 14px; background: var(--tint-neutral); display: flex; flex-direction: column; gap: 8px; }
+.price-lock .row { display: flex; align-items: center; gap: 8px; font-size: 15px; line-height: 18px; font-weight: 510; }
+.price-lock .row span:nth-child(2) { flex: 1; }
+.price-lock .count { font-family: var(--font-mono); font-weight: 500; line-height: 20px; }
+.track { height: 4px; border-radius: 2px; background: var(--surface-track); overflow: hidden; }
+.track .fill { height: 100%; border-radius: 2px; background: var(--action-primary); transform-origin: left center; }
+.stale { opacity: 0.4; }
+.banner { margin: 8px 16px; display: flex; gap: 12px; align-items: flex-start; padding: 14px 16px; border-radius: 20px; }
+.banner-loss { background: var(--tint-loss); }
+.banner-loss .banner-icon { color: var(--money-loss); }
+.banner-icon { flex: none; display: inline-flex; }
+.banner-neutral { background: var(--tint-neutral); }
+.banner-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.banner-title { font-size: 15px; line-height: 18px; font-weight: 590; }
+.banner-body { font-size: 13px; line-height: 16px; color: var(--text-muted); }
+.review-note { margin-top: 6px; }
+
+/* Buy 5 · Done (2297:2299) */
+.done-hero { display: flex; flex-direction: column; align-items: center; gap: 10px; margin: 17px 16px 0; text-align: center; }
+.state-icon { width: 88px; height: 88px; border-radius: 44px; background: var(--tint-gain); color: var(--money-gain); display: flex; align-items: center; justify-content: center; }
+.done-hero .serif { margin-top: 14px; font-size: 28px; line-height: 31px; white-space: nowrap; }
+.done-hero p.sub { width: 300px; max-width: 100%; font-size: 15px; line-height: 18px; color: var(--text-muted); }
+.done-receipt { margin-top: 19px; }
+
+/* Send 1 · To (2298:2457) + Wrong network (2317:7128) */
+.to-field {
+  display: flex; align-items: center; gap: 10px;
+  margin: 13px 16px 0; min-height: 50px; padding: 6px 6px 6px 14px;
+  border-radius: 16px; background: var(--surface-1);
+}
+.to-field.filled { padding: 14px 12px 14px 14px; border: 1.5px solid transparent; }
+.to-field.filled.error { border-color: var(--money-loss); }
+.to-field-icon { flex: none; display: inline-flex; color: var(--text-muted); }
+.to-input {
+  flex: 1; min-width: 0; display: block; margin: 0; padding: 0; border: 0; outline: 0; resize: none; overflow: hidden;
+  background: none; color: var(--text-fg); font: inherit; font-size: 17px; line-height: 20px;
+}
+.to-input::placeholder { color: var(--text-idle); }
+.to-input.mono { font-family: var(--font-mono); font-size: 15px; line-height: 20px; word-break: break-all; }
+.to-clear { flex: none; display: inline-flex; color: var(--text-muted); }
+.paste-chip {
+  flex: none; padding: 10px 12px; border-radius: 12px; background: var(--surface-chip);
+  font-size: 15px; line-height: 18px; font-weight: 510;
+}
+.field-error {
+  display: flex; align-items: center; gap: 8px; margin: 9px 20px 0;
+  font-size: 13px; line-height: 16px; font-weight: 510; color: var(--money-loss);
+}
+.field-error svg { flex: none; }
+.network-row { display: flex; align-items: center; gap: 8px; margin: 16px 16px 0; padding-left: 4px; font-size: 15px; line-height: 18px; }
+.network-row > span:first-child { flex: 1; color: var(--text-muted); }
+.network-chip {
+  display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px 5px 6px; border-radius: 16px;
+  background: var(--surface-chip); font-weight: 510; white-space: nowrap;
+}
+.suggestion { margin-top: 18px; padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 10px; }
+.suggestion-top { display: flex; align-items: center; gap: 12px; }
+.suggestion-top > div { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.suggestion-title { font-size: 15px; line-height: 18px; font-weight: 590; }
+.suggestion-body { max-width: 270px; font-size: 13px; line-height: 16px; color: var(--text-muted); }
+.day-label.send-people-label { margin-top: 22px; }
+.day-label.send-people-label.after-suggestion { margin-top: 24px; }
+.row-chev { flex: none; display: inline-flex; color: var(--text-idle); }
+.send-note { margin-top: 30px; }
+
+/* Send 2 · Amount (2298:2589) + Not enough ETH (2298:2878) */
+.to-pill-wrap { display: flex; justify-content: center; margin: 9px 16px 0; }
+.to-pill {
+  display: inline-flex; align-items: center; gap: 8px; padding: 5px 14px 5px 6px; border-radius: 18px;
+  background: var(--surface-chip); font-size: 15px; line-height: 18px; font-weight: 510; white-space: nowrap;
+}
+.send-amount { display: flex; flex-direction: column; align-items: center; gap: 6px; margin: 14px 16px 0; }
+.send-value { display: flex; align-items: baseline; gap: 10px; height: 83px; font-family: var(--font-mono); font-weight: 500; white-space: nowrap; }
+.send-figure { line-height: 83px; }
+.send-value.loss .send-figure { color: var(--money-loss); }
+.send-unit { font-size: 28px; line-height: 36px; color: var(--text-muted); }
+.send-approx { font-family: var(--font-mono); font-size: 17px; line-height: 22px; color: var(--text-muted); }
+.chips.send-chips { justify-content: center; margin: 9px 16px 0; }
+.chips.send-chips.not-enough { margin-top: 16px; }
+.field-error.send-error { margin: 19px 16px 0 21px; }
+.send-available { margin: 10px 16px 0; text-align: center; font-size: 13px; line-height: 16px; color: var(--text-muted); }
+.note-field { display: flex; flex-direction: column; gap: 2px; margin: 28px 16px 0; padding: 12px 16px; border-radius: 16px; background: var(--surface-1); cursor: text; }
+.note-label { font-size: 12px; line-height: 14px; color: var(--text-muted); }
+.note-input { width: 100%; margin: 0; padding: 0; border: 0; outline: 0; background: none; color: var(--text-fg); font: inherit; font-size: 17px; line-height: 20px; }
+.note-input::placeholder { color: var(--text-idle); }
+
+/* Send 3 · Review (2298:2690) + New address review (2317:7221); Transaction · Detail (2300:3713).
+   Figma spacers sit between two 4 px gaps, so a 2/4/6 px spacer is a 6/8/10 px margin here. */
+.send-hero { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 16px 16px 14px; text-align: center; }
+.send-hero-name { margin-top: 6px; font-size: 17px; line-height: 20px; font-weight: 590; white-space: nowrap; }
+.send-hero-short { font-family: var(--font-mono); font-size: 13px; line-height: 17px; color: var(--text-muted); white-space: nowrap; }
+.send-hero-address { display: flex; flex-direction: column; font-family: var(--font-mono); font-size: 13px; line-height: 18px; color: var(--text-muted); white-space: nowrap; }
+.quote { margin-top: 8px; padding: 4px 10px; border-radius: 10px; background: var(--tint-neutral); font-size: 13px; line-height: 16px; white-space: nowrap; }
+.send-hero .big { margin-top: 10px; font-family: var(--font-mono); font-weight: 500; font-size: 34px; line-height: 44px; white-space: nowrap; }
+.send-hero .approx { font-family: var(--font-mono); font-size: 15px; line-height: 20px; color: var(--text-muted); }
+.send-banner { margin-top: 9px; } /* Send 3 gap; New address review (30 px in Figma) aligned to it — agreed */
+
+.send-hero.detail-hero { padding: 16px; }
+.detail-line { font-size: 15px; line-height: 18px; color: var(--text-muted); white-space: nowrap; }
+.detail-hero > :nth-child(2) { margin-top: 6px; }
+.detail-hero .big { margin-top: 0; }
+.status-badge { margin-top: 10px; padding: 3px 8px; border-radius: 8px; background: var(--tint-neutral); color: var(--text-muted); font-size: 13px; line-height: 16px; font-weight: 510; }
+.status-badge.done { background: var(--tint-gain); color: var(--money-gain); }
+.detail-hero .quote { margin-top: 6px; }
+.hash-copy { flex: none; display: inline-flex; margin-left: -4px; color: var(--text-muted); }
+
+/* Send 4 · Sent (2298:2785) */
+.hash { letter-spacing: 0.5px; }
+.sent .perforation + .receipt-section { padding-bottom: 4px; }
+
+/* Send · Scan QR (2298:2978, always dark). The camera fills the whole frame, status bar included. */
+.screen.scan { position: relative; z-index: 0; }
+.scan-camera {
+  position: absolute; z-index: -1; left: 0; right: 0; top: -53px; bottom: 0; overflow: hidden;
+  background: var(--camera-bg); box-shadow: 0 -60px 0 var(--camera-bg);
+}
+.scan-blur { position: absolute; background: center / 100% 100% no-repeat; }
+.scan-blur.b1 { left: -120px; top: 500px; width: 360px; height: 360px; background-image: url(/img/scan-blur-1.svg); }
+.scan-blur.b2 { left: 160px; top: 360px; width: 380px; height: 380px; background-image: url(/img/scan-blur-2.svg); }
+.scan-blur.b3 { left: -20px; top: 120px; width: 340px; height: 340px; background-image: url(/img/scan-blur-3.svg); }
+.viewfinder { position: relative; width: 260px; height: 260px; margin: 117px auto 0; }
+.viewfinder .c { position: absolute; width: 44px; height: 44px; }
+.viewfinder .c::before, .viewfinder .c::after { content: ""; position: absolute; border-radius: 2px; background: var(--action-primary); }
+.viewfinder .c::before { width: 44px; height: 4px; }
+.viewfinder .c::after { width: 4px; height: 44px; }
+.viewfinder .tl { left: 0; top: 0; }
+.viewfinder .tr { right: 0; top: 0; }
+.viewfinder .bl { left: 0; bottom: 0; }
+.viewfinder .br { right: 0; bottom: 0; }
+.viewfinder .tl::before, .viewfinder .tl::after, .viewfinder .bl::after { left: 0; top: 0; }
+.viewfinder .tr::before, .viewfinder .tr::after, .viewfinder .br::after { right: 0; top: 0; }
+.viewfinder .bl::before { left: 0; bottom: 0; }
+.viewfinder .br::before { right: 0; bottom: 0; }
+.scan-caption { display: flex; flex-direction: column; align-items: center; gap: 4px; margin: 24px 16px 0; text-align: center; white-space: nowrap; }
+.torch { display: flex; flex-direction: column; align-items: center; gap: 6px; margin-top: 56px; }
+.torch-btn { width: 56px; height: 56px; border-radius: 28px; display: flex; align-items: center; justify-content: center; background: var(--surface-chip); color: var(--text-fg); }
+
+/* Face ID — stand-in for the iOS system indicator (not a Figma frame) */
+.faceid-scrim { position: absolute; inset: 0; z-index: 10; display: flex; align-items: center; justify-content: center; }
+.faceid-hud {
+  width: 160px; height: 160px; border-radius: 28px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px;
+  background: var(--hud-bg); color: var(--hud-fg); -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px);
+  font-size: 15px; line-height: 18px; font-weight: 510;
+}
+
+/* Earn tab (2296:1234) */
+.rewards-chart { display: flex; align-items: flex-end; gap: 3px; height: 52px; }
+.rewards-chart span { flex: 1; min-width: 0; border-radius: 2px; background: var(--chart-bar); }
+.rewards-chart span.today { background: var(--action-primary); }
+.stake-card { display: flex; flex-direction: column; margin-top: 9px; padding: 18px 20px 20px; color: var(--text-fg); }
+.stake-top { display: flex; align-items: center; gap: 8px; }
+.stake-title { flex: 1; min-width: 0; font-size: 15px; line-height: 18px; font-weight: 590; }
+.stake-big { margin-top: 14px; font-family: var(--font-mono); font-weight: 500; font-size: 34px; line-height: 44px; white-space: nowrap; }
+.stake-eur { font-family: var(--font-mono); font-size: 15px; line-height: 20px; color: var(--text-muted); white-space: nowrap; }
+.stake-card .rewards-chart { margin-top: 16px; }
+.earned { display: flex; align-items: center; gap: 8px; }
+.stake-card .earned { margin-top: 10px; }
+.earned-qty { font-family: var(--font-mono); font-weight: 500; font-size: 15px; line-height: 20px; color: var(--money-gain); white-space: nowrap; }
+.earned-sub { flex: 1; min-width: 0; font-size: 13px; line-height: 16px; color: var(--text-muted); }
+.next-reward {
+  display: flex; align-items: center; gap: 10px; margin-top: 14px; padding: 10px 12px; border-radius: 14px;
+  background: var(--tint-neutral); font-size: 13px; line-height: 16px;
+}
+.next-reward svg { flex: none; }
+.section-title { margin: 8px 16px 0; font-size: 20px; line-height: 24px; font-weight: 590; }
+.earn-list { margin-top: 10px; }
+.earn-list .list-row { width: 100%; }
+.earn-list .list-row-side .secondary { color: var(--text-muted); }
+.earn-note { margin-top: 20px; }
+
+/* Earn 1 · Ethereum (2301:3823) */
+.stake-hero { display: flex; flex-direction: column; gap: 4px; margin: 13px 20px 0; }
+.stake-hero-big { font-family: var(--font-mono); font-weight: 500; font-size: 40px; line-height: 52px; white-space: nowrap; }
+.stake-hero-sub { display: flex; align-items: center; gap: 8px; }
+.rewards-card { display: flex; flex-direction: column; gap: 12px; margin-top: 17px; padding: 16px; }
+.rewards-top { display: flex; align-items: flex-start; }
+.rewards-top h2 { flex: 1; font-size: 17px; line-height: 20px; font-weight: 590; }
+.rewards-card .earned-qty { font-size: 17px; line-height: 22px; }
+.stake-details { margin-top: 46px; }
+
+/* Earn 2 · Solana (2301:3967) */
+.earn-hero { display: flex; flex-direction: column; align-items: center; gap: 8px; margin: 9px 16px 0; text-align: center; }
+.earn-hero .serif { margin-top: 10px; font-size: 28px; line-height: 31px; white-space: nowrap; } /* 2 px spacer between two 8 px gaps */
+.earn-hero .sub { width: 300px; max-width: 100%; font-size: 15px; line-height: 18px; color: var(--text-muted); }
+.if-stake { display: flex; flex-direction: column; gap: 4px; margin: 43px 16px 0; padding: 16px; border-radius: 20px; background: var(--tint-gain); white-space: nowrap; }
+.if-stake-est { display: flex; align-items: baseline; gap: 8px; color: var(--money-gain); font-size: 15px; line-height: 18px; }
+.if-stake-big { font-family: var(--font-mono); font-weight: 500; font-size: 22px; line-height: 29px; }
+.steps { margin-top: 17px; }
+.step { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; }
+.step-num {
+  width: 28px; height: 28px; flex: none; border-radius: 14px; display: flex; align-items: center; justify-content: center;
+  background: var(--text-fg); color: var(--bg-canvas); font-family: var(--font-mono); font-weight: 500; font-size: 13px; line-height: 17px;
+}
+.step-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.step-title { font-size: 15px; line-height: 18px; font-weight: 590; }
+.step-body { font-size: 13px; line-height: 16px; color: var(--text-muted); }
+
+/* Motion: screens fade/slide in; reduced-motion users get none. */
+@media (prefers-reduced-motion: no-preference) {
+  .screen { animation: screen-in 220ms cubic-bezier(0.2, 0.8, 0.2, 1); }
+  .state-icon { animation: pop 420ms cubic-bezier(0.2, 1.4, 0.4, 1); }
+  .faceid-hud { animation: pop 200ms ease-out; }
+  .faceid-face { animation: faceid-pulse 650ms ease-in-out; }
+  .faceid-check { stroke-dasharray: 48; stroke-dashoffset: 48; animation: draw 280ms ease-out forwards; }
+}
+@keyframes faceid-pulse { 50% { opacity: 0.5; } }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+@keyframes screen-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@keyframes pop { from { transform: scale(0.6); opacity: 0; } to { transform: none; opacity: 1; } }
