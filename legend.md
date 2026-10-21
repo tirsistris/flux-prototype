@@ -13,6 +13,7 @@ Send: 0,3 ETH to Maxim = 1 066,18 €, network fee 0,0001 ETH 0,36 €, total 0,
 Swap: 0,1 BTC → 2,9676 ETH, rate 29,7532, spread 25,38, fee 1,90.
 Earn ETH: 2,6 % net (after Flux 15 % share), daily 03:00, earned 0,0005 ETH (1,77 €) in 35 days, ≈ 0,05 €/day, ≈ 0,000014 ETH/day, 7-day rewards 0,000100 ETH = 0,35 €, per year 18,48 €. Stake 500 € → 13,00 €/yr ≈ 0,04/day; after-stake 0,3407 ETH → 31,48 €/yr. Unstake 0,1 → lose ≈ 0,03 €/day.
 More ways: SOL 5,8 %; Polkadot 11,5 % (28 days to unstake); Cardano 2,4 % (no lock-up). USDC savings & BTC lending removed (MiCA / trust).
+Earn derived (round2, from the lines above): ETH stake 0,2000 = 710,79 € (0,2000 × 3 553,94 = 710,788); earned since 14 Sep (35 days before Mon 19 Oct); SOL if all 2,4322 staked ≈ +22,48 €/yr (387,60 € × 5,8 % = 22,4808), ≈ 0,06 €/day (22,48 / 365 = 0,0616).
 History values at time of tx: Maxim −0,0500 ETH = 178,02 € then (177,70 € now); Anna +0,5000 SOL = 77,06 € then.
 Send max after fee: 0,4199 ETH. Swap effective rate 29,6764 (market 29,7532).
 New address full: 0x91c4 a07e 3b5d 92f1 c8e6 04ab 7d29 e5f0 13c8 7be2.
