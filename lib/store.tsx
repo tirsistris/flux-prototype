@@ -2,10 +2,12 @@
 // lib/store.tsx — client-only demo state (in memory, like v1: a hard reload resets
 // the demo to legend.md). Holds balances, the Activity list, the buy draft carried
 // across steps, the live price-locked quote and the last receipt, and the
-// Send ETH draft (recipient, amount, note) with the last sent transfer.
+// Send ETH draft (recipient, amount, note) with the last sent transfer, and the
+// Profile settings: toggles, signed-in iPad, added bank accounts, price alerts.
 import React from "react";
 import {
   ACTIVITY,
+  ALERTS,
   ASSETS,
   BTC_DETAIL,
   DATE_TODAY,
@@ -21,6 +23,7 @@ import {
   PAY_METHODS,
   QUOTE_TTL_MS,
   type ActivityItem,
+  type Alert,
   type Holdings,
   type PayMethod,
   type RecipientRef,
@@ -72,6 +75,12 @@ type State = {
   pasteIdx: number;
   lastSendId: string | null;
   sendSeq: number;
+  faceId: boolean;
+  hideBalances: boolean;
+  ipadSignedIn: boolean;
+  addedBanks: string[]; // IBANs added in this session (Raiffeisen is the 1 existing)
+  alerts: Alert[];
+  alertSeq: number;
 };
 
 const initialDraft = (): BuyDraft => ({ mode: "eur", input: "100", eurCents: 10_000 });
@@ -89,6 +98,12 @@ const initialState = (): State => ({
   pasteIdx: 0,
   lastSendId: null,
   sendSeq: 0,
+  faceId: true,
+  hideBalances: false,
+  ipadSignedIn: true,
+  addedBanks: [],
+  alerts: ALERTS,
+  alertSeq: 0,
 });
 
 type Store = State & {
@@ -104,6 +119,11 @@ type Store = State & {
   setSendNote: (note: string) => void;
   confirmSend: () => string | null;
   resetSend: () => void;
+  setToggle: (k: "faceId" | "hideBalances", on: boolean) => void;
+  signOutIpad: () => void;
+  addBank: (iban: string) => void;
+  setAlertOn: (id: string, on: boolean) => void;
+  addAlert: (a: Omit<Alert, "id">) => void;
 };
 
 const Ctx = React.createContext<Store | null>(null);
@@ -213,6 +233,22 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   const setSendNote = React.useCallback((note: string) => set((p) => ({ ...p, send: { ...p.send, note } })), [set]);
   const resetSend = React.useCallback(() => set((p) => ({ ...p, send: initialSend() })), [set]);
 
+  // Profile settings — in memory only, like the rest of the demo.
+  const setToggle = React.useCallback((k: "faceId" | "hideBalances", on: boolean) => set((p) => ({ ...p, [k]: on })), [set]);
+  const signOutIpad = React.useCallback(() => set((p) => ({ ...p, ipadSignedIn: false })), [set]);
+  const addBank = React.useCallback(
+    (iban: string) => set((p) => (p.addedBanks.includes(iban) ? p : { ...p, addedBanks: [...p.addedBanks, iban] })),
+    [set]
+  );
+  const setAlertOn = React.useCallback(
+    (id: string, on: boolean) => set((p) => ({ ...p, alerts: p.alerts.map((a) => (a.id === id ? { ...a, on } : a)) })),
+    [set]
+  );
+  const addAlert = React.useCallback(
+    (a: Omit<Alert, "id">) => set((p) => ({ ...p, alertSeq: p.alertSeq + 1, alerts: [{ ...a, id: `new-${p.alertSeq + 1}` }, ...p.alerts] })),
+    [set]
+  );
+
   // Executes the send once: ETH −(amount + fee), Activity row on top. Returns the
   // row id, or null when the draft isn't sendable (so a double tap can't send twice).
   const confirmSend = React.useCallback((): string | null => {
@@ -260,8 +296,8 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   }, [set]);
 
   const value = React.useMemo(
-    () => ({ ...s, setDraft, setMethod, lockQuote, confirmBuy, resetBuy, setSendTo, nextPaste, pickRecipient, setSendAmount, setSendNote, confirmSend, resetSend }),
-    [s, setDraft, setMethod, lockQuote, confirmBuy, resetBuy, setSendTo, nextPaste, pickRecipient, setSendAmount, setSendNote, confirmSend, resetSend]
+    () => ({ ...s, setDraft, setMethod, lockQuote, confirmBuy, resetBuy, setSendTo, nextPaste, pickRecipient, setSendAmount, setSendNote, confirmSend, resetSend, setToggle, signOutIpad, addBank, setAlertOn, addAlert }),
+    [s, setDraft, setMethod, lockQuote, confirmBuy, resetBuy, setSendTo, nextPaste, pickRecipient, setSendAmount, setSendNote, confirmSend, resetSend, setToggle, signOutIpad, addBank, setAlertOn, addAlert]
   );
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }

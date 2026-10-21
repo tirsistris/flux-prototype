@@ -54,6 +54,8 @@ const TRY = [
   "Send → Paste, twice — a Bitcoin address, then a new one",
   "Send more than 0,4199 ETH — what happens when it doesn’t fit",
   "Open Earn — rates after Flux’s share",
+  "Search “pepe”, then “bitcon”",
+  "Set a price alert",
   "Switch light / dark",
 ];
 

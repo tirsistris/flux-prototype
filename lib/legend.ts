@@ -208,3 +208,74 @@ export const MAXIM_NOTE = "Rent · October";
 
 // Sent → status flips from "Confirming…" to "Completed" after this long.
 export const CONFIRM_MS = 4_000;
+
+// ── Markets & Search (Figma Markets 2296:1076, Search 2303:4921 / 2303:5017 / 2303:5075) ──
+// Prices: legend "Prices" line; Cardano / Polkadot price, cap and change: legend
+// "Markets list". Caps are written exactly as in Figma ("BTC · 2,11 T €": thin
+// space before T/B, plain spaces around · and before €). Market caps and the 24h change of XRP, ZEC, UNI, BCH are from the
+// Figma frames only (not in legend.md — flagged in step 5).
+export type MarketId = "BTC" | "ETH" | "XRP" | "SOL" | "ADA" | "ZEC" | "DOT" | "UNI" | "BCH";
+export type Market = { id: MarketId; name: string; priceCents: number; cap: string; change: string; up: boolean };
+
+export const MARKETS: Market[] = [
+  { id: "BTC", name: "Bitcoin", priceCents: 10_574_112, cap: "2,11 T €", change: "2,1", up: true },
+  { id: "ETH", name: "Ethereum", priceCents: 355_394, cap: "429 B €", change: "0,18", up: false },
+  { id: "XRP", name: "XRP", priceCents: 218, cap: "129 B €", change: "1,2", up: true },
+  { id: "SOL", name: "Solana", priceCents: 15_936, cap: "85 B €", change: "3,4", up: true },
+  { id: "ADA", name: "Cardano", priceCents: 61, cap: "22 B €", change: "1,8", up: true },
+  { id: "ZEC", name: "Zcash", priceCents: 48_133, cap: "7,9 B €", change: "2,6", up: false },
+  { id: "DOT", name: "Polkadot", priceCents: 392, cap: "6,0 B €", change: "0,6", up: false },
+  { id: "UNI", name: "Uniswap", priceCents: 854, cap: "5,4 B €", change: "0,9", up: true },
+];
+// Listed on Flux but not in "On Flux, by market cap": found by Search only.
+export const SEARCH_EXTRA: Market[] = [{ id: "BCH", name: "Bitcoin Cash", priceCents: 41_207, cap: "8,2 B €", change: "1,4", up: true }];
+export const SEARCH_RECENT: MarketId[] = ["SOL", "ZEC", "ETH"];
+export const SEARCH_TRENDING: MarketId[] = ["SOL", "BTC", "ZEC"];
+
+// ── Profile (Figma 2296:1548 and sub-screens 2302:4566 / 4646 / 4753 / 4843) ──
+export const PROFILE = {
+  name: "Mila Orlova",
+  email: "mila.orlova@gmail.com",
+  residence: "Belgrade, Serbia",
+  phone: "+381 64 123 45 67", // Figma Personal data, spaces as drawn
+  limit: "15 000 €", // Figma Personal data banner
+  paymentMethods: 2,
+  statements: "2025 ready", // legend "Statements & tax · 2025 ready"
+};
+// "Bank: Raiffeisen banka (existing …). Adding Commerzbank DE89… in Add bank flow."
+// Full IBAN as drawn in Figma Add bank account 2302:4843.
+export const NEW_BANK = { iban: "DE89 3704 0044 0532 0130 00", bank: "Commerzbank · Germany" };
+export const LANGUAGES: [string, string][] = [
+  ["English", "English"], ["Deutsch", "German"], ["Español", "Spanish"], ["Français", "French"],
+  ["Italiano", "Italian"], ["Srpski", "Serbian"], ["Русский", "Russian"], ["Українська", "Ukrainian"],
+];
+
+// ── Price alerts (Figma 2317:7010, New 2302:4450) ──
+// "Alerts: BTC > 110 000 € (+4,03 %) on; ETH < 3 400 € (−4,33 %) on; SOL > 170 €
+//  (+6,68 %) paused; BTC > 105 000 € fired 5:48." The % is computed from the price.
+export type Alert = { id: string; asset: "BTC" | "ETH" | "SOL"; above: boolean; targetCents: number; on: boolean };
+export const ALERTS: Alert[] = [
+  { id: "a1", asset: "BTC", above: true, targetCents: 11_000_000, on: true },
+  { id: "a2", asset: "ETH", above: false, targetCents: 340_000, on: true },
+  { id: "a3", asset: "SOL", above: true, targetCents: 17_000, on: false },
+];
+// "Alert BTC>105 000 fired 5:48 at 105 012,40 €."
+export const FIRED_ALERT = { title: "Bitcoin passed 105 000 €", sub: "Today, 5:48 · at 105 012,40 €" };
+
+// ── Notifications (Figma 2302:4331 / 2302:4928) — a static feed ──
+// Buy: "Buy today 6:12 Apple Pay 100 € → 0,000932 BTC"; alert: "fired 5:48 at
+// 105 012,40 €"; reward: "≈ 0,000014 ETH/day, daily 03:00"; Anna: Activity row
+// (12:40, "Concert tickets"). The iPad sign-in (Fri 16 Oct, 18:03) is Figma only.
+export type Notif = { icon: "check" | "alarm" | "earn" | "anna" | "shield"; title: string; time: string; body: string; unread?: boolean };
+export const NOTIFICATIONS: { day: string; items: Notif[] }[] = [
+  {
+    day: "TODAY",
+    items: [
+      { icon: "check", title: "0,000932 BTC is yours", time: "6:12", body: "Bought for 100,00 € with Apple Pay.", unread: true },
+      { icon: "alarm", title: "Bitcoin passed 105 000 €", time: "5:48", body: "Your alert fired at 105 012,40 €.", unread: true },
+      { icon: "earn", title: "+0,000014 ETH while you slept", time: "3:00", body: "Your daily staking reward is in." },
+    ],
+  },
+  { day: "YESTERDAY", items: [{ icon: "anna", title: "Anna sent you 0,5000 SOL", time: "12:40", body: "“Concert tickets”" }] },
+  { day: "FRI, 16 OCT", items: [{ icon: "shield", title: "New sign-in on iPad", time: "18:03", body: "Belgrade. Not you? Review your devices." }] },
+];

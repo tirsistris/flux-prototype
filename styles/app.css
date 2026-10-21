@@ -695,6 +695,151 @@ section:first-of-type > .day-label { margin-top: 16px; }
 .step-title { font-size: 15px; line-height: 18px; font-weight: 590; }
 .step-body { font-size: 13px; line-height: 16px; color: var(--text-muted); }
 
+/* ── Step 5: Markets, Search, Profile, Price alerts, Notifications ─────────── */
+
+/* Toggle (Figma "Toggle" 51×31) */
+.toggle {
+  position: relative; flex: none; width: 51px; height: 31px; border-radius: 15.5px;
+  background: var(--surface-track);
+}
+.toggle-knob {
+  position: absolute; top: 2px; left: 2px; width: 27px; height: 27px; border-radius: 50%;
+  background: var(--toggle-knob-off); box-shadow: 0 2px 4px #0000002e;
+}
+.toggle.on { background: var(--control-on); }
+.toggle.on .toggle-knob { transform: translateX(20px); background: var(--control-knob-on); }
+@media (prefers-reduced-motion: no-preference) {
+  .toggle, .toggle-knob { transition: background-color 160ms ease-out, transform 200ms cubic-bezier(0.2, 0.8, 0.2, 1); }
+}
+
+/* Markets (2296:1076) */
+.markets-chips { margin: 6px 16px 0; }
+.earn-nudge { display: block; margin-top: 14px; padding: 4px 16px; border-radius: 20px; color: var(--text-fg); }
+.earn-nudge .list-row { padding: 10px 0; }
+.nudge-title { font-size: 15px; line-height: 18px; font-weight: 590; white-space: nowrap; }
+.section-head { display: flex; align-items: center; margin: 18px 16px 0; }
+.section-head .section-title { flex: 1; margin: 0; }
+.section-head > span { font-size: 15px; line-height: 18px; font-weight: 510; color: var(--text-muted); }
+.markets-list { margin-top: 12px; margin-bottom: 16px; }
+.market-row { color: var(--text-fg); }
+.market-row .list-row-sub.mono { font-size: 13px; line-height: 16px; }
+
+/* Search (2303:4921 / 5017 / 5075) */
+.search-bar { display: flex; align-items: center; gap: 12px; margin: 6px 16px 0; }
+.search-field {
+  flex: 1; min-width: 0; display: flex; align-items: center; gap: 8px; height: 44px; padding: 0 12px 0 14px;
+  border-radius: 14px; background: var(--surface-1); color: var(--text-muted); cursor: text;
+}
+.search-field input {
+  flex: 1; min-width: 0; margin: 0; padding: 0; border: 0; outline: 0; background: none;
+  font: inherit; font-size: 17px; line-height: 20px; color: var(--text-fg);
+}
+.search-field input::placeholder { color: var(--text-idle); }
+/* No ring on the search field: the caret shows focus, as in the frame. */
+.search-clear { display: inline-flex; color: var(--text-muted); }
+.search-cancel { font-size: 17px; line-height: 20px; color: var(--text-fg); }
+.day-label.search-label { margin-top: 19px; }
+.day-label.search-label.trending { margin-top: 20px; }
+.day-label.search-label.popular { margin-top: 38px; }
+.search-recent { margin: 0 16px; margin-top: -2px; }
+.search-empty { display: flex; flex-direction: column; align-items: center; gap: 8px; margin: 77px 16px 0; text-align: center; }
+.search-empty-icon { width: 72px; height: 72px; border-radius: 36px; display: flex; align-items: center; justify-content: center; background: var(--tint-neutral); color: var(--text-fg); }
+.search-empty .serif { margin-top: 12px; /* 4 px spacer between two 8 px gaps */ font-size: 24px; line-height: 26px; letter-spacing: -0.5px; white-space: nowrap; }
+.search-empty p { width: 320px; max-width: 100%; font-size: 15px; line-height: 18px; color: var(--text-muted); }
+
+/* Profile (2296:1548) */
+.me-card { display: block; margin-top: 9px; padding: 6px 16px; color: var(--text-fg); }
+.me-card .list-row { padding: 10px 0; }
+.me-name { font-size: 20px; line-height: 24px; font-weight: 590; white-space: nowrap; }
+.me-card .status-badge { margin-top: 0; }
+.day-label.profile-label { margin-top: 12px; }
+.day-label.profile-label.money { margin-top: 20px; }
+.settings-row { padding: 6px 0; color: var(--text-fg); width: 100%; }
+.settings-row.has-sub, .roomy .settings-row { padding: 8px 0; } /* Safety rows are 56 px */
+.settings-label { font-size: 17px; line-height: 20px; white-space: nowrap; }
+.settings-value { flex: none; font-size: 15px; line-height: 18px; color: var(--text-muted); white-space: nowrap; }
+.logout {
+  display: flex; align-items: center; justify-content: center; gap: 6px; width: fit-content; margin: 12px auto 16px; padding: 10px 12px;
+  font-size: 15px; line-height: 18px; font-weight: 510; color: var(--money-loss);
+}
+
+/* Personal data (2302:4566) */
+.banner-gain { background: var(--tint-gain); }
+.personal-banner { margin: 9px 16px 0; }
+.fields-card { margin-top: 24px; }
+.field-row { display: flex; flex-direction: column; gap: 2px; padding: 10px 0; }
+.field-key { font-size: 13px; line-height: 16px; color: var(--text-muted); }
+.field-value { font-size: 17px; line-height: 20px; }
+.personal-note { margin-top: 47px; }
+
+/* Safety & privacy (2302:4646), Price alerts (2317:7010) */
+.day-label.sub-label { margin-top: 9px; }
+.day-label.sub-label ~ .day-label.sub-label { margin-top: 20px; }
+.devices-card { padding: 4px 16px; }
+.device-row { display: flex; align-items: center; gap: 12px; padding: 12px 0; }
+.device-row .status-badge { margin-top: 0; }
+.sign-out { font-size: 15px; line-height: 18px; font-weight: 510; color: var(--money-loss); }
+.alert-row { padding: 10px 0; }
+.alert-title { font-size: 15px; line-height: 18px; font-weight: 590; white-space: nowrap; }
+.day-label.sub-label ~ .day-label.sub-label.fired { margin-top: 32px; }
+.fired-card { display: block; width: calc(100% - 32px); text-align: left; color: var(--text-fg); }
+.alerts-note { margin-top: 28px; }
+
+/* Language (2302:4753) */
+.languages { margin-top: 9px; }
+.lang-row { display: flex; align-items: center; gap: 12px; padding: 9px 0; color: var(--text-fg); }
+.lang-check { display: inline-flex; color: var(--text-fg); }
+.language-note { margin-top: 65px; }
+
+/* Price alert · New (2302:4450) */
+.asset-chip {
+  display: inline-flex; align-items: center; gap: 8px; padding: 5px 12px 5px 6px; border-radius: 18px;
+  background: var(--surface-chip); font-size: 15px; line-height: 18px; font-weight: 510; white-space: nowrap;
+}
+.segmented { display: flex; margin: 14px 16px 0; padding: 3px; border-radius: 12px; background: var(--surface-track); }
+.segmented button { flex: 1; padding: 9px 0; border-radius: 9px; font-size: 15px; line-height: 18px; font-weight: 510; color: var(--text-muted); }
+.segmented button.on { background: var(--surface-chip); color: var(--text-fg); font-weight: 590; box-shadow: 0 1px 3px #00000014; }
+.alert-target { display: flex; flex-direction: column; align-items: center; gap: 6px; margin: 18px 16px 0; white-space: nowrap; }
+.alert-figure { height: 73px; display: flex; align-items: center; font-family: var(--font-mono); font-weight: 500; line-height: 73px; }
+.alert-delta { display: flex; align-items: baseline; gap: 6px; font-size: 15px; line-height: 18px; }
+.alert-delta .gain, .alert-delta .loss { font-family: var(--font-mono); font-weight: 500; line-height: 20px; }
+.chips.alert-chips { justify-content: center; margin: 23px 16px 0; }
+.delivery { margin-top: 14px; }
+.delivery-row { padding: 8px 0; }
+.tile.delivery-tile { width: 36px; height: 36px; border-radius: 11px; }
+
+/* Add bank account (2302:4843) */
+.form-field { display: flex; flex-direction: column; gap: 8px; margin: 18px 16px 0; }
+.form-field.holder { margin-top: 9px; }
+.form-label { font-size: 13px; line-height: 16px; font-weight: 510; color: var(--text-muted); }
+.form-input {
+  display: flex; align-items: center; gap: 8px; height: 48px; padding: 0 12px 0 16px; border-radius: 16px;
+  background: var(--surface-1); font-size: 17px; line-height: 20px;
+}
+.form-input > span { flex: 1; }
+.form-input.locked { color: var(--text-muted); }
+.form-input.focus { height: 53px; border: 1.5px solid var(--text-fg); } /* Figma: 53 px with the 1,5 px stroke */
+.form-input input { flex: 1; min-width: 0; margin: 0; padding: 0; border: 0; outline: 0; background: none; color: var(--text-fg); font-size: 17px; line-height: 20px; }
+.form-input input.mono { font-family: var(--font-mono); font-weight: 400; }
+.form-clear { display: inline-flex; color: var(--text-muted); }
+.form-hint { display: flex; align-items: center; gap: 6px; font-size: 13px; line-height: 16px; color: var(--text-muted); }
+.form-hint.ok { color: var(--money-gain); }
+.bank-info { margin-top: 17px; }
+.bank-note { margin-top: 22px; }
+
+/* Notifications (2302:4331) */
+.day-label.notif-label { margin-top: 20px; }
+section:first-of-type > .day-label.notif-label { margin-top: 11px; }
+.notif-row { display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; }
+.tile.notif-tile { color: var(--text-fg); }
+.tile.notif-tile.gain { background: var(--tint-gain); color: var(--money-gain); }
+.notif-main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.notif-top { display: flex; align-items: center; gap: 8px; }
+.notif-title { flex: 1; min-width: 0; font-size: 15px; line-height: 18px; font-weight: 590; }
+.notif-time { font-size: 13px; line-height: 16px; color: var(--text-muted); white-space: nowrap; }
+.notif-dot { width: 8px; height: 8px; border-radius: 4px; background: var(--action-primary); flex: none; }
+.notif-body { font-size: 13px; line-height: 16px; color: var(--text-muted); }
+
 /* Motion: screens fade/slide in; reduced-motion users get none. */
 @media (prefers-reduced-motion: no-preference) {
   .screen { animation: screen-in 220ms cubic-bezier(0.2, 0.8, 0.2, 1); }
