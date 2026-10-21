@@ -23,7 +23,9 @@ export default function SendToPage() {
   const trimmed = value.trim();
   const kind = trimmed ? detectAddress(trimmed) : "none";
   const q = trimmed.toLowerCase();
-  const matches = ORDER.filter((id) => !q || kind !== "none" || SEND_CONTACTS[id].name.toLowerCase().includes(q));
+  const matches = ORDER.filter((id) => !q || kind !== "none" || SEND_CONTACTS[id].name.toLowerCase().includes(q))
+    // Wrong network (Figma 2317:7128) lists people only — no My Ledger (agreed).
+    .filter((id) => kind !== "btc" || !SEND_CONTACTS[id].own);
   // A name that matches a contact is a filter, not an error (agreed).
   const garbage = !!trimmed && kind === "none" && matches.length === 0;
   const error = kind === "btc" || garbage;

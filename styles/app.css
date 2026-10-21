@@ -561,8 +561,7 @@ section:first-of-type > .day-label { margin-top: 16px; }
 .quote { margin-top: 8px; padding: 4px 10px; border-radius: 10px; background: var(--tint-neutral); font-size: 13px; line-height: 16px; white-space: nowrap; }
 .send-hero .big { margin-top: 10px; font-family: var(--font-mono); font-weight: 500; font-size: 34px; line-height: 44px; white-space: nowrap; }
 .send-hero .approx { font-family: var(--font-mono); font-size: 15px; line-height: 20px; color: var(--text-muted); }
-.send-banner { margin-top: 9px; }
-.send-banner.new-address { margin-top: 30px; }
+.send-banner { margin-top: 9px; } /* Send 3 gap; New address review (30 px in Figma) aligned to it — agreed */
 
 .send-hero.detail-hero { padding: 16px; }
 .detail-line { font-size: 15px; line-height: 18px; color: var(--text-muted); white-space: nowrap; }
