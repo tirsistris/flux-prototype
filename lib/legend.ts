@@ -268,15 +268,13 @@ export const ALERTS: Alert[] = [
 export const FIRED_ALERT = { title: "Bitcoin passed 105 000 €", sub: "Today, 5:48 · at 105 012,40 €" };
 
 // ── Notifications (Figma 2302:4331 / 2302:4928) — a static feed ──
-// Buy: "Buy today 6:12 Apple Pay 100 € → 0,000932 BTC"; alert: "fired 5:48 at
-// 105 012,40 €"; reward: "≈ 0,000014 ETH/day, daily 03:00"; Anna: Activity row
+// Alert: "fired 5:48 at 105 012,40 €"; reward: "≈ 0,000014 ETH/day, daily 03:00"; Anna: Activity row
 // (12:40, "Concert tickets"). The iPad sign-in (Fri 16 Oct, 18:03) is Figma only.
 export type Notif = { icon: "check" | "alarm" | "earn" | "anna" | "shield"; title: string; time: string; body: string; unread?: boolean };
 export const NOTIFICATIONS: { day: string; items: Notif[] }[] = [
   {
     day: "TODAY",
     items: [
-      { icon: "check", title: "0,000932 BTC is yours", time: "6:12", body: "Bought for 100,00 € with Apple Pay.", unread: true },
       { icon: "alarm", title: "Bitcoin passed 105 000 €", time: "5:48", body: "Your alert fired at 105 012,40 €.", unread: true },
       { icon: "earn", title: "+0,000014 ETH while you slept", time: "3:00", body: "Your daily staking reward is in." },
     ],
