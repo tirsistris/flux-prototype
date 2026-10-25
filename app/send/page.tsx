@@ -11,14 +11,14 @@ import { RecipientAvatar } from "@/components/RecipientAvatar";
 import { Button, Coin, Divider, Note, ScreenHeader } from "@/components/ui";
 import { IconChevDown, IconChevR, IconCloseCircle, IconScan, IconSearch, IconWarn } from "@/components/icons";
 import { SEND_CONTACTS, type ContactId } from "@/lib/legend";
-import { detectAddress } from "@/lib/address";
+import { detectAddress, shortAddress } from "@/lib/address";
 import { useStore } from "@/lib/store";
 
 const ORDER: ContactId[] = ["maxim", "anna", "ledger"];
 
 export default function SendToPage() {
   const router = useRouter();
-  const { send, setSendTo, nextPaste, pickRecipient, resetSend, activity } = useStore();
+  const { send, setSendTo, nextPaste, pickRecipient, resetSend, activity, savedAddresses } = useStore();
   const value = send.to;
   const trimmed = value.trim();
   const kind = trimmed ? detectAddress(trimmed) : "none";
@@ -26,6 +26,8 @@ export default function SendToPage() {
   const matches = ORDER.filter((id) => !q || kind !== "none" || SEND_CONTACTS[id].name.toLowerCase().includes(q))
     // Wrong network (Figma 2317:7128) lists people only — no My Ledger (agreed).
     .filter((id) => kind !== "btc" || !SEND_CONTACTS[id].own);
+  // Addresses saved on Send review this session, listed after the people.
+  const saved = kind === "btc" ? [] : savedAddresses.filter((a) => !q || a.toLowerCase().includes(q));
   // A name that matches a contact is a filter, not an error (agreed).
   const garbage = !!trimmed && kind === "none" && matches.length === 0;
   const error = kind === "btc" || garbage;
@@ -141,6 +143,21 @@ export default function SendToPage() {
                   <span className="list-row-main">
                     <span className="list-row-title">{SEND_CONTACTS[id].name}</span>
                     <span className="list-row-sub">{subFor(id)}</span>
+                  </span>
+                  <span className="row-chev">
+                    <IconChevR />
+                  </span>
+                </button>
+              </React.Fragment>
+            ))}
+            {saved.map((a) => (
+              <React.Fragment key={a}>
+                <Divider inset />
+                <button type="button" className="list-row method" onClick={() => { pickRecipient({ kind: "address", address: a }); router.push("/send/amount"); }}>
+                  <RecipientAvatar kind="wallet" size={40} />
+                  <span className="list-row-main">
+                    <span className="list-row-title">{shortAddress(a)}</span>
+                    <span className="list-row-sub">Saved this session</span>
                   </span>
                   <span className="row-chev">
                     <IconChevR />
