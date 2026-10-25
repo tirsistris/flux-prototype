@@ -116,10 +116,13 @@ export default function SendToPage() {
       </div>
 
       {error ? (
-        <p className="field-error" role="alert">
-          <IconWarn size={16} />
-          {kind === "btc" ? "This is a Bitcoin address, not Ethereum" : "This doesn’t look like an address"}
-        </p>
+        <>
+          <p className="field-error" role="alert">
+            <IconWarn size={16} />
+            {kind === "btc" ? "This is a Bitcoin address, not Ethereum" : "This doesn’t look like an address"}
+          </p>
+          {kind === "btc" && <p className="field-hint">Ethereum can’t be sent to a Bitcoin address.</p>}
+        </>
       ) : (
         <div className="network-row">
           <span>Network</span>
