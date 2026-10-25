@@ -79,7 +79,7 @@ export default function EarnEthereumPage() {
       </section>
 
       <div className="card stake-details">
-        <DetailRow ui label="Flux’s share" value={`${EARN_ETH.fluxSharePct}${NNBSP}% of rewards`} />
+        <DetailRow ui label="Flux’s share" value={`${EARN_ETH.fluxSharePct}${NNBSP}% of rewards: ≈ ${EARN_ETH.grossApy}${NNBSP}% → ${EARN_ETH.apy}${NNBSP}%`} />
         <Divider />
         <DetailRow label="Next reward" value={<Num>{`≈ ${crypto(est.nextRewardUnits, "ETH", 6)} at ${EARN_ETH.payoutAt}`}</Num>} />
         <Divider />

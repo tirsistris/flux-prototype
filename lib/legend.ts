@@ -62,6 +62,7 @@ export const ETH_STAKED = 20_000_000; // 0,2000 ETH — "0,2 earning" on Home
 // The stake is its own constant: sending ETH never touches it.
 export const EARN_ETH = {
   apy: "2,6",
+  grossApy: "3,1", // what the network pays before Flux’s 15 % of rewards (2,6 / 0,85)
   fluxSharePct: "15",
   earnedUnits: 50_000, // 0,0005 ETH
   earnedCents: 177,

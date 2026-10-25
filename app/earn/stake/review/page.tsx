@@ -58,7 +58,8 @@ export default function StakeReviewPage() {
           </div>
           <Perforation />
           <div className="receipt-section">
-            <DetailRow label={`APY after Flux’s ${EARN_ETH.fluxSharePct}${NNBSP}%`} value={<Num>{`${EARN_ETH.apy}${THIN}%`}</Num>} />
+            <DetailRow label="APY you get" value={<Num>{`${EARN_ETH.apy}${THIN}%`}</Num>} />
+            <DetailRow ui label="Flux’s share" value={`${EARN_ETH.fluxSharePct}${NNBSP}% of rewards: ≈ ${EARN_ETH.grossApy}${NNBSP}% → ${EARN_ETH.apy}${NNBSP}%`} />
             <DetailRow ui label="Rewards" value={`Daily at ${EARN_ETH.payoutAt}`} />
             <DetailRow ui label="First reward" value={`Tomorrow, ${EARN_ETH.payoutAt}`} />
             <DetailRow ui label="Unstaking" value={EARN_ETH.unstake} />
