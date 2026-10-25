@@ -69,7 +69,7 @@ export default function TxDetailPage() {
               {eurText(tx.eurCents)} when sent · {eurText(nowCents)} now
             </span>
             <span className={"status-badge" + (status === "completed" ? " done" : "")}>
-              {status === "completed" ? "Completed" : "Confirming…"}
+              {status === "completed" ? "Completed" : "On its way"}
             </span>
             {d.note && <span className="quote">“{d.note}”</span>}
           </div>

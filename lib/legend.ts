@@ -212,7 +212,7 @@ export const NEW_SEND_HASH = "0x9c4e…a71b";
 // Maxim's note in Figma Send 2 (prefilled for Maxim only — agreed).
 export const MAXIM_NOTE = "Rent · October";
 
-// Sent → status flips from "Confirming…" to "Completed" after this long.
+// A send's Activity detail flips from "On its way" to "Completed" after this long.
 export const CONFIRM_MS = 4_000;
 
 // ── Markets & Search (Figma Markets 2296:1076, Search 2303:4921 / 2303:5017 / 2303:5075) ──
