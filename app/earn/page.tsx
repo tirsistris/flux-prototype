@@ -95,7 +95,7 @@ export default function EarnPage() {
 
       <div className="earn-note">
         <Note icon={<IconInfo />}>
-          Rates are after Flux’s {EARN_ETH.fluxSharePct}{" "}% share. They move with each network and aren’t guaranteed. Staked coins can’t be sent until you unstake.
+          Rates are what you get. Flux keeps {EARN_ETH.fluxSharePct}{" "}% of the rewards: Ethereum pays ≈ {EARN_ETH.grossApy}{" "}%, you get {EARN_ETH.apy}{" "}%. They move with each network and aren’t guaranteed. Staked coins can’t be sent until you unstake.
         </Note>
       </div>
     </Screen>

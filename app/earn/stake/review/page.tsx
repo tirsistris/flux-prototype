@@ -1,6 +1,7 @@
 "use client";
 // app/earn/stake/review/page.tsx — Earn 4 · Review (Figma 2301:4135 / 2301:4485).
-// No price lock: staking moves ETH, the euro figure is only an estimate.
+// No price lock: staking moves ETH, the euro figure is only an estimate. The yearly
+// estimate is the one on Earn 3 (stakeEstimate of the amount being staked).
 import React from "react";
 import { useRouter } from "next/navigation";
 import { Screen } from "@/components/Screen";
@@ -9,7 +10,8 @@ import { FaceId } from "@/components/FaceId";
 import { Button, Coin, DetailRow, Perforation, Receipt, ScreenHeader } from "@/components/ui";
 import { IconFace, IconLock } from "@/components/icons";
 import { EARN_ETH } from "@/lib/legend";
-import { crypto, eurWhole, NNBSP, THIN } from "@/lib/format";
+import { ETH_APY_X1000, stakeEstimate } from "@/lib/money";
+import { crypto, cryptoText, eur, eurWhole, NNBSP, THIN } from "@/lib/format";
 import { ethAvailable, useStore } from "@/lib/store";
 
 export default function StakeReviewPage() {
@@ -20,6 +22,7 @@ export default function StakeReviewPage() {
   const leaving = React.useRef(false);
   const d = drafts.stake;
   const available = ethAvailable(store);
+  const est = stakeEstimate(d.cents, ETH_APY_X1000);
 
   React.useEffect(() => {
     if (!leaving.current && (d.units <= 0 || d.units > available)) router.replace("/earn/stake");
@@ -58,7 +61,9 @@ export default function StakeReviewPage() {
           </div>
           <Perforation />
           <div className="receipt-section">
-            <DetailRow label={`APY after Flux’s ${EARN_ETH.fluxSharePct}${NNBSP}%`} value={<Num>{`${EARN_ETH.apy}${THIN}%`}</Num>} />
+            <DetailRow label="APY you get" value={<Num>{`${EARN_ETH.apy}${THIN}%`}</Num>} />
+            <DetailRow ui label="Flux’s share" value={`${EARN_ETH.fluxSharePct}${NNBSP}% of rewards: ≈ ${EARN_ETH.grossApy}${NNBSP}% → ${EARN_ETH.apy}${NNBSP}%`} />
+            <DetailRow label={`Per year on ${cryptoText(d.units, "ETH", 4)}`} value={<Num>{"≈ " + eur(est.yearCents, { sign: true })}</Num>} />
             <DetailRow ui label="Rewards" value={`Daily at ${EARN_ETH.payoutAt}`} />
             <DetailRow ui label="First reward" value={`Tomorrow, ${EARN_ETH.payoutAt}`} />
             <DetailRow ui label="Unstaking" value={EARN_ETH.unstake} />

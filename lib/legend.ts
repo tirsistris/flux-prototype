@@ -62,6 +62,7 @@ export const ETH_STAKED = 20_000_000; // 0,2000 ETH — "0,2 earning" on Home
 // The stake is its own constant: sending ETH never touches it.
 export const EARN_ETH = {
   apy: "2,6",
+  grossApy: "3,1", // what the network pays before Flux’s 15 % of rewards (2,6 / 0,85)
   fluxSharePct: "15",
   earnedUnits: 50_000, // 0,0005 ETH
   earnedCents: 177,
@@ -159,8 +160,6 @@ export type ActivityItem = {
 };
 
 export const ACTIVITY: ActivityItem[] = [
-  // "Buy today 6:12 Apple Pay 100 € → 0,000932 BTC" (exact: 0,00093161 BTC)
-  { id: "buy-0612", day: "today", kind: "trade", icon: "buy", title: "Bought Bitcoin", sub: "Apple Pay · 6:12", asset: "BTC", qty: 93_161, qtyDp: 6, eurCents: 10_000 },
   // "7-day rewards 0,000100 ETH = 0,35 €"
   { id: "earn-7d", day: "today", kind: "earn", icon: "earn", title: "Staking rewards", sub: "Last 7 days · paid daily", asset: "ETH", qty: 10_000, qtyDp: 6, eurCents: 35 },
   // "Maxim −0,0500 ETH = 178,02 € then"

@@ -114,9 +114,11 @@ export default function AmountPage() {
         <DetailRow strong label="You pay" value={<Num>{eur(q.eurCents)}</Num>} />
       </section>
 
-      <div className="amount-note">
-        <Note icon={<IconInfo />}>The fee is already inside the {eurShort(draft.eurCents)}. Nothing is added later.</Note>
-      </div>
+      {draft.eurCents > 0 && (
+        <div className="amount-note">
+          <Note icon={<IconInfo />}>The fee is already inside the {eurShort(draft.eurCents)}. Nothing is added later.</Note>
+        </div>
+      )}
 
     </Screen>
   );
