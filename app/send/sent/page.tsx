@@ -63,7 +63,7 @@ export default function SentPage() {
         </span>
         <h1 className="serif">{info.sentHero}</h1>
         <p className="sub">
-          {cryptoText(units, "ETH", 4)} usually lands in about a minute. We’ll let you know when it does.
+          {cryptoText(units, "ETH", 4)} usually lands in about a minute.
         </p>
       </div>
 
