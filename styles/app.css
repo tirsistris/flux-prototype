@@ -549,6 +549,8 @@ section:first-of-type > .day-label { margin-top: 16px; }
   font-size: 13px; line-height: 16px; font-weight: 510; color: var(--money-loss);
 }
 .field-error svg { flex: none; }
+/* Muted line under a field error, aligned with its text (20 px + 16 px icon + 8 px gap). */
+.field-hint { margin: 4px 20px 0 44px; font-size: 13px; line-height: 16px; color: var(--text-muted); }
 .network-row { display: flex; align-items: center; gap: 8px; margin: 16px 16px 0; padding-left: 4px; font-size: 15px; line-height: 18px; }
 .network-row > span:first-child { flex: 1; color: var(--text-muted); }
 .network-chip {
