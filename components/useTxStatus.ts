@@ -1,6 +1,6 @@
 "use client";
 // components/useTxStatus.ts — a prototype send confirms CONFIRM_MS after it was
-// sent ("Confirming…" → "Completed"); seed transfers are long settled.
+// sent ("On its way" → "Completed"); seed transfers are long settled.
 import React from "react";
 import { CONFIRM_MS } from "@/lib/legend";
 

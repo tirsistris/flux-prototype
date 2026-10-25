@@ -4,10 +4,10 @@
 // calm "You've sent to Maxim before" banner built from his last transfer; Anna and
 // My Ledger get none (agreed); a new address shows the full address in groups of
 // four and the red first-time banner. Face ID is a ~1 s stand-in overlay.
+// Save as contact first keeps the address in this session's contacts, then sends.
 import React from "react";
 import { useRouter } from "next/navigation";
 import { Screen } from "@/components/Screen";
-import { NOT_IN_PROTOTYPE } from "@/components/NotInPrototype";
 import { Num } from "@/components/Num";
 import { FaceId } from "@/components/FaceId";
 import { RecipientAvatar } from "@/components/RecipientAvatar";
@@ -24,7 +24,7 @@ const PRICE = ASSETS.ETH.priceCents;
 
 export default function SendReviewPage() {
   const router = useRouter();
-  const { send, activity, confirmSend } = useStore();
+  const { send, activity, confirmSend, saveAddress } = useStore();
   const [scanning, setScanning] = React.useState(false);
   const leaving = React.useRef(false);
 
@@ -63,8 +63,14 @@ export default function SendReviewPage() {
             <Button glyph={<IconFace />} onClick={() => setScanning(true)} disabled={scanning}>
               I checked it · Send with Face ID
             </Button>
-            {/* Saving contacts is not in this prototype. */}
-            <Button variant="secondary" onClick={() => router.push(NOT_IN_PROTOTYPE)}>
+            <Button
+              variant="secondary"
+              disabled={scanning}
+              onClick={() => {
+                if (r.kind === "address") saveAddress(r.address);
+                setScanning(true);
+              }}
+            >
               Save as contact first
             </Button>
           </>

@@ -150,6 +150,7 @@ type State = {
   hideBalances: boolean;
   ipadSignedIn: boolean;
   addedBanks: string[]; // IBANs added in this session (Raiffeisen is the 1 existing)
+  savedAddresses: string[]; // ETH addresses saved as contacts in this session (Send review)
   alerts: Alert[];
   alertSeq: number;
   // New alert kept while the user looks at "Not in this prototype" (coin picker).
@@ -187,6 +188,7 @@ const initialState = (): State => ({
   hideBalances: false,
   ipadSignedIn: true,
   addedBanks: [],
+  savedAddresses: [],
   alerts: ALERTS,
   alertSeq: 0,
   alertDraft: null,
@@ -213,6 +215,7 @@ type Store = State & {
   setSendNote: (note: string) => void;
   confirmSend: () => string | null;
   resetSend: () => void;
+  saveAddress: (address: string) => void;
   setToggle: (k: "faceId" | "hideBalances", on: boolean) => void;
   signOutIpad: () => void;
   addBank: (iban: string) => void;
@@ -338,6 +341,11 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   );
   const setSendNote = React.useCallback((note: string) => set((p) => ({ ...p, send: { ...p.send, note } })), [set]);
   const resetSend = React.useCallback(() => set((p) => ({ ...p, send: initialSend() })), [set]);
+  const saveAddress = React.useCallback(
+    (address: string) =>
+      set((p) => (p.savedAddresses.includes(address) ? p : { ...p, savedAddresses: [...p.savedAddresses, address] })),
+    [set]
+  );
 
   // Profile settings — in memory only, like the rest of the demo.
   const setToggle = React.useCallback((k: "faceId" | "hideBalances", on: boolean) => set((p) => ({ ...p, [k]: on })), [set]);
@@ -605,8 +613,8 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   }, [set]);
 
   const value = React.useMemo(
-    () => ({ ...s, setDraft, setMethod, lockQuote, confirmBuy, resetBuy, setSendTo, nextPaste, pickRecipient, setSendAmount, setSendNote, confirmSend, resetSend, setToggle, signOutIpad, addBank, setAlertOn, addAlert, setAlertDraft, setAmount, resetAmount, lockSwap, lockSell, confirmSwap, confirmSell, confirmWithdraw, confirmStake, confirmUnstake }),
-    [s, setDraft, setMethod, lockQuote, confirmBuy, resetBuy, setSendTo, nextPaste, pickRecipient, setSendAmount, setSendNote, confirmSend, resetSend, setToggle, signOutIpad, addBank, setAlertOn, addAlert, setAlertDraft, setAmount, resetAmount, lockSwap, lockSell, confirmSwap, confirmSell, confirmWithdraw, confirmStake, confirmUnstake]
+    () => ({ ...s, setDraft, setMethod, lockQuote, confirmBuy, resetBuy, setSendTo, nextPaste, pickRecipient, setSendAmount, setSendNote, confirmSend, resetSend, saveAddress, setToggle, signOutIpad, addBank, setAlertOn, addAlert, setAlertDraft, setAmount, resetAmount, lockSwap, lockSell, confirmSwap, confirmSell, confirmWithdraw, confirmStake, confirmUnstake }),
+    [s, setDraft, setMethod, lockQuote, confirmBuy, resetBuy, setSendTo, nextPaste, pickRecipient, setSendAmount, setSendNote, confirmSend, resetSend, saveAddress, setToggle, signOutIpad, addBank, setAlertOn, addAlert, setAlertDraft, setAmount, resetAmount, lockSwap, lockSell, confirmSwap, confirmSell, confirmWithdraw, confirmStake, confirmUnstake]
   );
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }

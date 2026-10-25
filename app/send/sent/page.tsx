@@ -1,14 +1,14 @@
 "use client";
 // app/send/sent/page.tsx — Send 4 · Sent (Figma 2298:2785 / 2298:3716). Receipt of
-// the transfer just made; Status reads "Confirming…" and flips to "Completed"
-// after ~4 s (not in the design — agreed). "Let … know" only for people.
+// the transfer just made. Status reads "On its way", the same as the title above it
+// (it used to flip to "Completed" under an "On its way" title); the transfer's
+// detail in Activity still settles to "Completed". "Let … know" only for people.
 import React from "react";
 import { useRouter } from "next/navigation";
 import { Screen } from "@/components/Screen";
 import { Num } from "@/components/Num";
 import { Button, DetailRow, Perforation, Receipt, ScreenHeader } from "@/components/ui";
 import { IconArrowUpRight, IconShare } from "@/components/icons";
-import { useTxStatus } from "@/components/useTxStatus";
 import { crypto, cryptoText } from "@/lib/format";
 import { recipientInfo } from "@/lib/send";
 import { useStore } from "@/lib/store";
@@ -17,7 +17,6 @@ export default function SentPage() {
   const router = useRouter();
   const { activity, lastSendId } = useStore();
   const tx = activity.find((a) => a.id === lastSendId);
-  const status = useTxStatus(tx?.send?.sentAt);
   const [copied, setCopied] = React.useState(false);
 
   React.useEffect(() => {
@@ -75,7 +74,7 @@ export default function SentPage() {
               <span>FLUX · RECEIPT</span>
               <span className="hash">{d.hash}</span>
             </div>
-            <DetailRow ui label="Status" value={<span aria-live="polite">{status === "completed" ? "Completed" : "Confirming…"}</span>} />
+            <DetailRow ui label="Status" value="On its way" />
             <DetailRow label="Sent" value={<Num>{crypto(units, "ETH", 4)}</Num>} />
             <DetailRow label="Network fee" value={<Num>{crypto(d.feeUnits, "ETH", 4)}</Num>} />
             {d.note && <DetailRow ui label="Note" value={d.note} />}
