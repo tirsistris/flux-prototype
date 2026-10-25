@@ -1,6 +1,7 @@
 "use client";
-// app/earn/stake/done/page.tsx — Earn 5 · Done (Figma 2301:4228 / 2301:4527). "Per year
-// at this rate" is the whole stake after this one (lib/money.ts ethStake).
+// app/earn/stake/done/page.tsx — Earn 5 · Done (Figma 2301:4228 / 2301:4527). The yearly
+// estimate is for the whole stake after this one (lib/money.ts ethStake), and its label
+// names that amount ("Per year on all 0,4814 ETH").
 import React from "react";
 import { useRouter } from "next/navigation";
 import { Screen } from "@/components/Screen";
@@ -43,7 +44,7 @@ export default function StakeDonePage() {
             </div>
             <DetailRow label="Staked now" value={<Num>{crypto(r.units, "ETH", 4)}</Num>} />
             <DetailRow label="APY after fees" value={<Num>{`${EARN_ETH.apy}${THIN}%`}</Num>} />
-            <DetailRow label="Per year at this rate" value={<Num>{"≈ " + eur(est.yearCents, { sign: true })}</Num>} />
+            <DetailRow label={`Per year on all ${cryptoText(r.stakedAfter, "ETH", 4)}`} value={<Num>{"≈ " + eur(est.yearCents, { sign: true })}</Num>} />
           </div>
           <Perforation />
           <div className="receipt-section tail">
