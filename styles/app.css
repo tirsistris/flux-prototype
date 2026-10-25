@@ -536,7 +536,10 @@ section:first-of-type > .day-label { margin-top: 16px; }
 }
 .to-input::placeholder { color: var(--text-idle); }
 .to-input.mono { font-family: var(--font-mono); font-size: 15px; line-height: 20px; word-break: break-all; }
-.to-clear { flex: none; display: inline-flex; color: var(--text-muted); }
+.to-clear { position: relative; flex: none; display: inline-flex; color: var(--text-muted); }
+/* 20 px icon, 44 × 44 tap area; Paste sits 12 px away so the areas don't overlap. */
+.to-clear::after { content: ""; position: absolute; inset: -12px; }
+.to-clear + .paste-chip { margin-left: 2px; }
 .paste-chip {
   flex: none; padding: 10px 12px; border-radius: 12px; background: var(--surface-chip);
   font-size: 15px; line-height: 18px; font-weight: 510;

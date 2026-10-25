@@ -104,15 +104,15 @@ export default function SendToPage() {
           autoCorrect="off"
           onChange={(e) => setSendTo(e.target.value.replace(/\n/g, ""))}
         />
-        {trimmed ? (
+        {trimmed && (
           <button type="button" className="to-clear" aria-label="Clear" onClick={() => setSendTo("")}>
             <IconCloseCircle />
           </button>
-        ) : (
-          <button type="button" className="paste-chip" onClick={nextPaste}>
-            Paste
-          </button>
         )}
+        {/* Paste stays after a paste, so a second paste needs no Clear first. */}
+        <button type="button" className="paste-chip" onClick={nextPaste}>
+          Paste
+        </button>
       </div>
 
       {error ? (
