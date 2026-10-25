@@ -1,25 +1,24 @@
 "use client";
 // app/send/page.tsx — Send 1 · To (Figma 2298:2457 / 2298:3564) and its address
 // states: Wrong network (2317:7128 / 2317:7381) and "doesn't look like an address"
-// (agreed copy). Entry from Home's Send goes straight here — there is no coin
+// (agreed copy). Wrong network's action is Change address: it clears the field and
+// puts the cursor back in it (there is no "Send Bitcoin instead" offer). Entry from Home's Send goes straight here — there is no coin
 // picker in the design, ETH is assumed. Paste cycles the two demo values.
 import React from "react";
 import { useRouter } from "next/navigation";
 import { Screen } from "@/components/Screen";
-import { NOT_IN_PROTOTYPE } from "@/components/NotInPrototype";
 import { RecipientAvatar } from "@/components/RecipientAvatar";
 import { Button, Coin, Divider, Note, ScreenHeader } from "@/components/ui";
-import { IconArrowUpRight, IconChevDown, IconChevR, IconCloseCircle, IconScan, IconSearch, IconWarn } from "@/components/icons";
+import { IconChevDown, IconChevR, IconCloseCircle, IconScan, IconSearch, IconWarn } from "@/components/icons";
 import { SEND_CONTACTS, type ContactId } from "@/lib/legend";
 import { detectAddress } from "@/lib/address";
-import { cryptoText } from "@/lib/format";
 import { useStore } from "@/lib/store";
 
 const ORDER: ContactId[] = ["maxim", "anna", "ledger"];
 
 export default function SendToPage() {
   const router = useRouter();
-  const { send, setSendTo, nextPaste, pickRecipient, resetSend, activity, holdings } = useStore();
+  const { send, setSendTo, nextPaste, pickRecipient, resetSend, activity } = useStore();
   const value = send.to;
   const trimmed = value.trim();
   const kind = trimmed ? detectAddress(trimmed) : "none";
@@ -57,7 +56,14 @@ export default function SendToPage() {
     t.style.height = t.scrollHeight + "px";
   }, [value, addressLike]);
 
-  const actions = !trimmed || (kind === "none" && !garbage) ? (
+  const changeAddress = () => {
+    setSendTo("");
+    textRef.current?.focus();
+  };
+
+  const actions = kind === "btc" ? (
+    <Button onClick={changeAddress}>Change address</Button>
+  ) : !trimmed || (kind === "none" && !garbage) ? (
     <Button variant="secondary" glyph={<IconScan />} onClick={() => router.push("/send/scan")}>
       Scan QR code
     </Button>
@@ -123,27 +129,9 @@ export default function SendToPage() {
         </div>
       )}
 
-      {kind === "btc" && (
-        <section className="card suggestion" aria-label="Send Bitcoin instead">
-          <div className="suggestion-top">
-            <Coin asset="BTC" size={36} />
-            <div>
-              <p className="suggestion-title">Send Bitcoin instead?</p>
-              <p className="suggestion-body">
-                You have {cryptoText(holdings.BTC, "BTC", 4)}. Ethereum can’t be sent to a Bitcoin address.
-              </p>
-            </div>
-          </div>
-          {/* Sending Bitcoin is not in this prototype. */}
-          <Button variant="secondary" glyph={<IconArrowUpRight />} onClick={() => router.push(NOT_IN_PROTOTYPE)}>
-            Send Bitcoin
-          </Button>
-        </section>
-      )}
-
       {matches.length > 0 && (
         <>
-          <h2 className={"day-label send-people-label" + (kind === "btc" ? " after-suggestion" : "")}>PEOPLE</h2>
+          <h2 className="day-label send-people-label">PEOPLE</h2>
           <div className="card">
             {matches.map((id, i) => (
               <React.Fragment key={id}>
